@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JStL Spreadsheet™ | Tax & Demography</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+        .title {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            color: #1B5E20;
+            margin-bottom: 20px;
+        }
+        .country-bar {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .country-btn {
+            background: #1B5E20;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-family: monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .country-btn:hover {
+            background: #FF6B35;
+        }
+        .section {
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .section-title {
+            background: #1B5E20;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .section-content {
+            padding: 15px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted #ccc;
+            flex-wrap: wrap;
+        }
+        .row strong {
+            min-width: 180px;
+        }
+        input, select {
+            font-family: monospace;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+        input {
+            width: 180px;
+            text-align: right;
+        }
+        button {
+            background: #1B5E20;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-family: monospace;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #FF6B35;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.75em;
+            color: #888;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        @media (max-width: 600px) {
+            .row { flex-direction: column; gap: 5px; }
+            input { width: 100%; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title">📊 JStL Spreadsheet™</div>
+
+    <div class="country-bar">
+        <button class="country-btn" onclick="selectCountry('bangladesh')">🇧🇩 Bangladesh</button>
+        <button class="country-btn" onclick="selectCountry('canada')">🇨🇦 Canada</button>
+        <button class="country-btn" onclick="selectCountry('india')">🇮🇳 India</button>
+        <button class="country-btn" onclick="selectCountry('thailand')">🇹🇭 Thailand</button>
+    </div>
+
+    <!-- Income Tax Section -->
+    <div class="section">
+        <div class="section-title">💰 Income Tax Calculator</div>
+        <div class="section-content">
+            <div class="row">
+                <strong>Annual Income (<span id="currLabel">BDT</span>):</strong>
+                <input type="number" id="income" value="5000000" oninput="calculateTax()">
+            </div>
+            <div class="row">
+                <strong>Taxable Income:</strong>
+                <span id="taxable">0.00</span> <span id="currA">BDT</span>
+            </div>
+            <div class="row">
+                <strong>Total Tax Payable:</strong>
+                <span id="taxAmount">0.00</span> <span id="currB">BDT</span>
+            </div>
+            <div class="row">
+                <strong>Income After Tax:</strong>
+                <span id="afterTax">0.00</span> <span id="currC">BDT</span>
+            </div>
+            <div class="row">
+                <strong>Effective Tax Rate:</strong>
+                <span id="effectiveRate">0.00</span>%
+            </div>
+        </div>
+    </div>
+
+    <!-- Demography Section -->
+    <div class="section">
+        <div class="section-title">👥 Demography - <span id="countryName">Bangladesh</span></div>
+        <div class="section-content">
+            <div class="row"><strong>Total Population:</strong> <span id="population">0</span></div>
+            <div class="row"><strong>Male (<span id="malePercent">0</span>%):</strong> <span id="maleCount">0</span></div>
+            <div class="row"><strong>Female (<span id="femalePercent">0</span>%):</strong> <span id="femaleCount">0</span></div>
+            <div class="row"><strong>Birth Rate:</strong> <span id="birthRate">0</span> /1,000 people</div>
+            <div class="row"><strong>Death Rate:</strong> <span id="deathRate">0</span> /1,000 people</div>
+            <div class="row"><strong>Growth Rate:</strong> <span id="growthRate">0</span>%</div>
+            <div class="row"><strong>Urban %:</strong> <span id="urbanPercent">0</span>%</div>
+        </div>
+    </div>
+
+    <!-- Land Converter Section -->
+    <div class="section">
+        <div class="section-title">📐 Land Unit Converter</div>
+        <div class="section-content">
+            <div class="row">
+                <strong>Value:</strong>
+                <input type="number" id="landValue" value="1" style="width:120px">
+                <select id="fromUnit" style="margin-left:10px">
+                    <option value="bigha">Bigha</option>
+                    <option value="katha">Katha</option>
+                    <option value="ropani">Ropani</option>
+                </select>
+                <span style="margin-left:10px">→ Sq Ft</span>
+            </div>
+            <div class="row">
+                <strong>Converted:</strong> <span id="convertedSqft">0.00</span> sq ft
+            </div>
+            <button onclick="convertLand()">Convert</button>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button onclick="downloadHTML()">📥 Download as HTML</button>
+        <button onclick="contactBuy()">💎 Buy License - $199</button>
+    </div>
+
+    <div class="footer">
+        JStL Spreadsheet™ | Perpetual License<br>
+        📧 seliim.ahmed@gmail.com | amit.khanna.1082@gmail.com<br>
+        Generated: <span id="date"></span>
+    </div>
+</div>
+
+<script>
+    const countryData = {
+        bangladesh: {
+            name: "Bangladesh", currency: "BDT", taxFree: 350000,
+            population: 171186372, malePercent: 49.6, femalePercent: 50.4,
+            birthRate: 17.8, deathRate: 5.5, growthRate: 1.23, urbanPercent: 39.0,
+            slabs: [
+                { limit: 350000, rate: 0 },
+                { limit: 450000, rate: 5 },
+                { limit: 850000, rate: 10 },
+                { limit: 1350000, rate: 15 },
+                { limit: 1850000, rate: 20 },
+                { limit: 3850000, rate: 25 },
+                { limit: Infinity, rate: 30 }
+            ]
+        },
+        canada: {
+            name: "Canada", currency: "CAD", taxFree: 15000,
+            population: 38929000, malePercent: 49.6, femalePercent: 50.4,
+            birthRate: 9.8, deathRate: 8.3, growthRate: 0.15, urbanPercent: 81.5,
+            slabs: [
+                { limit: 15000, rate: 0 },
+                { limit: 53359, rate: 15 },
+                { limit: 106717, rate: 20.5 },
+                { limit: 165430, rate: 26 },
+                { limit: 235675, rate: 29 },
+                { limit: Infinity, rate: 33 }
+            ]
+        },
+        india: {
+            name: "India", currency: "INR", taxFree: 250000,
+            population: 1441710000, malePercent: 51.5, femalePercent: 48.5,
+            birthRate: 16.1, deathRate: 6.6, growthRate: 0.95, urbanPercent: 36.4,
+            slabs: [
+                { limit: 250000, rate: 0 },
+                { limit: 500000, rate: 5 },
+                { limit: 1000000, rate: 20 },
+                { limit: Infinity, rate: 30 }
+            ]
+        },
+        thailand: {
+            name: "Thailand", currency: "THB", taxFree: 150000,
+            population: 71801000, malePercent: 48.6, femalePercent: 51.4,
+            birthRate: 10.0, deathRate: 8.0, growthRate: 0.20, urbanPercent: 52.0,
+            slabs: [
+                { limit: 150000, rate: 0 },
+                { limit: 300000, rate: 5 },
+                { limit: 500000, rate: 10 },
+                { limit: 750000, rate: 15 },
+                { limit: 1000000, rate: 20 },
+                { limit: 2000000, rate: 25 },
+                { limit: Infinity, rate: 35 }
+            ]
+        }
+    };
+
+    let currentCountry = "bangladesh";
+
+    function selectCountry(country) {
+        currentCountry = country;
+        const data = countryData[country];
+        document.getElementById('countryName').innerText = data.name;
+        document.getElementById('currLabel').innerText = data.currency;
+        document.getElementById('currA').innerText = data.currency;
+        document.getElementById('currB').innerText = data.currency;
+        document.getElementById('currC').innerText = data.currency;
+        document.getElementById('population').innerText = data.population.toLocaleString();
+        document.getElementById('malePercent').innerText = data.malePercent;
+        document.getElementById('femalePercent').innerText = data.femalePercent;
+        document.getElementById('maleCount').innerText = Math.round(data.population * data.malePercent / 100).toLocaleString();
+        document.getElementById('femaleCount').innerText = Math.round(data.population * data.femalePercent / 100).toLocaleString();
+        document.getElementById('birthRate').innerText = data.birthRate;
+        document.getElementById('deathRate').innerText = data.deathRate;
+        document.getElementById('growthRate').innerText = data.growthRate;
+        document.getElementById('urbanPercent').innerText = data.urbanPercent;
+        calculateTax();
+    }
+
+    function calculateTax() {
+        const income = parseFloat(document.getElementById('income').value) || 0;
+        const data = countryData[currentCountry];
+        const taxable = Math.max(0, income - data.taxFree);
+        let tax = 0;
+        let remaining = taxable;
+        for (let i = 0; i < data.slabs.length; i++) {
+            const slab = data.slabs[i];
+            let limit = slab.limit;
+            if (i === 0) limit = slab.limit - data.taxFree;
+            if (i > 0) limit = slab.limit - data.slabs[i-1].limit;
+            if (slab.limit === Infinity) {
+                tax += remaining * slab.rate / 100;
+                break;
+            }
+            const slice = Math.min(remaining, limit);
+            tax += slice * slab.rate / 100;
+            remaining -= slice;
+            if (remaining <= 0) break;
+        }
+        const afterTax = income - tax;
+        const effectiveRate = income ? (tax / income * 100).toFixed(2) : 0;
+        document.getElementById('taxable').innerHTML = taxable.toLocaleString();
+        document.getElementById('taxAmount').innerHTML = tax.toLocaleString();
+        document.getElementById('afterTax').innerHTML = afterTax.toLocaleString();
+        document.getElementById('effectiveRate').innerHTML = effectiveRate;
+    }
+
+    function convertLand() {
+        const value = parseFloat(document.getElementById('landValue').value) || 0;
+        const fromUnit = document.getElementById('fromUnit').value;
+        let sqft = 0;
+        if (fromUnit === 'bigha') sqft = value * 27225;
+        else if (fromUnit === 'katha') sqft = value * 1361.25;
+        else if (fromUnit === 'ropani') sqft = value * 5476.5;
+        document.getElementById('convertedSqft').innerHTML = sqft.toFixed(2);
+    }
+
+    function downloadHTML() {
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const link = document.createElement('a');
+        const data = countryData[currentCountry];
+        link.download = `JStL_${data.name}_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.html`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function contactBuy() {
+        alert("📞 Purchase JStL License:\nEmail: seliim.ahmed@gmail.com\nPrice: $199 USD (Perpetual License)");
+    }
+
+    document.getElementById('date').innerHTML = new Date().toLocaleString();
+    selectCountry('bangladesh');
+    convertLand();
+</script>
+</body>
+</html>
