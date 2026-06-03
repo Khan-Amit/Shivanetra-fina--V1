@@ -20,24 +20,19 @@
             align-items: center;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             background: #4a0000;
             border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            padding: 20px;
         }
-        /* landing page & results page */
-        .page {
+        .card {
             background: white;
             border-radius: 16px;
             padding: 25px;
-            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        .hidden {
-            display: none;
-        }
-        h1 {
+        h1, h2 {
             color: #4a0000;
             text-align: center;
             margin-bottom: 20px;
@@ -56,6 +51,14 @@
             border-radius: 8px;
             background: #fefefe;
         }
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .row > div {
+            flex: 1;
+        }
         button {
             background: #4a0000;
             color: white;
@@ -68,12 +71,19 @@
             margin-top: 20px;
             width: 100%;
         }
-        button:hover {
-            background: #cc0000;
-        }
-        .home-btn {
+        button.secondary {
             background: #1B5E20;
-            margin-top: 10px;
+        }
+        button.danger {
+            background: #8B0000;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .button-group button {
+            margin-top: 0;
         }
         .result-section {
             margin: 20px 0;
@@ -92,14 +102,23 @@
             font-size: 0.7em;
             color: #ffaa88;
         }
+        .hidden {
+            display: none;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { background: white; padding: 0; }
+            .card { box-shadow: none; padding: 0; }
+            button, .footer { display: none; }
+        }
     </style>
 </head>
 <body>
 <div class="container" id="app">
-    <!-- LANDING PAGE (input form) -->
-    <div id="landingPage" class="page">
+    <!-- LANDING / PROFILE PAGE -->
+    <div id="profilePage" class="card">
         <h1>🌀 SHIVANETRA</h1>
-        <p style="text-align:center; margin-bottom:20px;">Enter your birth details for celestial guidance</p>
+        <p style="text-align:center; margin-bottom:20px;">Enter your birth details to reveal your celestial chart</p>
         
         <label>Full Name</label>
         <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
@@ -107,39 +126,59 @@
         <label>Date of Birth</label>
         <input type="date" id="dob">
         
+        <label>Birth Time</label>
+        <div class="row">
+            <div><input type="number" id="hour" placeholder="Hour (1-12)" min="1" max="12"></div>
+            <div><input type="number" id="minute" placeholder="Minute" min="0" max="59"></div>
+            <div><select id="ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
+        </div>
+        
         <label>Location (City, Country)</label>
         <input type="text" id="location" placeholder="Dhaka, Bangladesh">
         
-        <label>Time of Birth</label>
-        <div style="display:flex; gap:10px;">
-            <input type="number" id="hour" placeholder="Hour (1-12)" min="1" max="12" style="width:33%">
-            <input type="number" id="minute" placeholder="Minute" min="0" max="59" style="width:33%">
-            <select id="ampm" style="width:33%">
-                <option value="AM">AM</option>
-                <option value="PM">PM</option>
-            </select>
+        <div class="button-group">
+            <button id="saveProfileBtn">💾 Save Profile</button>
+            <button id="changeProfileBtn" class="secondary">✏️ Change</button>
         </div>
-        
-        <button id="calculateBtn">✨ Reveal My Chart ✨</button>
+        <div id="profileStatus" style="margin-top:10px; text-align:center; font-size:0.8em; color:#1B5E20;"></div>
     </div>
 
-    <!-- RESULTS PAGE (hidden initially) -->
-    <div id="resultsPage" class="page hidden">
+    <!-- RESULTS PAGE (hidden until profile saved) -->
+    <div id="resultsPage" class="card hidden">
         <div id="resultsContent"></div>
-        <button id="homeBtn" class="home-btn">🏠 Home / New Reading</button>
-        <button id="downloadResultsBtn">📥 Download Results (HTML)</button>
+        <div class="button-group">
+            <button id="printBtn" class="secondary">🖨️ Print / Save as PDF</button>
+            <button id="downloadHtmlBtn">📥 Save as HTML</button>
+        </div>
+        <button id="backToProfileBtn" class="danger">🏠 Home / New Profile</button>
     </div>
 
     <div class="footer">
-        Shivanetra · Sidereal calculations · 12 Zodiac folders + Numerology engine
+        Shivanetra · Sidereal calculations · Profile saved locally on your device
     </div>
 </div>
 
 <script>
     // ------------------------------
-    // 1. Helper: Zodiac sign from date of birth
+    // ZODIAC DATA (12 folders)
     // ------------------------------
-    function getZodiacSign(month, day) {
+    const zodiacData = {
+        aries: { name:"Aries", overview:"Energetic pioneer. You lead with courage.", good:"Initiative, optimism", bad:"Impulsiveness, short temper", best:"Starting new projects", day:"High energy morning; avoid arguments afternoon.", travel:"Adventure travel suits you.", money:"Unexpected expenses; budget carefully.", accident:"Minor burns or cuts – be careful with tools.", event:"Social gatherings boost your reputation." },
+        taurus: { name:"Taurus", overview:"Grounded and persistent. Build steadily.", good:"Reliability, sensuality", bad:"Stubbornness, resistance to change", best:"Financial planning", day:"Productive but slow start.", travel:"Nature destinations ideal.", money:"Income stable; avoid risky investments.", accident:"Low risk; watch for neck strain.", event:"Family dinner brings harmony." },
+        gemini: { name:"Gemini", overview:"Curious and communicative. Embrace learning.", good:"Versatility, wit", bad:"Restlessness, gossip", best:"Networking", day:"Busy with messages; double-check facts.", travel:"Short trips favored.", money:"Side hustles profitable.", accident:"Distracted walking – stay alert.", event:"Meetups bring new contacts." },
+        cancer: { name:"Cancer", overview:"Emotional and intuitive. Home is sanctuary.", good:"Nurturing, loyalty", bad:"Moodiness, clinginess", best:"Home improvement", day:"Morning sensitive; afternoon clarity.", travel:"Water-related journeys lucky.", money:"Savings grow; avoid emotional spending.", accident:"Kitchen mishaps – be cautious.", event:"Small gathering strengthens bonds." },
+        leo: { name:"Leo", overview:"Confident and generous. Shine brightly.", good:"Leadership, creativity", bad:"Arrogance, drama", best:"Public performance", day:"Energetic, but ego clashes possible.", travel:"Luxury travel rewarding.", money:"Possible gift or bonus.", accident:"Sun glare while driving.", event:"Celebration brings recognition." },
+        virgo: { name:"Virgo", overview:"Analytical and helpful. Perfect details.", good:"Precision, service", bad:"Overcritical, worry", best:"Health routines", day:"Efficient; avoid micromanaging.", travel:"Plan meticulously; delays possible.", money:"Budgeting pays off.", accident:"Minor strains – stretch before exercise.", event:"Work event beneficial." },
+        libra: { name:"Libra", overview:"Balanced and diplomatic. Relationships key.", good:"Charm, fairness", bad:"Indecision, people-pleasing", best:"Partnerships", day:"Socially rewarding, but tough choices.", travel:"Couples travel brings joy.", money:"Shared finances need transparency.", accident:"Uneven pavement – watch step.", event:"Art opening or wedding excellent." },
+        scorpio: { name:"Scorpio", overview:"Intense and transformative. Depth rules.", good:"Resourcefulness, passion", bad:"Jealousy, secrecy", best:"Research", day:"Mysterious morning; powerful afternoon.", travel:"Avoid isolated areas.", money:"Debt resolution or inheritance.", accident:"Drive defensively; moderate risk.", event:"Private gathering reveals truths." },
+        sagittarius: { name:"Sagittarius", overview:"Adventurous and optimistic. Expand horizons.", good:"Freedom, humor", bad:"Recklessness, bluntness", best:"Travel & education", day:"Full of surprises; embrace spontaneity.", travel:"Long distance journeys favored.", money:"Gambling not advised; invest in learning.", accident:"Sports injury possible – warm up.", event:"Festival or outdoor event excellent." },
+        capricorn: { name:"Capricorn", overview:"Ambitious and disciplined. Climb steadily.", good:"Responsibility, persistence", bad:"Pessimism, rigidity", best:"Career goals", day:"Productive but heavy.", travel:"Business travel successful.", money:"Steady growth; avoid get-rich-quick.", accident:"Check stairs; low risk.", event:"Corporate event brings opportunity." },
+        aquarius: { name:"Aquarius", overview:"Innovative and humanitarian. Think differently.", good:"Originality, friendliness", bad:"Detachment, unpredictability", best:"Tech projects", day:"Unconventional solutions work.", travel:"Group travel fun.", money:"Crypto or alternative investments.", accident:"Unusual mishap – stay aware.", event:"Community gathering inspires." },
+        pisces: { name:"Pisces", overview:"Dreamy and compassionate. Artistic flow.", good:"Empathy, creativity", bad:"Escapism, victimhood", best:"Art / meditation", day:"Intuitive hits; avoid overcommitting.", travel:"Coastal or spiritual destinations.", money:"Trust intuition; avoid lending.", accident:"Water-related caution.", event:"Music or healing circle powerful." }
+    };
+
+    // Helper: get zodiac from date
+    function getZodiacKey(month, day) {
         if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "aries";
         if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "taurus";
         if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "gemini";
@@ -151,14 +190,11 @@
         if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "sagittarius";
         if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "capricorn";
         if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "aquarius";
-        return "pisces"; // Feb 19 - Mar 20
+        return "pisces";
     }
 
-    // ------------------------------
-    // 2. Numerology: Life Path Number (simplified)
-    // ------------------------------
+    // Life Path Number (numerology)
     function getLifePathNumber(dobStr) {
-        // dobStr format YYYY-MM-DD
         let sum = 0;
         let digits = dobStr.replace(/-/g, '').split('');
         for (let d of digits) sum += parseInt(d);
@@ -170,149 +206,8 @@
         return sum;
     }
 
-    // ------------------------------
-    // 3. Zodiac predictions (12 folders data)
-    // ------------------------------
-    const zodiacData = {
-        aries: {
-            overview: "Energetic pioneer. You lead with courage.",
-            good: "Initiative, optimism",
-            bad: "Impulsiveness, short temper",
-            best: "Starting new projects",
-            day: "High energy morning; avoid arguments afternoon.",
-            travel: "Adventure travel suits you.",
-            money: "Unexpected expenses; budget carefully.",
-            accident: "Minor burns or cuts – be careful with tools.",
-            event: "Social gatherings boost your reputation."
-        },
-        taurus: {
-            overview: "Grounded and persistent. Build steadily.",
-            good: "Reliability, sensuality",
-            bad: "Stubbornness, resistance to change",
-            best: "Financial planning",
-            day: "Productive but slow start.",
-            travel: "Nature destinations ideal.",
-            money: "Income stable; avoid risky investments.",
-            accident: "Low risk; watch for neck strain.",
-            event: "Family dinner brings harmony."
-        },
-        gemini: {
-            overview: "Curious and communicative. Embrace learning.",
-            good: "Versatility, wit",
-            bad: "Restlessness, gossip",
-            best: "Networking",
-            day: "Busy with messages; double-check facts.",
-            travel: "Short trips favored.",
-            money: "Side hustles profitable.",
-            accident: "Distracted walking – stay alert.",
-            event: "Meetups bring new contacts."
-        },
-        cancer: {
-            overview: "Emotional and intuitive. Home is sanctuary.",
-            good: "Nurturing, loyalty",
-            bad: "Moodiness, clinginess",
-            best: "Home improvement",
-            day: "Morning sensitive; afternoon clarity.",
-            travel: "Water-related journeys lucky.",
-            money: "Savings grow; avoid emotional spending.",
-            accident: "Kitchen mishaps – be cautious.",
-            event: "Small gathering strengthens bonds."
-        },
-        leo: {
-            overview: "Confident and generous. Shine brightly.",
-            good: "Leadership, creativity",
-            bad: "Arrogance, drama",
-            best: "Public performance",
-            day: "Energetic, but ego clashes possible.",
-            travel: "Luxury travel rewarding.",
-            money: "Possible gift or bonus.",
-            accident: "Sun glare while driving.",
-            event: "Celebration brings recognition."
-        },
-        virgo: {
-            overview: "Analytical and helpful. Perfect details.",
-            good: "Precision, service",
-            bad: "Overcritical, worry",
-            best: "Health routines",
-            day: "Efficient; avoid micromanaging.",
-            travel: "Plan meticulously; delays possible.",
-            money: "Budgeting pays off.",
-            accident: "Minor strains – stretch before exercise.",
-            event: "Work event beneficial."
-        },
-        libra: {
-            overview: "Balanced and diplomatic. Relationships key.",
-            good: "Charm, fairness",
-            bad: "Indecision, people-pleasing",
-            best: "Partnerships",
-            day: "Socially rewarding, but tough choices.",
-            travel: "Couples travel brings joy.",
-            money: "Shared finances need transparency.",
-            accident: "Uneven pavement – watch step.",
-            event: "Art opening or wedding excellent."
-        },
-        scorpio: {
-            overview: "Intense and transformative. Depth rules.",
-            good: "Resourcefulness, passion",
-            bad: "Jealousy, secrecy",
-            best: "Research",
-            day: "Mysterious morning; powerful afternoon.",
-            travel: "Avoid isolated areas.",
-            money: "Debt resolution or inheritance.",
-            accident: "Drive defensively; moderate risk.",
-            event: "Private gathering reveals truths."
-        },
-        sagittarius: {
-            overview: "Adventurous and optimistic. Expand horizons.",
-            good: "Freedom, humor",
-            bad: "Recklessness, bluntness",
-            best: "Travel & education",
-            day: "Full of surprises; embrace spontaneity.",
-            travel: "Long distance journeys favored.",
-            money: "Gambling not advised; invest in learning.",
-            accident: "Sports injury possible – warm up.",
-            event: "Festival or outdoor event excellent."
-        },
-        capricorn: {
-            overview: "Ambitious and disciplined. Climb steadily.",
-            good: "Responsibility, persistence",
-            bad: "Pessimism, rigidity",
-            best: "Career goals",
-            day: "Productive but heavy.",
-            travel: "Business travel successful.",
-            money: "Steady growth; avoid get-rich-quick.",
-            accident: "Check stairs; low risk.",
-            event: "Corporate event brings opportunity."
-        },
-        aquarius: {
-            overview: "Innovative and humanitarian. Think differently.",
-            good: "Originality, friendliness",
-            bad: "Detachment, unpredictability",
-            best: "Tech projects",
-            day: "Unconventional solutions work.",
-            travel: "Group travel fun.",
-            money: "Crypto or alternative investments.",
-            accident: "Unusual mishap – stay aware.",
-            event: "Community gathering inspires."
-        },
-        pisces: {
-            overview: "Dreamy and compassionate. Artistic flow.",
-            good: "Empathy, creativity",
-            bad: "Escapism, victimhood",
-            best: "Art / meditation",
-            day: "Intuitive hits; avoid overcommitting.",
-            travel: "Coastal or spiritual destinations.",
-            money: "Trust intuition; avoid lending.",
-            accident: "Water-related caution.",
-            event: "Music or healing circle powerful."
-        }
-    };
-
-    // ------------------------------
-    // 4. Numerology folder (additional predictions)
-    // ------------------------------
-    function getNumerologyPrediction(lifePath) {
-        const numMap = {
+    function getNumerologyText(lp) {
+        const map = {
             1: "Leader, independent. New beginnings. Avoid arrogance.",
             2: "Diplomat, peacemaker. Partnerships thrive. Avoid indecision.",
             3: "Creative, expressive. Joy through art. Avoid scattering energy.",
@@ -325,107 +220,124 @@
             11: "Master teacher, intuitive. High spiritual insight. Avoid anxiety.",
             22: "Master builder, visionary. Turn dreams into reality. Avoid overwhelm."
         };
-        return numMap[lifePath] || "Unique energy; seek balance.";
+        return map[lp] || "Unique energy; seek balance.";
     }
 
-    // ------------------------------
-    // 5. Main calculation & display
-    // ------------------------------
-    function calculateAndShow() {
-        // get values
+    // Save profile to localStorage
+    function saveProfile() {
         const name = document.getElementById('userName').value.trim();
         const dob = document.getElementById('dob').value;
-        const location = document.getElementById('location').value.trim();
-        const hour = parseInt(document.getElementById('hour').value);
-        const minute = parseInt(document.getElementById('minute').value);
+        const hour = document.getElementById('hour').value;
+        const minute = document.getElementById('minute').value;
         const ampm = document.getElementById('ampm').value;
+        const location = document.getElementById('location').value.trim();
 
-        if (!name || !dob || !location || isNaN(hour) || isNaN(minute)) {
-            alert("Please fill all fields correctly.");
-            return;
+        if (!name || !dob || !hour || !minute || !location) {
+            alert("Please fill all fields.");
+            return false;
         }
 
-        // parse dob
-        const dobParts = dob.split('-');
+        const profile = { name, dob, hour, minute, ampm, location };
+        localStorage.setItem('shivanetra_profile', JSON.stringify(profile));
+        document.getElementById('profileStatus').innerHTML = "✅ Profile saved!";
+        return true;
+    }
+
+    // Load profile and show results
+    function loadAndShowResults() {
+        const stored = localStorage.getItem('shivanetra_profile');
+        if (!stored) {
+            alert("No saved profile. Please enter and save first.");
+            return false;
+        }
+        const profile = JSON.parse(stored);
+        // populate fields (so Change button works)
+        document.getElementById('userName').value = profile.name;
+        document.getElementById('dob').value = profile.dob;
+        document.getElementById('hour').value = profile.hour;
+        document.getElementById('minute').value = profile.minute;
+        document.getElementById('ampm').value = profile.ampm;
+        document.getElementById('location').value = profile.location;
+
+        // calculate zodiac
+        const dobParts = profile.dob.split('-');
         const year = parseInt(dobParts[0]);
         const month = parseInt(dobParts[1]);
         const day = parseInt(dobParts[2]);
-        const zodiacKey = getZodiacSign(month, day);
-        const zodiacName = zodiacKey.charAt(0).toUpperCase() + zodiacKey.slice(1);
-        const lifePath = getLifePathNumber(dob);
-        const numerologyText = getNumerologyPrediction(lifePath);
+        const zodiacKey = getZodiacKey(month, day);
+        const zodiac = zodiacData[zodiacKey];
+        const lifePath = getLifePathNumber(profile.dob);
+        const numerologyText = getNumerologyText(lifePath);
+        const timeStr = `${profile.hour}:${profile.minute.padStart(2,'0')} ${profile.ampm}`;
 
-        // time string
-        let timeStr = `${hour}:${minute.toString().padStart(2,'0')} ${ampm}`;
-        
-        // get zodiac data
-        const zd = zodiacData[zodiacKey];
-
-        // build result HTML
         const resultHtml = `
             <h1>🌀 Your Celestial Blueprint</h1>
             <div class="result-section">
-                <div class="result-item"><strong>Name:</strong> ${name}</div>
-                <div class="result-item"><strong>Birth Date:</strong> ${dob}</div>
-                <div class="result-item"><strong>Location:</strong> ${location}</div>
+                <div class="result-item"><strong>Name:</strong> ${profile.name}</div>
+                <div class="result-item"><strong>Birth Date:</strong> ${profile.dob}</div>
                 <div class="result-item"><strong>Birth Time:</strong> ${timeStr}</div>
-                <div class="result-item"><strong>Zodiac Sign:</strong> ${zodiacName}</div>
+                <div class="result-item"><strong>Location:</strong> ${profile.location}</div>
+                <div class="result-item"><strong>Zodiac Sign:</strong> ${zodiac.name}</div>
                 <div class="result-item"><strong>Life Path Number:</strong> ${lifePath}</div>
             </div>
             <div class="result-section">
-                <h3>✨ Astrological Guidance (${zodiacName})</h3>
-                <p><strong>Overview:</strong> ${zd.overview}</p>
-                <p><strong>😇 Good:</strong> ${zd.good}</p>
-                <p><strong>⚠️ Bad:</strong> ${zd.bad}</p>
-                <p><strong>🏆 Best:</strong> ${zd.best}</p>
+                <h3>✨ Astrological Guidance (${zodiac.name})</h3>
+                <p><strong>Overview:</strong> ${zodiac.overview}</p>
+                <p><strong>😇 Good:</strong> ${zodiac.good}</p>
+                <p><strong>⚠️ Bad:</strong> ${zodiac.bad}</p>
+                <p><strong>🏆 Best:</strong> ${zodiac.best}</p>
             </div>
             <div class="result-section">
                 <h3>🔢 Numerology Reading</h3>
                 <p>${numerologyText}</p>
             </div>
             <div class="result-section">
-                <h3>📅 Today's Forecast (based on your chart)</h3>
-                <p><strong>Day:</strong> ${zd.day}</p>
-                <p><strong>Travel:</strong> ${zd.travel}</p>
-                <p><strong>Money:</strong> ${zd.money}</p>
-                <p><strong>Accident / Safety:</strong> ${zd.accident}</p>
-                <p><strong>Events:</strong> ${zd.event}</p>
-            </div>
-            <div class="result-section">
-                <p style="font-style:italic;">Data derived from 12 zodiac folders + numerology backend simulation.</p>
+                <h3>📅 Daily Forecast (based on your chart)</h3>
+                <p><strong>Day:</strong> ${zodiac.day}</p>
+                <p><strong>Travel:</strong> ${zodiac.travel}</p>
+                <p><strong>Money:</strong> ${zodiac.money}</p>
+                <p><strong>Accident / Safety:</strong> ${zodiac.accident}</p>
+                <p><strong>Events:</strong> ${zodiac.event}</p>
             </div>
         `;
-
         document.getElementById('resultsContent').innerHTML = resultHtml;
-        // swap pages
-        document.getElementById('landingPage').classList.add('hidden');
-        document.getElementById('resultsPage').classList.remove('hidden');
+        return true;
     }
 
-    // home button: go back to landing page
-    function goHome() {
-        document.getElementById('landingPage').classList.remove('hidden');
+    // Switch to results page
+    function showResults() {
+        if (loadAndShowResults()) {
+            document.getElementById('profilePage').classList.add('hidden');
+            document.getElementById('resultsPage').classList.remove('hidden');
+        }
+    }
+
+    // Back to profile page (home)
+    function backToProfile() {
+        document.getElementById('profilePage').classList.remove('hidden');
         document.getElementById('resultsPage').classList.add('hidden');
-        // optionally clear form? keep as is, or reset? we can reset to empty
-        document.getElementById('userName').value = '';
-        document.getElementById('dob').value = '';
-        document.getElementById('location').value = '';
-        document.getElementById('hour').value = '';
-        document.getElementById('minute').value = '';
-        document.getElementById('ampm').value = 'AM';
+        // keep profile status visible
     }
 
-    // download results page as HTML
+    // Print / PDF
+    function printResults() {
+        window.print();
+    }
+
+    // Download results as HTML
     function downloadResults() {
-        const resultsDiv = document.getElementById('resultsContent');
-        const content = resultsDiv.innerHTML;
+        const content = document.getElementById('resultsContent').innerHTML;
         const fullHtml = `<!DOCTYPE html>
         <html>
-        <head><meta charset="UTF-8"><title>Shivanetra Report</title><style>
-            body { font-family: monospace; padding: 40px; background: #f0f0f0; }
-            .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 16px; }
+        <head><meta charset="UTF-8"><title>Shivanetra Report</title>
+        <style>
+            body { font-family: monospace; padding: 40px; background: white; }
+            .container { max-width: 800px; margin: auto; }
+            .result-item { margin: 10px 0; padding: 8px; background: #f9f9f9; border-left: 4px solid #4a0000; }
+            .result-section { margin: 20px 0; border-top: 1px solid #ddd; padding-top: 15px; }
             h1 { color: #4a0000; }
-        </style></head>
+        </style>
+        </head>
         <body><div class="container">${content}</div></body>
         </html>`;
         const blob = new Blob([fullHtml], {type: 'text/html'});
@@ -436,10 +348,32 @@
         URL.revokeObjectURL(link.href);
     }
 
-    // attach event listeners
-    document.getElementById('calculateBtn').addEventListener('click', calculateAndShow);
-    document.getElementById('homeBtn').addEventListener('click', goHome);
-    document.getElementById('downloadResultsBtn').addEventListener('click', downloadResults);
+    // Event listeners
+    document.getElementById('saveProfileBtn').addEventListener('click', () => {
+        if (saveProfile()) {
+            showResults();
+        }
+    });
+    document.getElementById('changeProfileBtn').addEventListener('click', () => {
+        // simply go back to profile page, keep existing values
+        backToProfile();
+    });
+    document.getElementById('backToProfileBtn').addEventListener('click', backToProfile);
+    document.getElementById('printBtn').addEventListener('click', printResults);
+    document.getElementById('downloadHtmlBtn').addEventListener('click', downloadResults);
+
+    // On page load, check if profile exists; if yes, show profile page with fields filled (but not results automatically)
+    const existing = localStorage.getItem('shivanetra_profile');
+    if (existing) {
+        const p = JSON.parse(existing);
+        document.getElementById('userName').value = p.name;
+        document.getElementById('dob').value = p.dob;
+        document.getElementById('hour').value = p.hour;
+        document.getElementById('minute').value = p.minute;
+        document.getElementById('ampm').value = p.ampm;
+        document.getElementById('location').value = p.location;
+        document.getElementById('profileStatus').innerHTML = "✅ Loaded saved profile. You can edit and Save again.";
+    }
 </script>
 </body>
 </html>
