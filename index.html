@@ -111,6 +111,11 @@
             .card { box-shadow: none; padding: 0; }
             button, .footer { display: none; }
         }
+        .error {
+            color: #cc0000;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -123,13 +128,13 @@
         <label>Full Name</label>
         <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
         
-        <label>Date of Birth</label>
-        <input type="date" id="dob">
+        <label>Date of Birth (DD/MM/YYYY)</label>
+        <input type="text" id="dob" placeholder="27/05/2026">
         
         <label>Birth Time</label>
         <div class="row">
             <div><input type="number" id="hour" placeholder="Hour (1-12)" min="1" max="12"></div>
-            <div><input type="number" id="minute" placeholder="Minute" min="0" max="59"></div>
+            <div><input type="number" id="minute" placeholder="Minute (0-59)" min="0" max="59"></div>
             <div><select id="ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
         </div>
         
@@ -141,6 +146,7 @@
             <button id="changeProfileBtn" class="secondary">✏️ Change</button>
         </div>
         <div id="profileStatus" style="margin-top:10px; text-align:center; font-size:0.8em; color:#1B5E20;"></div>
+        <div id="profileError" class="error" style="text-align:center;"></div>
     </div>
 
     <!-- RESULTS PAGE (hidden until profile saved) -->
@@ -177,8 +183,19 @@
         pisces: { name:"Pisces", overview:"Dreamy and compassionate. Artistic flow.", good:"Empathy, creativity", bad:"Escapism, victimhood", best:"Art / meditation", day:"Intuitive hits; avoid overcommitting.", travel:"Coastal or spiritual destinations.", money:"Trust intuition; avoid lending.", accident:"Water-related caution.", event:"Music or healing circle powerful." }
     };
 
-    // Helper: get zodiac from date
-    function getZodiacKey(month, day) {
+    // Convert DD/MM/YYYY to Date object and get zodiac
+    function parseDateManual(dateStr) {
+        // expects DD/MM/YYYY
+        let parts = dateStr.split('/');
+        if (parts.length !== 3) return null;
+        let day = parseInt(parts[0]);
+        let month = parseInt(parts[1]);
+        let year = parseInt(parts[2]);
+        if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
+        return { day, month, year };
+    }
+
+    function getZodiacKeyFromDate(day, month) {
         if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "aries";
         if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "taurus";
         if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "gemini";
@@ -193,10 +210,10 @@
         return "pisces";
     }
 
-    // Life Path Number (numerology)
-    function getLifePathNumber(dobStr) {
+    // Numerology from YYYY-MM-DD (we need year from manual date)
+    function getLifePathNumberFromDate(year, month, day) {
         let sum = 0;
-        let digits = dobStr.replace(/-/g, '').split('');
+        let digits = year.toString().split('').concat(month.toString().split(''), day.toString().split(''));
         for (let d of digits) sum += parseInt(d);
         while (sum > 9 && sum !== 11 && sum !== 22) {
             let s = 0;
@@ -223,21 +240,36 @@
         return map[lp] || "Unique energy; seek balance.";
     }
 
+    // Validate profile inputs
+    function validateProfile(name, dobStr, hour, minute, location) {
+        if (!name.trim()) return "Name is required.";
+        const dateObj = parseDateManual(dobStr);
+        if (!dateObj) return "Date of Birth must be in DD/MM/YYYY format (e.g., 27/05/2026).";
+        if (dateObj.day < 1 || dateObj.day > 31) return "Invalid day in date.";
+        if (dateObj.month < 1 || dateObj.month > 12) return "Invalid month in date.";
+        if (hour < 1 || hour > 12) return "Hour must be between 1 and 12.";
+        if (minute < 0 || minute > 59) return "Minute must be between 0 and 59.";
+        if (!location.trim()) return "Location is required.";
+        return null;
+    }
+
     // Save profile to localStorage
     function saveProfile() {
         const name = document.getElementById('userName').value.trim();
-        const dob = document.getElementById('dob').value;
-        const hour = document.getElementById('hour').value;
-        const minute = document.getElementById('minute').value;
+        const dobStr = document.getElementById('dob').value.trim();
+        const hour = parseInt(document.getElementById('hour').value);
+        const minute = parseInt(document.getElementById('minute').value);
         const ampm = document.getElementById('ampm').value;
         const location = document.getElementById('location').value.trim();
 
-        if (!name || !dob || !hour || !minute || !location) {
-            alert("Please fill all fields.");
+        const error = validateProfile(name, dobStr, hour, minute, location);
+        if (error) {
+            document.getElementById('profileError').innerText = error;
             return false;
         }
+        document.getElementById('profileError').innerText = "";
 
-        const profile = { name, dob, hour, minute, ampm, location };
+        const profile = { name, dob: dobStr, hour, minute, ampm, location };
         localStorage.setItem('shivanetra_profile', JSON.stringify(profile));
         document.getElementById('profileStatus').innerHTML = "✅ Profile saved!";
         return true;
@@ -259,16 +291,15 @@
         document.getElementById('ampm').value = profile.ampm;
         document.getElementById('location').value = profile.location;
 
-        // calculate zodiac
-        const dobParts = profile.dob.split('-');
-        const year = parseInt(dobParts[0]);
-        const month = parseInt(dobParts[1]);
-        const day = parseInt(dobParts[2]);
-        const zodiacKey = getZodiacKey(month, day);
+        // parse date
+        const dateObj = parseDateManual(profile.dob);
+        if (!dateObj) return false;
+        const { day, month, year } = dateObj;
+        const zodiacKey = getZodiacKeyFromDate(day, month);
         const zodiac = zodiacData[zodiacKey];
-        const lifePath = getLifePathNumber(profile.dob);
+        const lifePath = getLifePathNumberFromDate(year, month, day);
         const numerologyText = getNumerologyText(lifePath);
-        const timeStr = `${profile.hour}:${profile.minute.padStart(2,'0')} ${profile.ampm}`;
+        const timeStr = `${profile.hour}:${profile.minute.toString().padStart(2,'0')} ${profile.ampm}`;
 
         const resultHtml = `
             <h1>🌀 Your Celestial Blueprint</h1>
@@ -304,7 +335,6 @@
         return true;
     }
 
-    // Switch to results page
     function showResults() {
         if (loadAndShowResults()) {
             document.getElementById('profilePage').classList.add('hidden');
@@ -312,19 +342,15 @@
         }
     }
 
-    // Back to profile page (home)
     function backToProfile() {
         document.getElementById('profilePage').classList.remove('hidden');
         document.getElementById('resultsPage').classList.add('hidden');
-        // keep profile status visible
     }
 
-    // Print / PDF
     function printResults() {
         window.print();
     }
 
-    // Download results as HTML
     function downloadResults() {
         const content = document.getElementById('resultsContent').innerHTML;
         const fullHtml = `<!DOCTYPE html>
@@ -354,15 +380,12 @@
             showResults();
         }
     });
-    document.getElementById('changeProfileBtn').addEventListener('click', () => {
-        // simply go back to profile page, keep existing values
-        backToProfile();
-    });
+    document.getElementById('changeProfileBtn').addEventListener('click', backToProfile);
     document.getElementById('backToProfileBtn').addEventListener('click', backToProfile);
     document.getElementById('printBtn').addEventListener('click', printResults);
     document.getElementById('downloadHtmlBtn').addEventListener('click', downloadResults);
 
-    // On page load, check if profile exists; if yes, show profile page with fields filled (but not results automatically)
+    // On load, populate from localStorage if exists
     const existing = localStorage.getItem('shivanetra_profile');
     if (existing) {
         const p = JSON.parse(existing);
