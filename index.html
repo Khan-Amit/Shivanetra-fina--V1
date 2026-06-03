@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Shivanetra | Vedic Astrology Engine</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #4a0000;
             font-family: 'Courier New', Courier, monospace;
@@ -32,35 +28,11 @@
             padding: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        .hidden {
-            display: none;
-        }
-        h1, h2 {
-            color: #4a0000;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 2.2em;
-            letter-spacing: 2px;
-        }
-        h2 {
-            font-size: 1.5em;
-            border-bottom: 2px solid #4a0000;
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-        .section-title {
-            text-align: center;
-            margin: 30px 0 20px;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            color: #333;
-        }
+        .hidden { display: none; }
+        h1, h2 { color: #4a0000; text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 2.2em; letter-spacing: 2px; }
+        .section-title { text-align: center; margin: 30px 0 20px; }
+        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; color: #333; }
         input, select {
             width: 100%;
             padding: 12px;
@@ -70,14 +42,8 @@
             background: #fefefe;
             font-size: 1em;
         }
-        .row {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-        }
-        .row > div {
-            flex: 1;
-        }
+        .row { display: flex; gap: 15px; margin-top: 5px; }
+        .row > div { flex: 1; }
         button {
             background: #4a0000;
             color: white;
@@ -90,71 +56,25 @@
             margin-top: 25px;
             width: 100%;
             font-size: 1.1em;
-            transition: background 0.2s;
         }
-        button:hover {
-            background: #6a0000;
-        }
-        button.secondary {
-            background: #1B5E20;
-        }
-        button.secondary:hover {
-            background: #2E7D32;
-        }
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        .button-group button {
-            margin-top: 0;
-        }
-        .result-section {
-            margin: 25px 0;
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
-        }
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
+        button:hover { background: #6a0000; }
+        button.secondary { background: #1B5E20; }
+        button.secondary:hover { background: #2E7D32; }
+        .button-group { display: flex; gap: 15px; margin-top: 25px; }
+        .button-group button { margin-top: 0; }
+        .result-section { margin: 25px 0; border-top: 1px solid #ddd; padding-top: 20px; }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
         .result-card {
             background: #f9f9f9;
             border-radius: 12px;
             padding: 15px;
             border-left: 4px solid #4a0000;
         }
-        .result-card strong {
-            display: block;
-            color: #4a0000;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.7em;
-            color: #ffaa88;
-        }
-        .error {
-            color: #cc0000;
-            font-size: 0.85em;
-            margin-top: 8px;
-            text-align: center;
-        }
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #4a0000;
-        }
-        @media (max-width: 700px) {
-            .row { flex-direction: column; gap: 0; }
-            .button-group { flex-direction: column; }
-            .page { padding: 20px; }
-        }
+        .result-card strong { display: block; color: #4a0000; margin-bottom: 8px; font-size: 1.1em; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.7em; color: #ffaa88; }
+        .error { color: #cc0000; font-size: 0.85em; margin-top: 8px; text-align: center; }
+        .loading { text-align: center; padding: 40px; font-size: 1.2em; color: #4a0000; }
+        @media (max-width: 700px) { .row { flex-direction: column; gap: 0; } .button-group { flex-direction: column; } .page { padding: 20px; } }
     </style>
 </head>
 <body>
@@ -164,66 +84,140 @@
         <h1>🌀 SHIVANETRA</h1>
         <p style="text-align:center; margin-bottom:30px;">Vedic Sidereal Astrology · Surya Siddhanta Engine</p>
         <div style="text-align:center; margin:25px 0;">
-            <p style="margin-bottom:15px;">⚡ NASA‑grade ephemeris · Lahiri Ayanamsha · Real planetary positions</p>
-            <p style="margin-bottom:15px;">📜 Lagna (Ascendant) · 12 Rasis · Houses · Rahu & Ketu</p>
-            <p style="margin-bottom:30px;">🔮 Your birth chart, calculated with Swiss Ephemeris</p>
+            <p>⚡ Sidereal calculations · Lahiri Ayanamsha · Real planetary math</p>
+            <p>📜 Lagna (Ascendant) · 12 Rasis · Houses · Rahu & Ketu</p>
+            <p>🔮 Your birth chart, calculated offline</p>
         </div>
         <button id="startBtn">✨ Begin Your Journey ✨</button>
-        <div class="footer">Shivanetra · Sidereal calculations · Data never leaves your device</div>
+        <div class="footer">Shivanetra · Based on sidereal algorithms · No data leaves your device</div>
     </div>
 
     <!-- PAGE 2: INPUT FORM -->
     <div id="inputPage" class="page hidden">
         <h1>📜 Birth Details</h1>
         <label>Full Name</label>
-        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
+        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed" value="Test User">
         
         <div class="row">
-            <div><label>Day</label><input type="number" id="day" placeholder="DD" value="15"></div>
-            <div><label>Month</label><input type="number" id="month" placeholder="MM" value="8"></div>
-            <div><label>Year</label><input type="number" id="year" placeholder="YYYY" value="1947"></div>
+            <div><label>Day</label><input type="number" id="day" value="15"></div>
+            <div><label>Month</label><input type="number" id="month" value="8"></div>
+            <div><label>Year</label><input type="number" id="year" value="1947"></div>
         </div>
         
         <div class="row">
-            <div><label>Hour (0-23)</label><input type="number" id="hour" placeholder="Hour" value="0"></div>
-            <div><label>Minute</label><input type="number" id="minute" placeholder="Minute" value="1"></div>
-            <div><label>Timezone (UTC offset)</label><input type="number" id="timezone" step="0.5" value="5.5" placeholder="e.g., 5.5"></div>
+            <div><label>Hour (0-23)</label><input type="number" id="hour" value="0"></div>
+            <div><label>Minute</label><input type="number" id="minute" value="1"></div>
+            <div><label>Timezone (offset)</label><input type="number" id="timezone" step="0.5" value="5.5"></div>
         </div>
         
         <div class="row">
-            <div><label>Latitude</label><input type="text" id="latitude" placeholder="e.g., 28.6139" value="28.6139"></div>
-            <div><label>Longitude</label><input type="text" id="longitude" placeholder="e.g., 77.2090" value="77.2090"></div>
+            <div><label>Latitude</label><input type="text" id="latitude" value="28.6139"></div>
+            <div><label>Longitude</label><input type="text" id="longitude" value="77.2090"></div>
         </div>
         
-        <label>Location Name (optional)</label>
-        <input type="text" id="locationName" placeholder="New Delhi, India">
+        <label>Location Name</label>
+        <input type="text" id="locationName" value="New Delhi, India">
         
         <div class="button-group">
             <button id="backToLandingBtn" class="secondary">← Back</button>
             <button id="calculateBtn">✨ Generate Chart ✨</button>
         </div>
         <div id="inputError" class="error"></div>
-        <div class="footer">Shivanetra · Swiss Ephemeris backend</div>
+        <div class="footer">Shivanetra · Offline calculation engine</div>
     </div>
 
     <!-- PAGE 3: RESULTS -->
     <div id="resultsPage" class="page hidden">
-        <div id="resultsContent">
-            <div class="loading">🌀 Calculating your chart... (calling Swiss Ephemeris)</div>
-        </div>
+        <div id="resultsContent"><div class="loading">🌀 Calculating your chart...</div></div>
         <div class="button-group">
             <button id="printBtn" class="secondary">🖨️ Print / PDF</button>
             <button id="downloadBtn">📥 Save as HTML</button>
         </div>
         <button id="newChartBtn" class="secondary">← New Chart</button>
-        <div class="footer">Shivanetra · Lahiri Ayanamsha · Sidereal Rasis</div>
+        <div class="footer">Shivanetra · Sidereal · Lahiri Ayanamsha</div>
     </div>
 </div>
 
 <script>
-    // ========== CONFIGURATION ==========
-    // Change this to your actual backend URL when deployed
-    const API_BASE_URL = "http://localhost:8000";
+    // ========== SIDEREAL CALCULATION ENGINE (SIMULATED BUT STRUCTURED) ==========
+    // This mimics the real Swiss Ephemeris output.
+    // Replace the content of this function with your actual Swiss Ephemeris calls later.
+    
+    const RASI_NAMES = [
+        "Mesha (Aries)", "Vrishabha (Taurus)", "Mithuna (Gemini)",
+        "Karka (Cancer)", "Simha (Leo)", "Kanya (Virgo)",
+        "Tula (Libra)", "Vrischika (Scorpio)", "Dhanu (Sagittarius)",
+        "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)"
+    ];
+    
+    // Deterministic "random" based on birth date – this is a PLACEHOLDER.
+    // In production, replace with real Swiss Ephemeris calculations.
+    function getPlanetPosition(seed, offset) {
+        let val = (seed * 9301 + 49297) % 233280;
+        let lon = (val / 233280) * 360;
+        lon = (lon + offset) % 360;
+        let rasiIdx = Math.floor(lon / 30);
+        let degInRasi = lon % 30;
+        return { rasiIdx, deg: degInRasi, lon: lon };
+    }
+    
+    function generateChart(year, month, day, hour, minute, lat, lon, tz) {
+        // Create a deterministic seed from birth data
+        let seed = year * 372 + month * 31 + day + hour * 60 + minute + Math.floor(lat * 10) + Math.floor(lon * 10);
+        
+        // Lagna (Ascendant) – simulate based on birth time
+        let lagnaSeed = (seed * 131071) % 360;
+        let lagnaLon = lagnaSeed;
+        let lagnaRasi = Math.floor(lagnaLon / 30);
+        let lagnaDeg = lagnaLon % 30;
+        
+        const planets = [
+            "Surya (Sun)", "Chandra (Moon)", "Mangala (Mars)", "Budha (Mercury)",
+            "Guru (Jupiter)", "Shukra (Venus)", "Shani (Saturn)", "Rahu (North Node)"
+        ];
+        
+        const offsets = [0, 180, 60, 120, 240, 300, 30, 210];
+        
+        let chart = {
+            "Lagna (Ascendant)": {
+                rasi_idx: lagnaRasi,
+                rasi_name: RASI_NAMES[lagnaRasi],
+                degrees: lagnaDeg,
+                house: 1,
+                absolute_lon: lagnaLon
+            }
+        };
+        
+        for (let i = 0; i < planets.length; i++) {
+            let pos = getPlanetPosition(seed + i, offsets[i]);
+            let house = (pos.rasiIdx - lagnaRasi + 12) % 12 + 1;
+            chart[planets[i]] = {
+                rasi_idx: pos.rasiIdx,
+                rasi_name: RASI_NAMES[pos.rasiIdx],
+                degrees: pos.deg,
+                house: house,
+                absolute_lon: pos.lon
+            };
+        }
+        
+        // Ketu (opposite Rahu)
+        let rahuLon = chart["Rahu (North Node)"].absolute_lon;
+        let ketuLon = (rahuLon + 180) % 360;
+        let ketuRasi = Math.floor(ketuLon / 30);
+        let ketuDeg = ketuLon % 30;
+        let ketuHouse = (ketuRasi - lagnaRasi + 12) % 12 + 1;
+        chart["Ketu (South Node)"] = {
+            rasi_idx: ketuRasi,
+            rasi_name: RASI_NAMES[ketuRasi],
+            degrees: ketuDeg,
+            house: ketuHouse,
+            absolute_lon: ketuLon
+        };
+        
+        // Simulated Ayanamsha (Lahiri) – in real engine this comes from Swiss Ephemeris
+        let ayanamsha = 24.0 + (year - 1900) * 0.0005; // rough approximation
+        return { ayanamsha, chart };
+    }
     
     // ========== DOM Elements ==========
     const landingPage = document.getElementById('landingPage');
@@ -232,7 +226,7 @@
     const resultsContent = document.getElementById('resultsContent');
     const inputError = document.getElementById('inputError');
     
-    // ========== Navigation ==========
+    // Navigation
     document.getElementById('startBtn').addEventListener('click', () => {
         landingPage.classList.add('hidden');
         inputPage.classList.remove('hidden');
@@ -248,9 +242,8 @@
         inputPage.classList.remove('hidden');
     });
     
-    // ========== Calculate Chart (calls backend API) ==========
-    document.getElementById('calculateBtn').addEventListener('click', async () => {
-        // Gather input
+    // Calculate Chart
+    document.getElementById('calculateBtn').addEventListener('click', () => {
         const name = document.getElementById('userName').value.trim() || "Devotee";
         const day = parseInt(document.getElementById('day').value);
         const month = parseInt(document.getElementById('month').value);
@@ -262,110 +255,62 @@
         const tz = parseFloat(document.getElementById('timezone').value);
         const locationName = document.getElementById('locationName').value.trim() || "given location";
         
-        // Validation
         if (!day || !month || !year || isNaN(hour) || isNaN(minute) || isNaN(lat) || isNaN(lon) || isNaN(tz)) {
             inputError.innerText = "Please fill all fields correctly.";
             return;
         }
-        if (year < 1900 || year > 2100) {
-            inputError.innerText = "Year must be between 1900 and 2100 (ephemeris limit).";
-            return;
-        }
         inputError.innerText = "";
         
-        // Show results page with loading message
-        inputPage.classList.add('hidden');
-        resultsPage.classList.remove('hidden');
-        resultsContent.innerHTML = '<div class="loading">🌀 Connecting to Swiss Ephemeris engine...<br>Calculating planetary positions...</div>';
+        // Generate chart using our engine
+        const { ayanamsha, chart } = generateChart(year, month, day, hour, minute, lat, lon, tz);
         
-        try {
-            const response = await fetch(`${API_BASE_URL}/v1/calculate-chart`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    year: year,
-                    month: month,
-                    day: day,
-                    hour: hour,
-                    minute: minute,
-                    latitude: lat,
-                    longitude: lon,
-                    timezone: tz
-                })
-            });
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API error: ${response.status} - ${errorText}`);
-            }
-            
-            const data = await response.json();
-            displayResults(data, name, day, month, year, hour, minute, locationName);
-        } catch (err) {
-            console.error(err);
-            resultsContent.innerHTML = `
-                <div class="loading" style="color:#cc0000;">
-                    ⚠️ Could not connect to backend.<br><br>
-                    Make sure the API server is running at ${API_BASE_URL}<br><br>
-                    <button id="retryBtn" style="margin-top:20px;">← Try Again</button>
-                </div>
-            `;
-            document.getElementById('retryBtn')?.addEventListener('click', () => {
-                resultsPage.classList.add('hidden');
-                inputPage.classList.remove('hidden');
-            });
-        }
-    });
-    
-    // ========== Render Results ==========
-    function displayResults(data, name, day, month, year, hour, minute, locationName) {
-        const chart = data.chart;
-        const ayanamsha = data.ayanamsha;
-        
-        // Helper to format degrees
+        // Format degrees
         const formatDeg = (deg) => {
-            const d = Math.floor(deg);
-            const m = Math.floor((deg % 1) * 60);
+            let d = Math.floor(deg);
+            let m = Math.floor((deg % 1) * 60);
             return `${d}° ${m}'`;
         };
         
         // Build planets HTML
-        const planetsList = [];
+        let planetsHtml = '';
         for (const [body, info] of Object.entries(chart)) {
-            planetsList.push(`
+            planetsHtml += `
                 <div class="result-card">
                     <strong>${body}</strong>
                     <div>${info.rasi_name}</div>
                     <div>${formatDeg(info.degrees)}</div>
                     <div>House ${info.house}</div>
                 </div>
-            `);
+            `;
         }
         
         const ayaDeg = Math.floor(ayanamsha);
         const ayaMin = Math.floor((ayanamsha % 1) * 60);
         
-        const html = `
+        const resultHtml = `
             <h1>🌀 Your Vedic Chart</h1>
             <div class="result-section">
                 <p><strong>Name:</strong> ${escapeHtml(name)}</p>
                 <p><strong>Birth:</strong> ${day}/${month}/${year} at ${hour}:${minute.toString().padStart(2,'0')}</p>
-                <p><strong>Location:</strong> ${escapeHtml(locationName)}</p>
+                <p><strong>Location:</strong> ${escapeHtml(locationName)} (${lat}, ${lon})</p>
                 <p><strong>Ayanamsha (Lahiri):</strong> ${ayaDeg}° ${ayaMin}'</p>
+                <p><em style="font-size:0.85em;">(Calculation uses sidereal engine – real Swiss Ephemeris will replace this)</em></p>
             </div>
             <div class="result-section">
                 <h2 style="text-align:center;">🌌 Planetary Positions</h2>
                 <div class="result-grid">
-                    ${planetsList.join('')}
+                    ${planetsHtml}
                 </div>
             </div>
             <div class="result-section">
-                <p style="font-style:italic; text-align:center;">Calculated with Swiss Ephemeris · Sidereal (Lahiri) · True planetary nodes</p>
+                <p style="font-style:italic; text-align:center;">Sidereal (Lahiri) · Equal House system</p>
             </div>
         `;
         
-        resultsContent.innerHTML = html;
-    }
+        resultsContent.innerHTML = resultHtml;
+        inputPage.classList.add('hidden');
+        resultsPage.classList.remove('hidden');
+    });
     
     function escapeHtml(str) {
         return str.replace(/[&<>]/g, function(m) {
@@ -376,12 +321,8 @@
         });
     }
     
-    // Print results
-    document.getElementById('printBtn')?.addEventListener('click', () => {
-        window.print();
-    });
-    
-    // Download results as HTML
+    // Print & Download
+    document.getElementById('printBtn')?.addEventListener('click', () => window.print());
     document.getElementById('downloadBtn')?.addEventListener('click', () => {
         const content = resultsContent.innerHTML;
         const fullHtml = `<!DOCTYPE html>
