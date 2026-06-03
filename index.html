@@ -86,15 +86,13 @@
 </div>
 
 <script>
-    // ------------------------------
-    // CONFIGURATION
-    // ------------------------------
+    // ================= CONFIGURATION =================
     // Change this to your actual backend URL when deployed
-    const API_BASE_URL = "http://localhost:8000";  // or your server IP
+    const API_BASE_URL = "http://localhost:8000";   // e.g., https://api.yourdomain.com
     let currentUserId = null;
     let currentProfileId = null;
 
-    // Helper: convert DD/MM/YYYY to YYYY-MM-DD for backend
+    // Helper: convert DD/MM/YYYY to YYYY-MM-DD
     function convertDateToISO(dobStr) {
         let parts = dobStr.split('/');
         if (parts.length !== 3) return null;
@@ -104,42 +102,38 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Helper: convert time to 24h format for backend
+    // Helper: convert 12h time to 24h HH:MM:SS
     function convertTimeToISO(hour, minute, ampm) {
         let h = parseInt(hour);
         if (ampm === "PM" && h !== 12) h += 12;
         if (ampm === "AM" && h === 12) h = 0;
-        return `${h.toString().padStart(2,'0')}:${minute.padStart(2,'0')}:00`;
+        return `${h.toString().padStart(2,'0')}:${minute.toString().padStart(2,'0')}:00`;
     }
 
-    // Save profile to backend AND local storage
+    // Save profile to backend
     async function saveProfileToBackend(profileData) {
-        // 1. Get or create user (email is dummy for now, but we'll use name+location as unique key)
-        // For simplicity, we'll use email = name@shivanetra.local
+        // Create a unique email from name (temporary solution)
         let email = profileData.name.replace(/\s/g, '.').toLowerCase() + "@shivanetra.local";
         let userPayload = {
             email: email,
-            password_hash: "temp_hash",  // will be replaced later with real auth
+            password_hash: "temp_hash",
             full_name: profileData.name
         };
         
-        // Try to get user by email (GET endpoint not yet, so we'll POST and if conflict, handle)
         let userResponse = await fetch(`${API_BASE_URL}/users/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userPayload)
         });
+        
         let userData;
         if (userResponse.status === 400) {
-            // user exists, fetch by email (we need a GET /users/by-email endpoint – for now, we'll simulate)
-            // In production, you'd have a GET endpoint. For simplicity, we'll assume user exists and we query.
-            // We'll skip this complexity for demo and just create a new profile with a dummy user ID.
-            // But better: use localStorage to store userId after first creation.
-            let existing = localStorage.getItem('shivanetra_userId');
-            if (existing) {
-                currentUserId = existing;
+            // User exists – try to retrieve by email (we don't have a GET endpoint yet; fallback to stored ID)
+            let storedId = localStorage.getItem('shivanetra_userId');
+            if (storedId) {
+                currentUserId = storedId;
             } else {
-                throw new Error("User exists but no ID stored. Please clear cache.");
+                throw new Error("User exists but no ID stored. Please clear local storage.");
             }
         } else if (userResponse.ok) {
             userData = await userResponse.json();
@@ -149,12 +143,12 @@
             throw new Error("Failed to create user");
         }
 
-        // 2. Create profile
+        // Create profile
         let profilePayload = {
             profile_name: profileData.name,
             birth_date: profileData.birth_date_iso,
             birth_time: profileData.birth_time_iso,
-            latitude: 23.8103,   // default Dhaka, could be improved with geocoding
+            latitude: 23.8103,   // default Dhaka – later add geocoding
             longitude: 90.4125,
             timezone: "Asia/Dhaka"
         };
@@ -167,7 +161,6 @@
         let profileDataRes = await profileResponse.json();
         currentProfileId = profileDataRes.profile_id;
         localStorage.setItem('shivanetra_profileId', currentProfileId);
-        
         return currentProfileId;
     }
 
@@ -200,7 +193,7 @@
         const ampm = document.getElementById('ampm').value;
         const location = document.getElementById('location').value.trim();
 
-        // Validate
+        // Validation
         if (!name || !dobStr || !hour || !minute || !location) {
             document.getElementById('profileError').innerText = "Please fill all fields.";
             return;
@@ -232,7 +225,7 @@
                 location: location
             };
             const profileId = await saveProfileToBackend(profileData);
-            // Show results page with loading message
+            // Show results page
             document.getElementById('profilePage').classList.add('hidden');
             document.getElementById('resultsPage').classList.remove('hidden');
             document.getElementById('resultsContent').innerHTML = '<div class="loader">Calculating your natal chart using NASA ephemeris...</div>';
@@ -240,7 +233,7 @@
             const chart = await calculateChart(profileId);
             const traits = await getTraits(profileId);
             
-            // Build results display
+            // Build planets HTML
             const planetsHtml = chart.planets.map(p => `
                 <div class="result-item"><strong>${p.name}:</strong> ${p.sign} ${p.degrees}°${p.minutes}'</div>
             `).join('');
@@ -287,6 +280,10 @@
             `;
             document.getElementById('resultsContent').innerHTML = resultHtml;
             document.getElementById('profileStatus').innerHTML = "✅ Profile saved and chart calculated!";
+            // Save entered data to localStorage for quick re-fill
+            localStorage.setItem('shivanetra_profile', JSON.stringify({
+                name, dob: dobStr, hour, minute, ampm, location
+            }));
         } catch (err) {
             console.error(err);
             document.getElementById('profileError').innerText = "Error connecting to backend. Make sure API is running at " + API_BASE_URL;
@@ -295,43 +292,28 @@
         }
     }
 
-    // Load stored profile from localStorage and pre-fill form (but not auto-calculate)
+    // Load stored profile from localStorage (fill form only, no auto-calc)
     function loadStoredProfile() {
         const stored = localStorage.getItem('shivanetra_profile');
         if (stored) {
             try {
                 const p = JSON.parse(stored);
-                document.getElementById('userName').value = p.name || '';
-                document.getElementById('dob').value = p.dob || '';
-                document.getElementById('hour').value = p.hour || '';
-                document.getElementById('minute').value = p.minute || '';
-                document.getElementById('ampm').value = p.ampm || 'AM';
-                document.getElementById('location').value = p.location || '';
+                if (p.name) document.getElementById('userName').value = p.name;
+                if (p.dob) document.getElementById('dob').value = p.dob;
+                if (p.hour) document.getElementById('hour').value = p.hour;
+                if (p.minute) document.getElementById('minute').value = p.minute;
+                if (p.ampm) document.getElementById('ampm').value = p.ampm;
+                if (p.location) document.getElementById('location').value = p.location;
                 document.getElementById('profileStatus').innerHTML = "✅ Loaded saved profile. Click 'Save & Calculate' to refresh chart.";
             } catch(e) {}
         }
-        // Also load userId and profileId from localStorage if they exist
         const uid = localStorage.getItem('shivanetra_userId');
         const pid = localStorage.getItem('shivanetra_profileId');
         if (uid) currentUserId = uid;
         if (pid) currentProfileId = pid;
     }
 
-    // Save current form data to localStorage (without backend call)
-    function saveFormToLocal() {
-        const profile = {
-            name: document.getElementById('userName').value.trim(),
-            dob: document.getElementById('dob').value.trim(),
-            hour: document.getElementById('hour').value,
-            minute: document.getElementById('minute').value,
-            ampm: document.getElementById('ampm').value,
-            location: document.getElementById('location').value.trim()
-        };
-        localStorage.setItem('shivanetra_profile', JSON.stringify(profile));
-        document.getElementById('profileStatus').innerHTML = "✅ Form data saved locally. Click 'Save & Calculate' for full chart.";
-    }
-
-    // UI event handlers
+    // Event handlers
     document.getElementById('saveProfileBtn').addEventListener('click', saveAndCalculate);
     document.getElementById('changeProfileBtn').addEventListener('click', () => {
         document.getElementById('profilePage').classList.remove('hidden');
@@ -353,7 +335,7 @@
         URL.revokeObjectURL(link.href);
     });
 
-    // On page load, populate from local storage
+    // Initial load
     loadStoredProfile();
 </script>
 </body>
