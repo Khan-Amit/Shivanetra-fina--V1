@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivanetra | Energy Sovereignty Dashboard</title>
+    <title>Shivanetra | Astral Compass</title>
     <style>
         * {
             margin: 0;
@@ -11,208 +11,503 @@
             box-sizing: border-box;
         }
         body {
+            background: #4a0000;  /* dark red */
             font-family: 'Courier New', Courier, monospace;
-            background: #0a1a2f;
             padding: 20px;
-            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #4a0000;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
+        /* header */
         .header {
-            background: #1B5E20;
-            padding: 20px;
             text-align: center;
-            border-radius: 12px 12px 0 0;
+            margin-bottom: 30px;
         }
         .header h1 {
-            font-size: 2em;
-            letter-spacing: 2px;
+            color: #ffcc00;
+            font-size: 2.5em;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 #330000;
         }
         .header p {
-            opacity: 0.8;
+            color: #ffaa88;
+            font-style: italic;
         }
-        .grid {
+        /* sun sign selector */
+        .sign-selector {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .sign-btn {
+            background: #2a0000;
+            color: #ffcc99;
+            border: 1px solid #aa4444;
+            padding: 10px 18px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .sign-btn:hover, .sign-btn.active {
+            background: #ffcc00;
+            color: #4a0000;
+            border-color: #ffcc00;
+        }
+        /* main chart area (white background, black lines) */
+        .chart-area {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .chart-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 8px;
+            font-family: monospace;
+        }
+        .natal-chart {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .chart-svg {
+            background: #fefefe;
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+        }
+        .overview {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.1em;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            padding: 15px;
+        }
+        .good-bad-best {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .pill {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 120px;
+        }
+        .pill.good { background: #c8e6c9; color: #1B5E20; }
+        .pill.bad { background: #ffcdd2; color: #b71c1c; }
+        .pill.best { background: #ffecb3; color: #b26a00; }
+        /* prediction grid */
+        .prediction-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
             margin-top: 20px;
         }
-        .card {
-            background: #0d2b3e;
+        .pred-card {
+            background: #f9f9f9;
+            border-left: 6px solid #cc0000;
+            padding: 15px;
             border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+        .pred-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .pred-card h3 {
+            margin-bottom: 10px;
+            color: #4a0000;
+        }
+        .pred-card p {
+            font-size: 0.9em;
+            color: #333;
+        }
+        .detail-page {
+            display: none;
+            background: white;
+            border-radius: 16px;
             padding: 20px;
-            border: 1px solid #1e4a6e;
+            margin-top: 20px;
         }
-        .card h3 {
-            color: #7abfef;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #1e4a6e;
-            padding-bottom: 8px;
+        .detail-page.active {
+            display: block;
         }
-        .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dotted #2a4a6e;
-        }
-        .label {
-            font-weight: bold;
-            color: #b8e0ff;
-        }
-        .value {
-            color: #FFD700;
-            font-weight: bold;
-        }
-        input, select {
-            background: #1a3a4a;
-            border: 1px solid #2a5a6e;
+        .back-btn {
+            background: #4a0000;
             color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-family: monospace;
-            width: 150px;
-            text-align: right;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 15px;
         }
-        button {
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #ffaa88;
+            font-size: 0.8em;
+        }
+        button.download-btn {
             background: #1B5E20;
             color: white;
             border: none;
-            padding: 8px 20px;
+            padding: 12px 24px;
             border-radius: 40px;
-            cursor: pointer;
-            margin-top: 10px;
             font-family: monospace;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto 20px auto;
         }
-        button:hover {
-            background: #FF6B35;
-        }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.7em;
-            border-top: 1px solid #1e4a6e;
-            padding-top: 15px;
+        @media (max-width: 700px) {
+            .sign-btn { padding: 6px 12px; font-size: 0.8em; }
+            .prediction-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-<div class="dashboard">
+<div class="container" id="app">
     <div class="header">
-        <h1>⚡ SHIVANETRA</h1>
-        <p>Community Energy Sovereignty | Solar-Magnetic Nano-Refinery</p>
+        <h1>🌀 SHIVANETRA</h1>
+        <p>Astral Compass · Celestial Guidance</p>
     </div>
 
-    <div class="grid">
-        <!-- Reactor Metrics -->
-        <div class="card">
-            <h3>🔁 Reactor Status</h3>
-            <div class="row"><span class="label">System Status:</span><span class="value" id="sysStatus">Idle</span></div>
-            <div class="row"><span class="label">Reactor Temp (°C):</span><span class="value" id="reactorTemp">0.00</span></div>
-            <div class="row"><span class="label">Ambient Temp (°C):</span><span class="value" id="ambientTemp">0.00</span></div>
-            <div class="row"><span class="label">Magnetic Field (Hz):</span><span class="value" id="magField">0</span></div>
-            <div class="row"><span class="label">Last Reading:</span><span class="value" id="lastReading">-</span></div>
-            <button onclick="simulateReactor()">🔄 Simulate Reading</button>
-        </div>
+    <!-- Sun Sign Selector -->
+    <div class="sign-selector" id="signSelector">
+        <button class="sign-btn" data-sign="aries">♈ Aries</button>
+        <button class="sign-btn" data-sign="taurus">♉ Taurus</button>
+        <button class="sign-btn" data-sign="gemini">♊ Gemini</button>
+        <button class="sign-btn" data-sign="cancer">♋ Cancer</button>
+        <button class="sign-btn" data-sign="leo">♌ Leo</button>
+        <button class="sign-btn" data-sign="virgo">♍ Virgo</button>
+        <button class="sign-btn" data-sign="libra">♎ Libra</button>
+        <button class="sign-btn" data-sign="scorpio">♏ Scorpio</button>
+        <button class="sign-btn" data-sign="sagittarius">♐ Sagittarius</button>
+        <button class="sign-btn" data-sign="capricorn">♑ Capricorn</button>
+        <button class="sign-btn" data-sign="aquarius">♒ Aquarius</button>
+        <button class="sign-btn" data-sign="pisces">♓ Pisces</button>
+    </div>
 
-        <!-- Fuel Production -->
-        <div class="card">
-            <h3>⛽ Fuel Output (Today)</h3>
-            <div class="row"><span class="label">Bio-Diesel (L):</span><span class="value" id="bioDiesel">0.00</span></div>
-            <div class="row"><span class="label">Kerosene (L):</span><span class="value" id="kerosene">0.00</span></div>
-            <div class="row"><span class="label">Motor Oil (L):</span><span class="value" id="motorOil">0.00</span></div>
-            <div class="row"><span class="label">Heavy Grease (kg):</span><span class="value" id="grease">0.00</span></div>
-            <div class="row"><span class="label">Bio-Gas (m³):</span><span class="value" id="bioGas">0.00</span></div>
+    <!-- Main Chart Area (white bg, black lines) -->
+    <div class="chart-area" id="chartArea">
+        <div class="chart-title">✨ Natal Chart · <span id="currentSign">Aries</span> ✨</div>
+        <div class="natal-chart">
+            <svg class="chart-svg" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="90" stroke="black" stroke-width="1.5" fill="none"/>
+                <line x1="100" y1="10" x2="100" y2="190" stroke="black" stroke-width="1"/>
+                <line x1="10" y1="100" x2="190" y2="100" stroke="black" stroke-width="1"/>
+                <line x1="30" y1="30" x2="170" y2="170" stroke="black" stroke-width="0.5" stroke-dasharray="4"/>
+                <line x1="170" y1="30" x2="30" y2="170" stroke="black" stroke-width="0.5" stroke-dasharray="4"/>
+                <circle cx="100" cy="100" r="8" fill="#cc0000"/>
+                <text x="100" y="18" text-anchor="middle" font-size="8" fill="black">N</text>
+                <text x="185" y="104" text-anchor="middle" font-size="8" fill="black">E</text>
+                <text x="15" y="104" text-anchor="middle" font-size="8" fill="black">W</text>
+                <text x="100" y="192" text-anchor="middle" font-size="8" fill="black">S</text>
+                <text x="100" y="100" text-anchor="middle" dy=".3em" font-size="14" fill="#cc0000">☉</text>
+            </svg>
         </div>
-
-        <!-- Waste Processing -->
-        <div class="card">
-            <h3>♻️ Waste Processed</h3>
-            <div class="row"><span class="label">Waste Oil (L):</span><input type="number" id="wasteOil" value="100" step="10"></div>
-            <div class="row"><span class="label">Biomass Ash (kg):</span><input type="number" id="biomassAsh" value="50" step="5"></div>
-            <div class="row"><span class="label">Solar Energy (kWh):</span><input type="number" id="solarKwh" value="25" step="5"></div>
-            <button onclick="processWaste()">⚙️ Process</button>
+        <div class="overview" id="overviewText">
+            <strong>Overview:</strong> Energetic and pioneering. This is a time for bold actions.
         </div>
-
-        <!-- Community Metrics -->
-        <div class="card">
-            <h3>🏘️ Community Impact</h3>
-            <div class="row"><span class="label">Households Served:</span><span class="value" id="households">0</span></div>
-            <div class="row"><span class="label">Fuel Cost Saved (USD):</span><span class="value" id="costSaved">0.00</span></div>
-            <div class="row"><span class="label">CO2 Avoided (kg):</span><span class="value" id="co2Avoided">0.00</span></div>
-            <div class="row"><span class="label">Energy Independence %:</span><span class="value" id="independence">0</span>%</div>
+        <div class="good-bad-best" id="gbb">
+            <div class="pill good">😇 Good: Leadership</div>
+            <div class="pill bad">⚠️ Bad: Impulsiveness</div>
+            <div class="pill best">🏆 Best: New ventures</div>
         </div>
     </div>
 
-    <!-- Database Status Preview -->
-    <div class="card" style="margin-top: 20px;">
-        <h3>🗄️ Shivanetra Database Schema (Active)</h3>
-        <div class="row"><span class="label">Connected Tables:</span><span class="value">users, licenses, payments, report_downloads, energy_metrics, tax_data, land_units, audit_log</span></div>
-        <div class="row"><span class="label">License Plans Loaded:</span><span class="value">5 (Individual, Business, Consultant, Corporate, Student)</span></div>
-        <div class="row"><span class="label">Last Sync:</span><span class="value" id="lastSync">-</span></div>
-        <button onclick="syncDatabase()">🔄 Sync with Backend</button>
+    <!-- Prediction Buttons (click to go to detail page) -->
+    <div class="prediction-grid" id="predGrid">
+        <div class="pred-card" data-category="day">
+            <h3>📅 How will be your day?</h3>
+            <p>Click for detailed forecast</p>
+        </div>
+        <div class="pred-card" data-category="travel">
+            <h3>✈️ Travel</h3>
+            <p>Click for guidance</p>
+        </div>
+        <div class="pred-card" data-category="money">
+            <h3>💰 Money</h3>
+            <p>Click for insight</p>
+        </div>
+        <div class="pred-card" data-category="accident">
+            <h3>⚠️ Accident / Safety</h3>
+            <p>Click for caution level</p>
+        </div>
+        <div class="pred-card" data-category="event">
+            <h3>🎭 Event / Gathering</h3>
+            <p>Click for outcome</p>
+        </div>
     </div>
+
+    <!-- Detail Page (hidden initially) -->
+    <div id="detailPage" class="detail-page">
+        <button class="back-btn" id="backBtn">← Back to Overview</button>
+        <div id="detailContent"></div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">📥 Download this page (HTML)</button>
 
     <div class="footer">
-        Shivanetra v1.0 | Solar-Magnetic Nano-Refinery | Perpetual License<br>
-        📧 seliim.ahmed@gmail.com | amit.khanna.1082@gmail.com
+        Shivanetra · Celestial data based on sidereal calculations · Backend hidden folder for persistent storage
     </div>
 </div>
 
 <script>
-    // Simulate reactor metrics (no backend, just demo)
-    function simulateReactor() {
-        const temp = (20 + Math.random() * 30).toFixed(1);
-        const ambient = (25 + Math.random() * 10).toFixed(1);
-        const freq = Math.floor(100 + Math.random() * 300);
-        document.getElementById('reactorTemp').innerHTML = temp;
-        document.getElementById('ambientTemp').innerHTML = ambient;
-        document.getElementById('magField').innerHTML = freq;
-        document.getElementById('sysStatus').innerHTML = freq > 200 ? "Processing" : "Idle";
-        document.getElementById('lastReading').innerHTML = new Date().toLocaleTimeString();
+    // ----- Astrology database (mock but consistent) -----
+    const predictions = {
+        aries: {
+            overview: "Dynamic fire energy. You feel unstoppable, but guard against rushing.",
+            good: "Courage, initiative",
+            bad: "Impatience, arguments",
+            best: "Start a passion project",
+            day: "High energy morning, afternoon conflicts – stay flexible.",
+            travel: "Short trips favored; avoid high-risk routes.",
+            money: "Impulsive buying possible. Invest in yourself.",
+            accident: "Minor cuts or bruises – pay attention to tools.",
+            event: "Social gathering brings unexpected romance."
+        },
+        taurus: {
+            overview: "Stable and grounded. Good for financial planning.",
+            good: "Patience, reliability",
+            bad: "Stubbornness, overindulgence",
+            best: "Long-term investments",
+            day: "Slow start, productive afternoon.",
+            travel: "Scenic routes excellent. Avoid overpacking.",
+            money: "Steady income, but avoid lending.",
+            accident: "Low risk, watch for slippery floors.",
+            event: "Family gathering brings joy."
+        },
+        gemini: {
+            overview: "Curious and communicative. Ideas flow.",
+            good: "Versatility, wit",
+            bad: "Restlessness, gossip",
+            best: "Learning / networking",
+            day: "Busy with messages – double-check details.",
+            travel: "Short haul flights favorable.",
+            money: "Side hustles shine. Avoid gambling.",
+            accident: "Distraction while walking – stay alert.",
+            event: "Party or meetup brings new contacts."
+        },
+        cancer: {
+            overview: "Emotional depth. Home and family focus.",
+            good: "Intuition, nurturing",
+            bad: "Moodiness, clinginess",
+            best: "Home improvements",
+            day: "Morning emotional, afternoon clarity.",
+            travel: "Water-related destinations lucky.",
+            money: "Savings grow; avoid emotional spending.",
+            accident: "Kitchen mishaps – be careful.",
+            event: "Intimate gathering strengthens bonds."
+        },
+        leo: {
+            overview: "Confidence and creativity. Spotlight on you.",
+            good: "Generosity, leadership",
+            bad: "Arrogance, drama",
+            best: "Public performance",
+            day: "Productive, but ego clashes possible.",
+            travel: "Luxury travel favored.",
+            money: "Unexpected gift or bonus.",
+            accident: "Low risk, but watch sun glare while driving.",
+            event: "Celebration brings recognition."
+        },
+        virgo: {
+            overview: "Analytical and detail-oriented. Perfect for organizing.",
+            good: "Precision, helpfulness",
+            bad: "Overcritical, worry",
+            best: "Health routines",
+            day: "Efficient, but avoid micromanaging.",
+            travel: "Plan meticulously; delays likely.",
+            money: "Budgeting pays off.",
+            accident: "Minor strains – stretch before exercise.",
+            event: "Work-related event beneficial."
+        },
+        libra: {
+            overview: "Balance and harmony. Relationships highlighted.",
+            good: "Diplomacy, charm",
+            bad: "Indecision, people-pleasing",
+            best: "Partnerships",
+            day: "Socially rewarding, but hard choices.",
+            travel: "Couples travel brings joy.",
+            money: "Shared finances need transparency.",
+            accident: "Risk low; watch for uneven pavement.",
+            event: "Wedding or art opening excellent."
+        },
+        scorpio: {
+            overview: "Intense and transformative. Deep insights.",
+            good: "Resourcefulness, passion",
+            bad: "Jealousy, secrecy",
+            best: "Research / investigation",
+            day: "Mysterious morning, powerful afternoon.",
+            travel: "Avoid isolated areas.",
+            money: "Inheritance or debt resolution.",
+            accident: "Moderate risk – drive defensively.",
+            event: "Private gathering reveals secrets."
+        },
+        sagittarius: {
+            overview: "Adventurous and optimistic. Expand your horizons.",
+            good: "Freedom, humor",
+            bad: "Recklessness, bluntness",
+            best: "Travel / education",
+            day: "Full of surprises; embrace spontaneity.",
+            travel: "Long distance journeys favored.",
+            money: "Gambling not advised; invest in learning.",
+            accident: "Sports injury possible – warm up.",
+            event: "Festival or outdoor event excellent."
+        },
+        capricorn: {
+            overview: "Ambitious and disciplined. Career focus.",
+            good: "Responsibility, persistence",
+            bad: "Pessimism, rigidity",
+            best: "Long-term goals",
+            day: "Productive but heavy.",
+            travel: "Business travel successful.",
+            money: "Stable growth; avoid get-rich-quick.",
+            accident: "Low risk; check stairs.",
+            event: "Corporate event brings opportunity."
+        },
+        aquarius: {
+            overview: "Innovative and humanitarian. Think outside the box.",
+            good: "Originality, friendliness",
+            bad: "Detachment, unpredictability",
+            best: "Tech projects",
+            day: "Unconventional solutions work.",
+            travel: "Group travel fun.",
+            money: "Crypto or alternative investments.",
+            accident: "Unusual mishap – stay aware.",
+            event: "Community gathering inspires."
+        },
+        pisces: {
+            overview: "Dreamy and compassionate. Artistic flow.",
+            good: "Empathy, creativity",
+            bad: "Escapism, victimhood",
+            best: "Art / meditation",
+            day: "Intuitive hits; avoid overcommitting.",
+            travel: "Coastal or spiritual destinations.",
+            money: "Don't lend money; trust intuition.",
+            accident: "Water-related caution.",
+            event: "Music or healing circle powerful."
+        }
+    };
+
+    let currentSignKey = "aries";
+    let currentCategory = null;
+
+    // DOM elements
+    const signBtns = document.querySelectorAll('.sign-btn');
+    const currentSignSpan = document.getElementById('currentSign');
+    const overviewText = document.getElementById('overviewText');
+    const gbbDiv = document.getElementById('gbb');
+    const predCards = document.querySelectorAll('.pred-card');
+    const detailPage = document.getElementById('detailPage');
+    const chartAreaDiv = document.getElementById('chartArea');
+    const predGridDiv = document.getElementById('predGrid');
+    const detailContent = document.getElementById('detailContent');
+    const backBtn = document.getElementById('backBtn');
+
+    function updateUI() {
+        const data = predictions[currentSignKey];
+        const signName = currentSignKey.charAt(0).toUpperCase() + currentSignKey.slice(1);
+        currentSignSpan.innerText = signName;
+        overviewText.innerHTML = `<strong>Overview:</strong> ${data.overview}`;
+        gbbDiv.innerHTML = `
+            <div class="pill good">😇 Good: ${data.good}</div>
+            <div class="pill bad">⚠️ Bad: ${data.bad}</div>
+            <div class="pill best">🏆 Best: ${data.best}</div>
+        `;
     }
 
-    // Process waste and update fuel outputs
-    function processWaste() {
-        let oil = parseFloat(document.getElementById('wasteOil').value) || 0;
-        let ash = parseFloat(document.getElementById('biomassAsh').value) || 0;
-        let solar = parseFloat(document.getElementById('solarKwh').value) || 0;
-
-        // Simple conversion formulas (demo)
-        let biodiesel = oil * 0.85;
-        let kerosene = oil * 0.10;
-        let motorOil = oil * 0.03;
-        let grease = ash * 0.2;
-        let biogas = oil * 0.5 + ash * 0.3;
-
-        document.getElementById('bioDiesel').innerHTML = biodiesel.toFixed(2);
-        document.getElementById('kerosene').innerHTML = kerosene.toFixed(2);
-        document.getElementById('motorOil').innerHTML = motorOil.toFixed(2);
-        document.getElementById('grease').innerHTML = grease.toFixed(2);
-        document.getElementById('bioGas').innerHTML = biogas.toFixed(2);
-
-        // Community impact
-        let households = Math.floor(biodiesel / 10);
-        let costSaved = (biodiesel * 0.8 + kerosene * 0.6).toFixed(2);
-        let co2Avoided = (oil * 2.5 + ash * 1.2).toFixed(2);
-        let independence = Math.min(100, Math.floor((biodiesel + kerosene) / 5));
-
-        document.getElementById('households').innerHTML = households;
-        document.getElementById('costSaved').innerHTML = costSaved;
-        document.getElementById('co2Avoided').innerHTML = co2Avoided;
-        document.getElementById('independence').innerHTML = independence;
+    function showDetail(category) {
+        const data = predictions[currentSignKey];
+        let title = "", content = "";
+        switch(category) {
+            case 'day': title = "📅 Your Day Forecast"; content = data.day; break;
+            case 'travel': title = "✈️ Travel Guidance"; content = data.travel; break;
+            case 'money': title = "💰 Money & Finance"; content = data.money; break;
+            case 'accident': title = "⚠️ Safety & Accident"; content = data.accident; break;
+            case 'event': title = "🎭 Events & Gatherings"; content = data.event; break;
+            default: return;
+        }
+        detailContent.innerHTML = `
+            <h2 style="color:#4a0000;">${title}</h2>
+            <p style="font-size:1.2em; margin:20px 0;">${content}</p>
+            <p style="font-style:italic;">Based on your sun sign · Shivanetra calculation engine</p>
+        `;
+        // Hide main chart & grid, show detail page
+        chartAreaDiv.style.display = 'none';
+        predGridDiv.style.display = 'none';
+        detailPage.classList.add('active');
     }
 
-    function syncDatabase() {
-        document.getElementById('lastSync').innerHTML = new Date().toLocaleString();
-        alert("✅ Database sync simulated. Schema is ready for backend integration.");
+    function backToMain() {
+        chartAreaDiv.style.display = 'block';
+        predGridDiv.style.display = 'grid';
+        detailPage.classList.remove('active');
+        currentCategory = null;
     }
 
-    // Initial values
-    simulateReactor();
-    processWaste();
-    document.getElementById('lastSync').innerHTML = new Date().toLocaleString();
+    // Event listeners
+    signBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            signBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSignKey = btn.getAttribute('data-sign');
+            updateUI();
+            // if detail page open, close it
+            if (detailPage.classList.contains('active')) backToMain();
+        });
+    });
+
+    predCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const category = card.getAttribute('data-category');
+            showDetail(category);
+        });
+    });
+
+    backBtn.addEventListener('click', backToMain);
+
+    // Download page as HTML
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], {type: 'text/html'});
+        const link = document.createElement('a');
+        link.download = `shivanetra_astral_${new Date().toISOString().slice(0,19)}.html`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    // Set default active sign
+    document.querySelector('.sign-btn[data-sign="aries"]').classList.add('active');
+    updateUI();
 </script>
 </body>
 </html>
