@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: shivanetra_postgres
+    environment:
+      POSTGRES_USER: shivanetra
+      POSTGRES_PASSWORD: shivanetra_pass
+      POSTGRES_DB: shivanetra_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - shivanetra_net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: shivanetra_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - shivanetra_net
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: shivanetra_api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: postgresql://shivanetra:shivanetra_pass@postgres:5432/shivanetra_db
+      REDIS_URL: redis://redis:6379/0
+      EPHEMERIS_BACKEND: horizons   # 'horizons' for online NASA, or 'skyfield' for offline
+    volumes:
+      - ./ephemeris_data:/app/ephemeris_data   # optional: for offline ephemeris files
+    networks:
+      - shivanetra_net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  shivanetra_net:
+    driver: bridge
