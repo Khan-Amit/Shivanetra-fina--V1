@@ -1,12 +1,93 @@
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-alembic==1.12.1
-pydantic==2.5.0
-pydantic-settings==2.1.0
-python-dotenv==1.0.0
-redis==5.0.1
-libephemeris==0.9.0
-pytz==2023.3
-numpy==1.26.2
+-- ============================================
+-- SHIVANETRA - PostgreSQL Database Schema
+-- Version: 1.0
+-- ============================================
+
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. Users table (authentication)
+CREATE TABLE users (
+    user_id         UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    email           VARCHAR(150) UNIQUE NOT NULL,
+    password_hash   VARCHAR(255) NOT NULL,
+    full_name       VARCHAR(150),
+    is_active       BOOLEAN DEFAULT TRUE,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. User profiles (birth data)
+CREATE TABLE user_profiles (
+    profile_id      SERIAL PRIMARY KEY,
+    user_id         UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    profile_name    VARCHAR(100) NOT NULL,
+    birth_date      DATE NOT NULL,
+    birth_time      TIME NOT NULL,
+    latitude        DECIMAL(10,6),
+    longitude       DECIMAL(10,6),
+    timezone        VARCHAR(50) DEFAULT 'UTC',
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Celestial cache (raw planetary positions)
+CREATE TABLE celestial_cache (
+    id              SERIAL PRIMARY KEY,
+    body_id         INTEGER NOT NULL,        -- libephemeris planet constant
+    julian_day      DECIMAL(15,6) NOT NULL,
+    longitude       DECIMAL(10,6) NOT NULL,
+    latitude        DECIMAL(10,6),
+    distance        DECIMAL(15,6),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_celestial_body_time ON celestial_cache(body_id, julian_day);
+
+-- 4. Natal charts (full calculated chart data)
+CREATE TABLE natal_charts (
+    chart_id        SERIAL PRIMARY KEY,
+    profile_id      INTEGER REFERENCES user_profiles(profile_id) ON DELETE CASCADE,
+    calculation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    house_system    VARCHAR(20) DEFAULT 'Placidus',
+    raw_data        JSONB NOT NULL,          -- complete chart: planets, houses, aspects
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_chart_profile ON natal_charts(profile_id);
+
+-- 5. Numerology readings
+CREATE TABLE numerology_readings (
+    reading_id      SERIAL PRIMARY KEY,
+    profile_id      INTEGER REFERENCES user_profiles(profile_id) ON DELETE CASCADE,
+    life_path       INTEGER,
+    expression_num  INTEGER,
+    soul_urge_num   INTEGER,
+    reading_text    TEXT,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- Initial data: Zodiac signs and traits
+-- ============================================
+CREATE TABLE zodiac_traits (
+    sign_id         SERIAL PRIMARY KEY,
+    sign_name       VARCHAR(20) UNIQUE NOT NULL,
+    element         VARCHAR(10),
+    modality        VARCHAR(15),
+    ruling_planet   VARCHAR(20),
+    traits_good     TEXT[],
+    traits_bad      TEXT[],
+    daily_template  TEXT
+);
+
+INSERT INTO zodiac_traits (sign_name, element, modality, ruling_planet, traits_good, traits_bad) VALUES
+('Aries', 'Fire', 'Cardinal', 'Mars', '{"Courageous", "Determined", "Confident"}', '{"Impatient", "Moody", "Short-tempered"}'),
+('Taurus', 'Earth', 'Fixed', 'Venus', '{"Reliable", "Patient", "Practical"}', '{"Stubborn", "Possessive", "Lazy"}'),
+('Gemini', 'Air', 'Mutable', 'Mercury', '{"Adaptable", "Curious", "Lively"}', '{"Nervous", "Inconsistent", "Gossipy"}'),
+('Cancer', 'Water', 'Cardinal', 'Moon', '{"Loyal", "Emotional", "Intuitive"}', '{"Moody", "Clingy", "Oversensitive"}'),
+('Leo', 'Fire', 'Fixed', 'Sun', '{"Generous", "Creative", "Warm"}', '{"Arrogant", "Dramatic", "Stubborn"}'),
+('Virgo', 'Earth', 'Mutable', 'Mercury', '{"Analytical", "Hardworking", "Helpful"}', '{"Critical", "Worrier", "Perfectionist"}'),
+('Libra', 'Air', 'Cardinal', 'Venus', '{"Diplomatic", "Charming", "Fair"}', '{"Indecisive", "Self-pitying", "Avoids conflict"}'),
+('Scorpio', 'Water', 'Fixed', 'Pluto', '{"Passionate", "Resourceful", "Brave"}', '{"Jealous", "Secretive", "Manipulative"}'),
+('Sagittarius', 'Fire', 'Mutable', 'Jupiter', '{"Optimistic", "Adventurous", "Honest"}', '{"Reckless", "Tactless", "Restless"}'),
+('Capricorn', 'Earth', 'Cardinal', 'Saturn', '{"Disciplined", "Responsible", "Ambitious"}', '{"Pessimistic", "Stingy", "Cold"}'),
+('Aquarius', 'Air', 'Fixed', 'Uranus', '{"Original", "Humanitarian", "Intelligent"}', '{"Detached", "Unpredictable", "Rebellious"}'),
+('Pisces', 'Water', 'Mutable', 'Neptune', '{"Compassionate", "Artistic", "Intuitive"}', '{"Escapist", "Overly trusting", "Lazy"}');
