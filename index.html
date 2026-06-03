@@ -3,219 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Shivanetra | Birth Chart & Predictions</title>
+    <title>Shivanetra | Vedic Astrology Engine</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             background: #4a0000;
             font-family: 'Courier New', Courier, monospace;
             padding: 20px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .container { max-width: 900px; margin: 0 auto; background: #4a0000; border-radius: 20px; padding: 20px; }
-        .card { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        h1, h2 { color: #4a0000; text-align: center; margin-bottom: 20px; }
-        label { font-weight: bold; display: block; margin-top: 12px; margin-bottom: 4px; }
-        input, select { width: 100%; padding: 10px; font-family: monospace; border: 1px solid #aaa; border-radius: 8px; background: #fefefe; }
-        .row { display: flex; gap: 10px; margin-top: 5px; }
-        .row > div { flex: 1; }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #4a0000;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .page {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .hidden {
+            display: none;
+        }
+        h1, h2 {
+            color: #4a0000;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.2em;
+            letter-spacing: 2px;
+        }
+        h2 {
+            font-size: 1.5em;
+            border-bottom: 2px solid #4a0000;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .section-title {
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-family: monospace;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+            background: #fefefe;
+            font-size: 1em;
+        }
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        .row > div {
+            flex: 1;
+        }
         button {
-            background: #4a0000; color: white; border: none; padding: 12px 20px;
-            border-radius: 40px; font-family: monospace; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;
+            background: #4a0000;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-family: monospace;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            font-size: 1.1em;
+            transition: background 0.2s;
         }
-        button.secondary { background: #1B5E20; }
-        button.danger { background: #8B0000; }
-        .button-group { display: flex; gap: 12px; margin-top: 20px; }
-        .result-section { margin: 20px 0; border-top: 1px solid #ddd; padding-top: 15px; }
-        .result-item { margin: 10px 0; padding: 8px; background: #f9f9f9; border-left: 4px solid #4a0000; }
-        .footer { text-align: center; margin-top: 20px; font-size: 0.7em; color: #ffaa88; }
-        .hidden { display: none; }
-        .error { color: #cc0000; font-size: 0.8em; margin-top: 5px; text-align: center; }
-        @media print { body { background: white; } .container { background: white; } button, .footer { display: none; } }
+        button:hover {
+            background: #6a0000;
+        }
+        button.secondary {
+            background: #1B5E20;
+        }
+        button.secondary:hover {
+            background: #2E7D32;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .button-group button {
+            margin-top: 0;
+        }
+        .result-section {
+            margin: 25px 0;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .result-card {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid #4a0000;
+        }
+        .result-card strong {
+            display: block;
+            color: #4a0000;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7em;
+            color: #ffaa88;
+        }
+        .error {
+            color: #cc0000;
+            font-size: 0.85em;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #4a0000;
+        }
+        @media (max-width: 700px) {
+            .row { flex-direction: column; gap: 0; }
+            .button-group { flex-direction: column; }
+            .page { padding: 20px; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- PROFILE PAGE -->
-    <div id="profilePage" class="card">
+    <!-- PAGE 1: LANDING -->
+    <div id="landingPage" class="page">
         <h1>🌀 SHIVANETRA</h1>
-        <p style="text-align:center;">Enter your birth details</p>
-        <label>Full Name</label>
-        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
-        <label>Date of Birth (DD/MM/YYYY)</label>
-        <input type="text" id="dob" placeholder="27/05/2026">
-        <label>Birth Time</label>
-        <div class="row">
-            <div><input type="number" id="hour" placeholder="Hour (1-12)" min="1" max="12"></div>
-            <div><input type="number" id="minute" placeholder="Minute (0-59)" min="0" max="59"></div>
-            <div><select id="ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
+        <p style="text-align:center; margin-bottom:30px;">Vedic Sidereal Astrology · Surya Siddhanta Engine</p>
+        <div style="text-align:center; margin:25px 0;">
+            <p style="margin-bottom:15px;">⚡ NASA‑grade ephemeris · Lahiri Ayanamsha · Real planetary positions</p>
+            <p style="margin-bottom:15px;">📜 Lagna (Ascendant) · 12 Rasis · Houses · Rahu & Ketu</p>
+            <p style="margin-bottom:30px;">🔮 Your birth chart, calculated with Swiss Ephemeris</p>
         </div>
-        <label>Location (City, Country)</label>
-        <input type="text" id="location" placeholder="Dhaka, Bangladesh">
-        <div class="button-group">
-            <button id="saveProfileBtn">💾 See My Predictions</button>
-            <button id="changeProfileBtn" class="secondary">✏️ Change</button>
-        </div>
-        <div id="profileStatus" style="margin-top:10px; text-align:center; font-size:0.8em;"></div>
-        <div id="profileError" class="error"></div>
+        <button id="startBtn">✨ Begin Your Journey ✨</button>
+        <div class="footer">Shivanetra · Sidereal calculations · Data never leaves your device</div>
     </div>
 
-    <!-- PREDICTIONS PAGE -->
-    <div id="resultsPage" class="card hidden">
-        <div id="resultsContent"></div>
+    <!-- PAGE 2: INPUT FORM -->
+    <div id="inputPage" class="page hidden">
+        <h1>📜 Birth Details</h1>
+        <label>Full Name</label>
+        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
+        
+        <div class="row">
+            <div><label>Day</label><input type="number" id="day" placeholder="DD" value="15"></div>
+            <div><label>Month</label><input type="number" id="month" placeholder="MM" value="8"></div>
+            <div><label>Year</label><input type="number" id="year" placeholder="YYYY" value="1947"></div>
+        </div>
+        
+        <div class="row">
+            <div><label>Hour (0-23)</label><input type="number" id="hour" placeholder="Hour" value="0"></div>
+            <div><label>Minute</label><input type="number" id="minute" placeholder="Minute" value="1"></div>
+            <div><label>Timezone (UTC offset)</label><input type="number" id="timezone" step="0.5" value="5.5" placeholder="e.g., 5.5"></div>
+        </div>
+        
+        <div class="row">
+            <div><label>Latitude</label><input type="text" id="latitude" placeholder="e.g., 28.6139" value="28.6139"></div>
+            <div><label>Longitude</label><input type="text" id="longitude" placeholder="e.g., 77.2090" value="77.2090"></div>
+        </div>
+        
+        <label>Location Name (optional)</label>
+        <input type="text" id="locationName" placeholder="New Delhi, India">
+        
+        <div class="button-group">
+            <button id="backToLandingBtn" class="secondary">← Back</button>
+            <button id="calculateBtn">✨ Generate Chart ✨</button>
+        </div>
+        <div id="inputError" class="error"></div>
+        <div class="footer">Shivanetra · Swiss Ephemeris backend</div>
+    </div>
+
+    <!-- PAGE 3: RESULTS -->
+    <div id="resultsPage" class="page hidden">
+        <div id="resultsContent">
+            <div class="loading">🌀 Calculating your chart... (calling Swiss Ephemeris)</div>
+        </div>
         <div class="button-group">
             <button id="printBtn" class="secondary">🖨️ Print / PDF</button>
-            <button id="downloadHtmlBtn">📥 Save as HTML</button>
+            <button id="downloadBtn">📥 Save as HTML</button>
         </div>
-        <button id="backToProfileBtn" class="danger">🏠 Home</button>
+        <button id="newChartBtn" class="secondary">← New Chart</button>
+        <div class="footer">Shivanetra · Lahiri Ayanamsha · Sidereal Rasis</div>
     </div>
-    <div class="footer">Shivanetra · Offline predictions · Your data stays on device</div>
 </div>
 
 <script>
-    // ========== ZODIAC + PREDICTIONS DATA (full offline) ==========
-    const zodiacData = {
-        aries: { name:"Aries", element:"Fire", ruling:"Mars", good:"Courageous, Determined, Confident", bad:"Impatient, Moody, Short-tempered", day:"High energy morning; avoid arguments.", travel:"Adventure travel suits you.", money:"Unexpected expenses – budget.", accident:"Minor cuts – be careful.", event:"Social boost." },
-        taurus: { name:"Taurus", element:"Earth", ruling:"Venus", good:"Reliable, Patient, Practical", bad:"Stubborn, Possessive, Lazy", day:"Productive but slow start.", travel:"Nature destinations ideal.", money:"Steady income.", accident:"Low risk.", event:"Family harmony." },
-        gemini: { name:"Gemini", element:"Air", ruling:"Mercury", good:"Adaptable, Curious, Lively", bad:"Nervous, Inconsistent, Gossipy", day:"Busy messages – double-check.", travel:"Short trips favored.", money:"Side hustles profitable.", accident:"Distracted walking.", event:"Meetups bring contacts." },
-        cancer: { name:"Cancer", element:"Water", ruling:"Moon", good:"Loyal, Emotional, Intuitive", bad:"Moody, Clingy, Oversensitive", day:"Morning sensitive, afternoon clarity.", travel:"Water journeys lucky.", money:"Savings grow.", accident:"Kitchen mishaps.", event:"Small gathering bonds." },
-        leo: { name:"Leo", element:"Fire", ruling:"Sun", good:"Generous, Creative, Warm", bad:"Arrogant, Dramatic, Stubborn", day:"Energetic, ego clashes.", travel:"Luxury travel rewarding.", money:"Possible gift.", accident:"Sun glare driving.", event:"Celebration recognition." },
-        virgo: { name:"Virgo", element:"Earth", ruling:"Mercury", good:"Analytical, Hardworking, Helpful", bad:"Critical, Worrier, Perfectionist", day:"Efficient, avoid micromanaging.", travel:"Plan meticulously.", money:"Budgeting pays.", accident:"Minor strains.", event:"Work event beneficial." },
-        libra: { name:"Libra", element:"Air", ruling:"Venus", good:"Diplomatic, Charming, Fair", bad:"Indecisive, Self-pitying", day:"Socially rewarding, tough choices.", travel:"Couples travel.", money:"Shared finances transparent.", accident:"Uneven pavement.", event:"Art opening excellent." },
-        scorpio: { name:"Scorpio", element:"Water", ruling:"Pluto", good:"Passionate, Resourceful, Brave", bad:"Jealous, Secretive, Manipulative", day:"Mysterious morning, powerful afternoon.", travel:"Avoid isolated areas.", money:"Debt resolution.", accident:"Drive defensively.", event:"Private gathering reveals truths." },
-        sagittarius: { name:"Sagittarius", element:"Fire", ruling:"Jupiter", good:"Optimistic, Adventurous, Honest", bad:"Reckless, Tactless, Restless", day:"Full of surprises.", travel:"Long journeys favored.", money:"Gambling not advised.", accident:"Sports injury possible.", event:"Festival excellent." },
-        capricorn: { name:"Capricorn", element:"Earth", ruling:"Saturn", good:"Disciplined, Responsible, Ambitious", bad:"Pessimistic, Stingy, Cold", day:"Productive but heavy.", travel:"Business travel successful.", money:"Steady growth.", accident:"Check stairs.", event:"Corporate opportunity." },
-        aquarius: { name:"Aquarius", element:"Air", ruling:"Uranus", good:"Original, Humanitarian, Intelligent", bad:"Detached, Unpredictable, Rebellious", day:"Unconventional solutions.", travel:"Group travel fun.", money:"Crypto alternative.", accident:"Unusual mishap.", event:"Community gathering." },
-        pisces: { name:"Pisces", element:"Water", ruling:"Neptune", good:"Compassionate, Artistic, Intuitive", bad:"Escapist, Overly trusting, Lazy", day:"Intuitive hits.", travel:"Coastal destinations.", money:"Trust intuition.", accident:"Water caution.", event:"Music circle powerful." }
-    };
-
-    function getZodiacKey(day, month) {
-        if ((month==3 && day>=21) || (month==4 && day<=19)) return "aries";
-        if ((month==4 && day>=20) || (month==5 && day<=20)) return "taurus";
-        if ((month==5 && day>=21) || (month==6 && day<=20)) return "gemini";
-        if ((month==6 && day>=21) || (month==7 && day<=22)) return "cancer";
-        if ((month==7 && day>=23) || (month==8 && day<=22)) return "leo";
-        if ((month==8 && day>=23) || (month==9 && day<=22)) return "virgo";
-        if ((month==9 && day>=23) || (month==10 && day<=22)) return "libra";
-        if ((month==10 && day>=23) || (month==11 && day<=21)) return "scorpio";
-        if ((month==11 && day>=22) || (month==12 && day<=21)) return "sagittarius";
-        if ((month==12 && day>=22) || (month==1 && day<=19)) return "capricorn";
-        if ((month==1 && day>=20) || (month==2 && day<=18)) return "aquarius";
-        return "pisces";
-    }
-
-    function getLifePath(dobStr) {  // dobStr DD/MM/YYYY
-        let sum = 0;
-        for(let ch of dobStr.replace(/\D/g, '')) sum += parseInt(ch);
-        while(sum > 9 && sum !== 11 && sum !== 22) { let s=0; while(sum>0){ s+=sum%10; sum=Math.floor(sum/10); } sum=s; }
-        return sum;
-    }
-
-    function numerologyText(lp) {
-        const map = {1:"Leader, independent. New beginnings.",2:"Diplomat, peacemaker. Partnerships thrive.",3:"Creative, expressive. Joy through art.",4:"Builder, disciplined. Stability through hard work.",5:"Adventurer, freedom-loving. Embrace change.",6:"Nurturer, responsible. Family and service.",7:"Thinker, spiritual. Seek wisdom.",8:"Ambitious, powerful. Material success.",9:"Humanitarian, compassionate. Letting go.",11:"Master teacher, intuitive. High spiritual insight.",22:"Master builder, visionary. Turn dreams into reality."};
-        return map[lp] || "Unique energy; seek balance.";
-    }
-
-    function saveAndShowPredictions() {
-        const name = document.getElementById('userName').value.trim();
-        const dobStr = document.getElementById('dob').value.trim();
-        const hour = document.getElementById('hour').value;
-        const minute = document.getElementById('minute').value;
-        const ampm = document.getElementById('ampm').value;
-        const location = document.getElementById('location').value.trim();
-
-        if (!name || !dobStr || !hour || !minute || !location) {
-            document.getElementById('profileError').innerText = "Please fill all fields.";
+    // ========== CONFIGURATION ==========
+    // Change this to your actual backend URL when deployed
+    const API_BASE_URL = "http://localhost:8000";
+    
+    // ========== DOM Elements ==========
+    const landingPage = document.getElementById('landingPage');
+    const inputPage = document.getElementById('inputPage');
+    const resultsPage = document.getElementById('resultsPage');
+    const resultsContent = document.getElementById('resultsContent');
+    const inputError = document.getElementById('inputError');
+    
+    // ========== Navigation ==========
+    document.getElementById('startBtn').addEventListener('click', () => {
+        landingPage.classList.add('hidden');
+        inputPage.classList.remove('hidden');
+    });
+    
+    document.getElementById('backToLandingBtn').addEventListener('click', () => {
+        inputPage.classList.add('hidden');
+        landingPage.classList.remove('hidden');
+    });
+    
+    document.getElementById('newChartBtn').addEventListener('click', () => {
+        resultsPage.classList.add('hidden');
+        inputPage.classList.remove('hidden');
+    });
+    
+    // ========== Calculate Chart (calls backend API) ==========
+    document.getElementById('calculateBtn').addEventListener('click', async () => {
+        // Gather input
+        const name = document.getElementById('userName').value.trim() || "Devotee";
+        const day = parseInt(document.getElementById('day').value);
+        const month = parseInt(document.getElementById('month').value);
+        const year = parseInt(document.getElementById('year').value);
+        const hour = parseInt(document.getElementById('hour').value);
+        const minute = parseInt(document.getElementById('minute').value);
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lon = parseFloat(document.getElementById('longitude').value);
+        const tz = parseFloat(document.getElementById('timezone').value);
+        const locationName = document.getElementById('locationName').value.trim() || "given location";
+        
+        // Validation
+        if (!day || !month || !year || isNaN(hour) || isNaN(minute) || isNaN(lat) || isNaN(lon) || isNaN(tz)) {
+            inputError.innerText = "Please fill all fields correctly.";
             return;
         }
-        // parse date
-        let parts = dobStr.split('/');
-        if (parts.length !== 3) { document.getElementById('profileError').innerText = "Use DD/MM/YYYY"; return; }
-        let day = parseInt(parts[0]), month = parseInt(parts[1]), year = parseInt(parts[2]);
-        if (isNaN(day) || isNaN(month) || isNaN(year)) { document.getElementById('profileError').innerText = "Invalid date"; return; }
-        let hourNum = parseInt(hour);
-        if (isNaN(hourNum) || hourNum<1 || hourNum>12) { document.getElementById('profileError').innerText = "Hour 1-12"; return; }
-        let minuteNum = parseInt(minute);
-        if (isNaN(minuteNum) || minuteNum<0 || minuteNum>59) { document.getElementById('profileError').innerText = "Minute 0-59"; return; }
-
-        const zodiacKey = getZodiacKey(day, month);
-        const zodiac = zodiacData[zodiacKey];
-        const lifePath = getLifePath(dobStr);
-        const numText = numerologyText(lifePath);
-        const timeStr = `${hour}:${minute.toString().padStart(2,'0')} ${ampm}`;
-
-        const resultHtml = `
-            <h1>🌀 Your Predictions</h1>
+        if (year < 1900 || year > 2100) {
+            inputError.innerText = "Year must be between 1900 and 2100 (ephemeris limit).";
+            return;
+        }
+        inputError.innerText = "";
+        
+        // Show results page with loading message
+        inputPage.classList.add('hidden');
+        resultsPage.classList.remove('hidden');
+        resultsContent.innerHTML = '<div class="loading">🌀 Connecting to Swiss Ephemeris engine...<br>Calculating planetary positions...</div>';
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/v1/calculate-chart`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    year: year,
+                    month: month,
+                    day: day,
+                    hour: hour,
+                    minute: minute,
+                    latitude: lat,
+                    longitude: lon,
+                    timezone: tz
+                })
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`API error: ${response.status} - ${errorText}`);
+            }
+            
+            const data = await response.json();
+            displayResults(data, name, day, month, year, hour, minute, locationName);
+        } catch (err) {
+            console.error(err);
+            resultsContent.innerHTML = `
+                <div class="loading" style="color:#cc0000;">
+                    ⚠️ Could not connect to backend.<br><br>
+                    Make sure the API server is running at ${API_BASE_URL}<br><br>
+                    <button id="retryBtn" style="margin-top:20px;">← Try Again</button>
+                </div>
+            `;
+            document.getElementById('retryBtn')?.addEventListener('click', () => {
+                resultsPage.classList.add('hidden');
+                inputPage.classList.remove('hidden');
+            });
+        }
+    });
+    
+    // ========== Render Results ==========
+    function displayResults(data, name, day, month, year, hour, minute, locationName) {
+        const chart = data.chart;
+        const ayanamsha = data.ayanamsha;
+        
+        // Helper to format degrees
+        const formatDeg = (deg) => {
+            const d = Math.floor(deg);
+            const m = Math.floor((deg % 1) * 60);
+            return `${d}° ${m}'`;
+        };
+        
+        // Build planets HTML
+        const planetsList = [];
+        for (const [body, info] of Object.entries(chart)) {
+            planetsList.push(`
+                <div class="result-card">
+                    <strong>${body}</strong>
+                    <div>${info.rasi_name}</div>
+                    <div>${formatDeg(info.degrees)}</div>
+                    <div>House ${info.house}</div>
+                </div>
+            `);
+        }
+        
+        const ayaDeg = Math.floor(ayanamsha);
+        const ayaMin = Math.floor((ayanamsha % 1) * 60);
+        
+        const html = `
+            <h1>🌀 Your Vedic Chart</h1>
             <div class="result-section">
-                <div class="result-item"><strong>Name:</strong> ${name}</div>
-                <div class="result-item"><strong>Birth:</strong> ${dobStr} at ${timeStr}, ${location}</div>
-                <div class="result-item"><strong>Sun Sign:</strong> ${zodiac.name} (${zodiac.element})</div>
-                <div class="result-item"><strong>Life Path Number:</strong> ${lifePath}</div>
-                <div class="result-item"><strong>Numerology:</strong> ${numText}</div>
+                <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+                <p><strong>Birth:</strong> ${day}/${month}/${year} at ${hour}:${minute.toString().padStart(2,'0')}</p>
+                <p><strong>Location:</strong> ${escapeHtml(locationName)}</p>
+                <p><strong>Ayanamsha (Lahiri):</strong> ${ayaDeg}° ${ayaMin}'</p>
             </div>
             <div class="result-section">
-                <h3>✨ Your Nature</h3>
-                <p><strong>Good traits:</strong> ${zodiac.good}</p>
-                <p><strong>Challenges:</strong> ${zodiac.bad}</p>
+                <h2 style="text-align:center;">🌌 Planetary Positions</h2>
+                <div class="result-grid">
+                    ${planetsList.join('')}
+                </div>
             </div>
             <div class="result-section">
-                <h3>📅 Daily Forecast</h3>
-                <p><strong>Day:</strong> ${zodiac.day}</p>
-                <p><strong>Travel:</strong> ${zodiac.travel}</p>
-                <p><strong>Money:</strong> ${zodiac.money}</p>
-                <p><strong>Accident / Safety:</strong> ${zodiac.accident}</p>
-                <p><strong>Events:</strong> ${zodiac.event}</p>
-            </div>
-            <div class="result-section">
-                <p><em>Shivanetra · Offline predictions · No data leaves your device</em></p>
+                <p style="font-style:italic; text-align:center;">Calculated with Swiss Ephemeris · Sidereal (Lahiri) · True planetary nodes</p>
             </div>
         `;
-        document.getElementById('resultsContent').innerHTML = resultHtml;
-        document.getElementById('profilePage').classList.add('hidden');
-        document.getElementById('resultsPage').classList.remove('hidden');
-        // Save to localStorage for next time
-        localStorage.setItem('shivanetra_profile', JSON.stringify({name, dob:dobStr, hour, minute, ampm, location}));
-        document.getElementById('profileStatus').innerHTML = "✅ Predictions ready";
+        
+        resultsContent.innerHTML = html;
     }
-
-    function loadStoredProfile() {
-        const stored = localStorage.getItem('shivanetra_profile');
-        if (stored) {
-            try {
-                const p = JSON.parse(stored);
-                if(p.name) document.getElementById('userName').value = p.name;
-                if(p.dob) document.getElementById('dob').value = p.dob;
-                if(p.hour) document.getElementById('hour').value = p.hour;
-                if(p.minute) document.getElementById('minute').value = p.minute;
-                if(p.ampm) document.getElementById('ampm').value = p.ampm;
-                if(p.location) document.getElementById('location').value = p.location;
-                document.getElementById('profileStatus').innerHTML = "✅ Loaded saved profile. Click 'See My Predictions'.";
-            } catch(e) {}
-        }
+    
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
-
-    document.getElementById('saveProfileBtn').addEventListener('click', saveAndShowPredictions);
-    document.getElementById('changeProfileBtn').addEventListener('click', () => {
-        document.getElementById('profilePage').classList.remove('hidden');
-        document.getElementById('resultsPage').classList.add('hidden');
+    
+    // Print results
+    document.getElementById('printBtn')?.addEventListener('click', () => {
+        window.print();
     });
-    document.getElementById('backToProfileBtn').addEventListener('click', () => {
-        document.getElementById('profilePage').classList.remove('hidden');
-        document.getElementById('resultsPage').classList.add('hidden');
+    
+    // Download results as HTML
+    document.getElementById('downloadBtn')?.addEventListener('click', () => {
+        const content = resultsContent.innerHTML;
+        const fullHtml = `<!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>Shivanetra Vedic Chart</title>
+        <style>
+            body { font-family: monospace; padding: 40px; background: white; }
+            .result-card { background: #f9f9f9; border-left: 4px solid #4a0000; padding: 12px; margin: 8px 0; }
+            .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap: 15px; }
+            h1 { color: #4a0000; }
+        </style>
+        </head>
+        <body><div class="container">${content}</div></body>
+        </html>`;
+        const blob = new Blob([fullHtml], {type: 'text/html'});
+        const link = document.createElement('a');
+        link.download = `shivanetra_chart_${Date.now()}.html`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
     });
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
-    document.getElementById('downloadHtmlBtn').addEventListener('click', () => {
-        const content = document.getElementById('resultsContent').innerHTML;
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shivanetra Report</title><style>body{font-family:monospace;padding:40px;background:white;}.result-item{margin:10px 0;padding:8px;background:#f9f9f9;border-left:4px solid #4a0000;}</style></head><body><div>${content}</div></body></html>`;
-        const blob = new Blob([html], {type:'text/html'});
-        const a = document.createElement('a');
-        a.download = `shivanetra_${Date.now()}.html`;
-        a.href = URL.createObjectURL(blob);
-        a.click();
-        URL.revokeObjectURL(a.href);
-    });
-
-    loadStoredProfile();
 </script>
 </body>
 </html>
