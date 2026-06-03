@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shivanetra | Birth Chart & Numerology</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #4a0000;
             font-family: 'Courier New', Courier, monospace;
@@ -19,108 +15,33 @@
             justify-content: center;
             align-items: center;
         }
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: #4a0000;
-            border-radius: 20px;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        h1, h2 {
-            color: #4a0000;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 12px;
-            margin-bottom: 4px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            font-family: monospace;
-            border: 1px solid #aaa;
-            border-radius: 8px;
-            background: #fefefe;
-        }
-        .row {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
-        .row > div {
-            flex: 1;
-        }
+        .container { max-width: 900px; width: 100%; background: #4a0000; border-radius: 20px; padding: 20px; }
+        .card { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        h1, h2 { color: #4a0000; text-align: center; margin-bottom: 20px; }
+        label { font-weight: bold; display: block; margin-top: 12px; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 10px; font-family: monospace; border: 1px solid #aaa; border-radius: 8px; background: #fefefe; }
+        .row { display: flex; gap: 10px; margin-top: 5px; }
+        .row > div { flex: 1; }
         button {
-            background: #4a0000;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-family: monospace;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
+            background: #4a0000; color: white; border: none; padding: 12px 20px;
+            border-radius: 40px; font-family: monospace; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;
         }
-        button.secondary {
-            background: #1B5E20;
-        }
-        button.danger {
-            background: #8B0000;
-        }
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .button-group button {
-            margin-top: 0;
-        }
-        .result-section {
-            margin: 20px 0;
-            border-top: 1px solid #ddd;
-            padding-top: 15px;
-        }
-        .result-item {
-            margin: 10px 0;
-            padding: 8px;
-            background: #f9f9f9;
-            border-left: 4px solid #4a0000;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.7em;
-            color: #ffaa88;
-        }
-        .hidden {
-            display: none;
-        }
-        @media print {
-            body { background: white; padding: 0; }
-            .container { background: white; padding: 0; }
-            .card { box-shadow: none; padding: 0; }
-            button, .footer { display: none; }
-        }
-        .error {
-            color: #cc0000;
-            font-size: 0.8em;
-            margin-top: 5px;
-        }
+        button.secondary { background: #1B5E20; }
+        button.danger { background: #8B0000; }
+        .button-group { display: flex; gap: 12px; margin-top: 20px; }
+        .button-group button { margin-top: 0; }
+        .result-section { margin: 20px 0; border-top: 1px solid #ddd; padding-top: 15px; }
+        .result-item { margin: 10px 0; padding: 8px; background: #f9f9f9; border-left: 4px solid #4a0000; }
+        .footer { text-align: center; margin-top: 20px; font-size: 0.7em; color: #ffaa88; }
+        .hidden { display: none; }
+        @media print { body { background: white; padding: 0; } .container { background: white; } .card { box-shadow: none; } button, .footer { display: none; } }
+        .error { color: #cc0000; font-size: 0.8em; margin-top: 5px; text-align: center; }
+        .loader { text-align: center; margin: 20px; color: #4a0000; }
     </style>
 </head>
 <body>
-<div class="container" id="app">
-    <!-- LANDING / PROFILE PAGE -->
+<div class="container">
+    <!-- PROFILE PAGE -->
     <div id="profilePage" class="card">
         <h1>🌀 SHIVANETRA</h1>
         <p style="text-align:center; margin-bottom:20px;">Enter your birth details to reveal your celestial chart</p>
@@ -142,16 +63,16 @@
         <input type="text" id="location" placeholder="Dhaka, Bangladesh">
         
         <div class="button-group">
-            <button id="saveProfileBtn">💾 Save Profile</button>
+            <button id="saveProfileBtn">💾 Save Profile & Calculate</button>
             <button id="changeProfileBtn" class="secondary">✏️ Change</button>
         </div>
         <div id="profileStatus" style="margin-top:10px; text-align:center; font-size:0.8em; color:#1B5E20;"></div>
-        <div id="profileError" class="error" style="text-align:center;"></div>
+        <div id="profileError" class="error"></div>
     </div>
 
-    <!-- RESULTS PAGE (hidden until profile saved) -->
+    <!-- RESULTS PAGE -->
     <div id="resultsPage" class="card hidden">
-        <div id="resultsContent"></div>
+        <div id="resultsContent"><div class="loader">Loading chart from celestial database...</div></div>
         <div class="button-group">
             <button id="printBtn" class="secondary">🖨️ Print / Save as PDF</button>
             <button id="downloadHtmlBtn">📥 Save as HTML</button>
@@ -160,243 +81,280 @@
     </div>
 
     <div class="footer">
-        Shivanetra · Sidereal calculations · Profile saved locally on your device
+        Shivanetra · Sidereal calculations powered by NASA JPL data · Backend sync enabled
     </div>
 </div>
 
 <script>
     // ------------------------------
-    // ZODIAC DATA (12 folders)
+    // CONFIGURATION
     // ------------------------------
-    const zodiacData = {
-        aries: { name:"Aries", overview:"Energetic pioneer. You lead with courage.", good:"Initiative, optimism", bad:"Impulsiveness, short temper", best:"Starting new projects", day:"High energy morning; avoid arguments afternoon.", travel:"Adventure travel suits you.", money:"Unexpected expenses; budget carefully.", accident:"Minor burns or cuts – be careful with tools.", event:"Social gatherings boost your reputation." },
-        taurus: { name:"Taurus", overview:"Grounded and persistent. Build steadily.", good:"Reliability, sensuality", bad:"Stubbornness, resistance to change", best:"Financial planning", day:"Productive but slow start.", travel:"Nature destinations ideal.", money:"Income stable; avoid risky investments.", accident:"Low risk; watch for neck strain.", event:"Family dinner brings harmony." },
-        gemini: { name:"Gemini", overview:"Curious and communicative. Embrace learning.", good:"Versatility, wit", bad:"Restlessness, gossip", best:"Networking", day:"Busy with messages; double-check facts.", travel:"Short trips favored.", money:"Side hustles profitable.", accident:"Distracted walking – stay alert.", event:"Meetups bring new contacts." },
-        cancer: { name:"Cancer", overview:"Emotional and intuitive. Home is sanctuary.", good:"Nurturing, loyalty", bad:"Moodiness, clinginess", best:"Home improvement", day:"Morning sensitive; afternoon clarity.", travel:"Water-related journeys lucky.", money:"Savings grow; avoid emotional spending.", accident:"Kitchen mishaps – be cautious.", event:"Small gathering strengthens bonds." },
-        leo: { name:"Leo", overview:"Confident and generous. Shine brightly.", good:"Leadership, creativity", bad:"Arrogance, drama", best:"Public performance", day:"Energetic, but ego clashes possible.", travel:"Luxury travel rewarding.", money:"Possible gift or bonus.", accident:"Sun glare while driving.", event:"Celebration brings recognition." },
-        virgo: { name:"Virgo", overview:"Analytical and helpful. Perfect details.", good:"Precision, service", bad:"Overcritical, worry", best:"Health routines", day:"Efficient; avoid micromanaging.", travel:"Plan meticulously; delays possible.", money:"Budgeting pays off.", accident:"Minor strains – stretch before exercise.", event:"Work event beneficial." },
-        libra: { name:"Libra", overview:"Balanced and diplomatic. Relationships key.", good:"Charm, fairness", bad:"Indecision, people-pleasing", best:"Partnerships", day:"Socially rewarding, but tough choices.", travel:"Couples travel brings joy.", money:"Shared finances need transparency.", accident:"Uneven pavement – watch step.", event:"Art opening or wedding excellent." },
-        scorpio: { name:"Scorpio", overview:"Intense and transformative. Depth rules.", good:"Resourcefulness, passion", bad:"Jealousy, secrecy", best:"Research", day:"Mysterious morning; powerful afternoon.", travel:"Avoid isolated areas.", money:"Debt resolution or inheritance.", accident:"Drive defensively; moderate risk.", event:"Private gathering reveals truths." },
-        sagittarius: { name:"Sagittarius", overview:"Adventurous and optimistic. Expand horizons.", good:"Freedom, humor", bad:"Recklessness, bluntness", best:"Travel & education", day:"Full of surprises; embrace spontaneity.", travel:"Long distance journeys favored.", money:"Gambling not advised; invest in learning.", accident:"Sports injury possible – warm up.", event:"Festival or outdoor event excellent." },
-        capricorn: { name:"Capricorn", overview:"Ambitious and disciplined. Climb steadily.", good:"Responsibility, persistence", bad:"Pessimism, rigidity", best:"Career goals", day:"Productive but heavy.", travel:"Business travel successful.", money:"Steady growth; avoid get-rich-quick.", accident:"Check stairs; low risk.", event:"Corporate event brings opportunity." },
-        aquarius: { name:"Aquarius", overview:"Innovative and humanitarian. Think differently.", good:"Originality, friendliness", bad:"Detachment, unpredictability", best:"Tech projects", day:"Unconventional solutions work.", travel:"Group travel fun.", money:"Crypto or alternative investments.", accident:"Unusual mishap – stay aware.", event:"Community gathering inspires." },
-        pisces: { name:"Pisces", overview:"Dreamy and compassionate. Artistic flow.", good:"Empathy, creativity", bad:"Escapism, victimhood", best:"Art / meditation", day:"Intuitive hits; avoid overcommitting.", travel:"Coastal or spiritual destinations.", money:"Trust intuition; avoid lending.", accident:"Water-related caution.", event:"Music or healing circle powerful." }
-    };
+    // Change this to your actual backend URL when deployed
+    const API_BASE_URL = "http://localhost:8000";  // or your server IP
+    let currentUserId = null;
+    let currentProfileId = null;
 
-    // Convert DD/MM/YYYY to Date object and get zodiac
-    function parseDateManual(dateStr) {
-        // expects DD/MM/YYYY
-        let parts = dateStr.split('/');
+    // Helper: convert DD/MM/YYYY to YYYY-MM-DD for backend
+    function convertDateToISO(dobStr) {
+        let parts = dobStr.split('/');
         if (parts.length !== 3) return null;
-        let day = parseInt(parts[0]);
-        let month = parseInt(parts[1]);
-        let year = parseInt(parts[2]);
-        if (isNaN(day) || isNaN(month) || isNaN(year)) return null;
-        return { day, month, year };
+        let day = parts[0].padStart(2,'0');
+        let month = parts[1].padStart(2,'0');
+        let year = parts[2];
+        return `${year}-${month}-${day}`;
     }
 
-    function getZodiacKeyFromDate(day, month) {
-        if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "aries";
-        if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "taurus";
-        if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "gemini";
-        if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "cancer";
-        if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "leo";
-        if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "virgo";
-        if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "libra";
-        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "scorpio";
-        if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "sagittarius";
-        if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "capricorn";
-        if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "aquarius";
-        return "pisces";
+    // Helper: convert time to 24h format for backend
+    function convertTimeToISO(hour, minute, ampm) {
+        let h = parseInt(hour);
+        if (ampm === "PM" && h !== 12) h += 12;
+        if (ampm === "AM" && h === 12) h = 0;
+        return `${h.toString().padStart(2,'0')}:${minute.padStart(2,'0')}:00`;
     }
 
-    // Numerology from YYYY-MM-DD (we need year from manual date)
-    function getLifePathNumberFromDate(year, month, day) {
-        let sum = 0;
-        let digits = year.toString().split('').concat(month.toString().split(''), day.toString().split(''));
-        for (let d of digits) sum += parseInt(d);
-        while (sum > 9 && sum !== 11 && sum !== 22) {
-            let s = 0;
-            while (sum > 0) { s += sum % 10; sum = Math.floor(sum / 10); }
-            sum = s;
-        }
-        return sum;
-    }
-
-    function getNumerologyText(lp) {
-        const map = {
-            1: "Leader, independent. New beginnings. Avoid arrogance.",
-            2: "Diplomat, peacemaker. Partnerships thrive. Avoid indecision.",
-            3: "Creative, expressive. Joy through art. Avoid scattering energy.",
-            4: "Builder, disciplined. Stability through hard work. Avoid rigidity.",
-            5: "Adventurer, freedom-loving. Embrace change. Avoid recklessness.",
-            6: "Nurturer, responsible. Family and service. Avoid meddling.",
-            7: "Thinker, spiritual. Seek wisdom. Avoid isolation.",
-            8: "Ambitious, powerful. Material success. Avoid greed.",
-            9: "Humanitarian, compassionate. Letting go. Avoid martyrdom.",
-            11: "Master teacher, intuitive. High spiritual insight. Avoid anxiety.",
-            22: "Master builder, visionary. Turn dreams into reality. Avoid overwhelm."
+    // Save profile to backend AND local storage
+    async function saveProfileToBackend(profileData) {
+        // 1. Get or create user (email is dummy for now, but we'll use name+location as unique key)
+        // For simplicity, we'll use email = name@shivanetra.local
+        let email = profileData.name.replace(/\s/g, '.').toLowerCase() + "@shivanetra.local";
+        let userPayload = {
+            email: email,
+            password_hash: "temp_hash",  // will be replaced later with real auth
+            full_name: profileData.name
         };
-        return map[lp] || "Unique energy; seek balance.";
+        
+        // Try to get user by email (GET endpoint not yet, so we'll POST and if conflict, handle)
+        let userResponse = await fetch(`${API_BASE_URL}/users/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userPayload)
+        });
+        let userData;
+        if (userResponse.status === 400) {
+            // user exists, fetch by email (we need a GET /users/by-email endpoint – for now, we'll simulate)
+            // In production, you'd have a GET endpoint. For simplicity, we'll assume user exists and we query.
+            // We'll skip this complexity for demo and just create a new profile with a dummy user ID.
+            // But better: use localStorage to store userId after first creation.
+            let existing = localStorage.getItem('shivanetra_userId');
+            if (existing) {
+                currentUserId = existing;
+            } else {
+                throw new Error("User exists but no ID stored. Please clear cache.");
+            }
+        } else if (userResponse.ok) {
+            userData = await userResponse.json();
+            currentUserId = userData.user_id;
+            localStorage.setItem('shivanetra_userId', currentUserId);
+        } else {
+            throw new Error("Failed to create user");
+        }
+
+        // 2. Create profile
+        let profilePayload = {
+            profile_name: profileData.name,
+            birth_date: profileData.birth_date_iso,
+            birth_time: profileData.birth_time_iso,
+            latitude: 23.8103,   // default Dhaka, could be improved with geocoding
+            longitude: 90.4125,
+            timezone: "Asia/Dhaka"
+        };
+        let profileResponse = await fetch(`${API_BASE_URL}/profiles/?user_id=${currentUserId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(profilePayload)
+        });
+        if (!profileResponse.ok) throw new Error("Failed to create profile");
+        let profileDataRes = await profileResponse.json();
+        currentProfileId = profileDataRes.profile_id;
+        localStorage.setItem('shivanetra_profileId', currentProfileId);
+        
+        return currentProfileId;
     }
 
-    // Validate profile inputs
-    function validateProfile(name, dobStr, hour, minute, location) {
-        if (!name.trim()) return "Name is required.";
-        const dateObj = parseDateManual(dobStr);
-        if (!dateObj) return "Date of Birth must be in DD/MM/YYYY format (e.g., 27/05/2026).";
-        if (dateObj.day < 1 || dateObj.day > 31) return "Invalid day in date.";
-        if (dateObj.month < 1 || dateObj.month > 12) return "Invalid month in date.";
-        if (hour < 1 || hour > 12) return "Hour must be between 1 and 12.";
-        if (minute < 0 || minute > 59) return "Minute must be between 0 and 59.";
-        if (!location.trim()) return "Location is required.";
-        return null;
+    // Calculate chart from backend
+    async function calculateChart(profileId) {
+        let response = await fetch(`${API_BASE_URL}/calculate-chart/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ profile_id: profileId, house_system: "Placidus" })
+        });
+        if (!response.ok) throw new Error("Chart calculation failed");
+        let chartData = await response.json();
+        return chartData;
     }
 
-    // Save profile to localStorage
-    function saveProfile() {
+    // Get traits from backend
+    async function getTraits(profileId) {
+        let response = await fetch(`${API_BASE_URL}/profile-traits/${profileId}`);
+        if (!response.ok) throw new Error("Failed to fetch traits");
+        let traits = await response.json();
+        return traits;
+    }
+
+    // Main flow: save profile, calculate chart, display results
+    async function saveAndCalculate() {
         const name = document.getElementById('userName').value.trim();
         const dobStr = document.getElementById('dob').value.trim();
-        const hour = parseInt(document.getElementById('hour').value);
-        const minute = parseInt(document.getElementById('minute').value);
+        const hour = document.getElementById('hour').value;
+        const minute = document.getElementById('minute').value;
         const ampm = document.getElementById('ampm').value;
         const location = document.getElementById('location').value.trim();
 
-        const error = validateProfile(name, dobStr, hour, minute, location);
-        if (error) {
-            document.getElementById('profileError').innerText = error;
-            return false;
+        // Validate
+        if (!name || !dobStr || !hour || !minute || !location) {
+            document.getElementById('profileError').innerText = "Please fill all fields.";
+            return;
         }
+        const isoDate = convertDateToISO(dobStr);
+        if (!isoDate) {
+            document.getElementById('profileError').innerText = "Date must be in DD/MM/YYYY format.";
+            return;
+        }
+        const hourNum = parseInt(hour);
+        if (isNaN(hourNum) || hourNum < 1 || hourNum > 12) {
+            document.getElementById('profileError').innerText = "Hour must be 1-12.";
+            return;
+        }
+        const minuteNum = parseInt(minute);
+        if (isNaN(minuteNum) || minuteNum < 0 || minuteNum > 59) {
+            document.getElementById('profileError').innerText = "Minute must be 0-59.";
+            return;
+        }
+
         document.getElementById('profileError').innerText = "";
+        document.getElementById('profileStatus').innerHTML = "🔄 Saving profile and contacting celestial database...";
 
-        const profile = { name, dob: dobStr, hour, minute, ampm, location };
-        localStorage.setItem('shivanetra_profile', JSON.stringify(profile));
-        document.getElementById('profileStatus').innerHTML = "✅ Profile saved!";
-        return true;
-    }
-
-    // Load profile and show results
-    function loadAndShowResults() {
-        const stored = localStorage.getItem('shivanetra_profile');
-        if (!stored) {
-            alert("No saved profile. Please enter and save first.");
-            return false;
-        }
-        const profile = JSON.parse(stored);
-        // populate fields (so Change button works)
-        document.getElementById('userName').value = profile.name;
-        document.getElementById('dob').value = profile.dob;
-        document.getElementById('hour').value = profile.hour;
-        document.getElementById('minute').value = profile.minute;
-        document.getElementById('ampm').value = profile.ampm;
-        document.getElementById('location').value = profile.location;
-
-        // parse date
-        const dateObj = parseDateManual(profile.dob);
-        if (!dateObj) return false;
-        const { day, month, year } = dateObj;
-        const zodiacKey = getZodiacKeyFromDate(day, month);
-        const zodiac = zodiacData[zodiacKey];
-        const lifePath = getLifePathNumberFromDate(year, month, day);
-        const numerologyText = getNumerologyText(lifePath);
-        const timeStr = `${profile.hour}:${profile.minute.toString().padStart(2,'0')} ${profile.ampm}`;
-
-        const resultHtml = `
-            <h1>🌀 Your Celestial Blueprint</h1>
-            <div class="result-section">
-                <div class="result-item"><strong>Name:</strong> ${profile.name}</div>
-                <div class="result-item"><strong>Birth Date:</strong> ${profile.dob}</div>
-                <div class="result-item"><strong>Birth Time:</strong> ${timeStr}</div>
-                <div class="result-item"><strong>Location:</strong> ${profile.location}</div>
-                <div class="result-item"><strong>Zodiac Sign:</strong> ${zodiac.name}</div>
-                <div class="result-item"><strong>Life Path Number:</strong> ${lifePath}</div>
-            </div>
-            <div class="result-section">
-                <h3>✨ Astrological Guidance (${zodiac.name})</h3>
-                <p><strong>Overview:</strong> ${zodiac.overview}</p>
-                <p><strong>😇 Good:</strong> ${zodiac.good}</p>
-                <p><strong>⚠️ Bad:</strong> ${zodiac.bad}</p>
-                <p><strong>🏆 Best:</strong> ${zodiac.best}</p>
-            </div>
-            <div class="result-section">
-                <h3>🔢 Numerology Reading</h3>
-                <p>${numerologyText}</p>
-            </div>
-            <div class="result-section">
-                <h3>📅 Daily Forecast (based on your chart)</h3>
-                <p><strong>Day:</strong> ${zodiac.day}</p>
-                <p><strong>Travel:</strong> ${zodiac.travel}</p>
-                <p><strong>Money:</strong> ${zodiac.money}</p>
-                <p><strong>Accident / Safety:</strong> ${zodiac.accident}</p>
-                <p><strong>Events:</strong> ${zodiac.event}</p>
-            </div>
-        `;
-        document.getElementById('resultsContent').innerHTML = resultHtml;
-        return true;
-    }
-
-    function showResults() {
-        if (loadAndShowResults()) {
+        try {
+            const profileData = {
+                name: name,
+                birth_date_iso: isoDate,
+                birth_time_iso: convertTimeToISO(hour, minute, ampm),
+                location: location
+            };
+            const profileId = await saveProfileToBackend(profileData);
+            // Show results page with loading message
             document.getElementById('profilePage').classList.add('hidden');
             document.getElementById('resultsPage').classList.remove('hidden');
+            document.getElementById('resultsContent').innerHTML = '<div class="loader">Calculating your natal chart using NASA ephemeris...</div>';
+            
+            const chart = await calculateChart(profileId);
+            const traits = await getTraits(profileId);
+            
+            // Build results display
+            const planetsHtml = chart.planets.map(p => `
+                <div class="result-item"><strong>${p.name}:</strong> ${p.sign} ${p.degrees}°${p.minutes}'</div>
+            `).join('');
+            
+            const housesHtml = Object.entries(chart.houses).map(([num, sign]) => `
+                <div class="result-item"><strong>House ${num}:</strong> ${sign}</div>
+            `).join('');
+            
+            const aspectsHtml = chart.aspects.map(a => `
+                <div class="result-item"><strong>${a.planet1} ${a.aspect} ${a.planet2}:</strong> orb ${a.orb}°</div>
+            `).join('');
+            
+            const resultHtml = `
+                <h1>🌀 Your Celestial Blueprint</h1>
+                <div class="result-section">
+                    <div class="result-item"><strong>Name:</strong> ${name}</div>
+                    <div class="result-item"><strong>Birth Date:</strong> ${dobStr}</div>
+                    <div class="result-item"><strong>Birth Time:</strong> ${hour}:${minute} ${ampm}</div>
+                    <div class="result-item"><strong>Location:</strong> ${location}</div>
+                    <div class="result-item"><strong>Sun Sign:</strong> ${traits.sun_sign}</div>
+                    <div class="result-item"><strong>Ruling Planet:</strong> ${traits.ruling_planet || '—'}</div>
+                    <div class="result-item"><strong>Element:</strong> ${traits.element || '—'}</div>
+                </div>
+                <div class="result-section">
+                    <h3>✨ Astrological Guidance</h3>
+                    <p><strong>Good traits:</strong> ${traits.good_traits?.join(', ') || '—'}</p>
+                    <p><strong>Challenges:</strong> ${traits.bad_traits?.join(', ') || '—'}</p>
+                </div>
+                <div class="result-section">
+                    <h3>🌍 Planetary Positions</h3>
+                    ${planetsHtml}
+                </div>
+                <div class="result-section">
+                    <h3>🏠 Houses</h3>
+                    ${housesHtml}
+                </div>
+                <div class="result-section">
+                    <h3>⚡ Aspects</h3>
+                    ${aspectsHtml}
+                </div>
+                <div class="result-section">
+                    <p style="font-style:italic;">Data derived from NASA JPL ephemeris via Shivanetra backend.</p>
+                </div>
+            `;
+            document.getElementById('resultsContent').innerHTML = resultHtml;
+            document.getElementById('profileStatus').innerHTML = "✅ Profile saved and chart calculated!";
+        } catch (err) {
+            console.error(err);
+            document.getElementById('profileError').innerText = "Error connecting to backend. Make sure API is running at " + API_BASE_URL;
+            document.getElementById('profilePage').classList.remove('hidden');
+            document.getElementById('resultsPage').classList.add('hidden');
         }
     }
 
-    function backToProfile() {
+    // Load stored profile from localStorage and pre-fill form (but not auto-calculate)
+    function loadStoredProfile() {
+        const stored = localStorage.getItem('shivanetra_profile');
+        if (stored) {
+            try {
+                const p = JSON.parse(stored);
+                document.getElementById('userName').value = p.name || '';
+                document.getElementById('dob').value = p.dob || '';
+                document.getElementById('hour').value = p.hour || '';
+                document.getElementById('minute').value = p.minute || '';
+                document.getElementById('ampm').value = p.ampm || 'AM';
+                document.getElementById('location').value = p.location || '';
+                document.getElementById('profileStatus').innerHTML = "✅ Loaded saved profile. Click 'Save & Calculate' to refresh chart.";
+            } catch(e) {}
+        }
+        // Also load userId and profileId from localStorage if they exist
+        const uid = localStorage.getItem('shivanetra_userId');
+        const pid = localStorage.getItem('shivanetra_profileId');
+        if (uid) currentUserId = uid;
+        if (pid) currentProfileId = pid;
+    }
+
+    // Save current form data to localStorage (without backend call)
+    function saveFormToLocal() {
+        const profile = {
+            name: document.getElementById('userName').value.trim(),
+            dob: document.getElementById('dob').value.trim(),
+            hour: document.getElementById('hour').value,
+            minute: document.getElementById('minute').value,
+            ampm: document.getElementById('ampm').value,
+            location: document.getElementById('location').value.trim()
+        };
+        localStorage.setItem('shivanetra_profile', JSON.stringify(profile));
+        document.getElementById('profileStatus').innerHTML = "✅ Form data saved locally. Click 'Save & Calculate' for full chart.";
+    }
+
+    // UI event handlers
+    document.getElementById('saveProfileBtn').addEventListener('click', saveAndCalculate);
+    document.getElementById('changeProfileBtn').addEventListener('click', () => {
         document.getElementById('profilePage').classList.remove('hidden');
         document.getElementById('resultsPage').classList.add('hidden');
-    }
-
-    function printResults() {
-        window.print();
-    }
-
-    function downloadResults() {
+    });
+    document.getElementById('backToProfileBtn').addEventListener('click', () => {
+        document.getElementById('profilePage').classList.remove('hidden');
+        document.getElementById('resultsPage').classList.add('hidden');
+    });
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.getElementById('downloadHtmlBtn').addEventListener('click', () => {
         const content = document.getElementById('resultsContent').innerHTML;
-        const fullHtml = `<!DOCTYPE html>
-        <html>
-        <head><meta charset="UTF-8"><title>Shivanetra Report</title>
-        <style>
-            body { font-family: monospace; padding: 40px; background: white; }
-            .container { max-width: 800px; margin: auto; }
-            .result-item { margin: 10px 0; padding: 8px; background: #f9f9f9; border-left: 4px solid #4a0000; }
-            .result-section { margin: 20px 0; border-top: 1px solid #ddd; padding-top: 15px; }
-            h1 { color: #4a0000; }
-        </style>
-        </head>
-        <body><div class="container">${content}</div></body>
-        </html>`;
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shivanetra Report</title><style>body{font-family:monospace;padding:40px;background:white;}.result-item{margin:10px 0;padding:8px;background:#f9f9f9;border-left:4px solid #4a0000;}.result-section{margin:20px 0;border-top:1px solid #ddd;padding-top:15px;}h1{color:#4a0000;}</style></head><body><div class="container">${content}</div></body></html>`;
         const blob = new Blob([fullHtml], {type: 'text/html'});
         const link = document.createElement('a');
         link.download = `shivanetra_${new Date().toISOString().slice(0,19)}.html`;
         link.href = URL.createObjectURL(blob);
         link.click();
         URL.revokeObjectURL(link.href);
-    }
-
-    // Event listeners
-    document.getElementById('saveProfileBtn').addEventListener('click', () => {
-        if (saveProfile()) {
-            showResults();
-        }
     });
-    document.getElementById('changeProfileBtn').addEventListener('click', backToProfile);
-    document.getElementById('backToProfileBtn').addEventListener('click', backToProfile);
-    document.getElementById('printBtn').addEventListener('click', printResults);
-    document.getElementById('downloadHtmlBtn').addEventListener('click', downloadResults);
 
-    // On load, populate from localStorage if exists
-    const existing = localStorage.getItem('shivanetra_profile');
-    if (existing) {
-        const p = JSON.parse(existing);
-        document.getElementById('userName').value = p.name;
-        document.getElementById('dob').value = p.dob;
-        document.getElementById('hour').value = p.hour;
-        document.getElementById('minute').value = p.minute;
-        document.getElementById('ampm').value = p.ampm;
-        document.getElementById('location').value = p.location;
-        document.getElementById('profileStatus').innerHTML = "✅ Loaded saved profile. You can edit and Save again.";
-    }
+    // On page load, populate from local storage
+    loadStoredProfile();
 </script>
 </body>
 </html>
