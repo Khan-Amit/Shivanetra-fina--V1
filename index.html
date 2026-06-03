@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivanetra | Astral Compass</title>
+    <title>Shivanetra | Birth Chart & Numerology</title>
     <style>
         * {
             margin: 0;
@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            background: #4a0000;  /* dark red */
+            background: #4a0000;
             font-family: 'Courier New', Courier, monospace;
             padding: 20px;
             min-height: 100vh;
@@ -20,362 +20,253 @@
             align-items: center;
         }
         .container {
-            max-width: 1100px;
+            max-width: 800px;
             width: 100%;
             background: #4a0000;
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        /* header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            color: #ffcc00;
-            font-size: 2.5em;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 0 #330000;
-        }
-        .header p {
-            color: #ffaa88;
-            font-style: italic;
-        }
-        /* sun sign selector */
-        .sign-selector {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-        .sign-btn {
-            background: #2a0000;
-            color: #ffcc99;
-            border: 1px solid #aa4444;
-            padding: 10px 18px;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 40px;
-            transition: 0.2s;
-        }
-        .sign-btn:hover, .sign-btn.active {
-            background: #ffcc00;
-            color: #4a0000;
-            border-color: #ffcc00;
-        }
-        /* main chart area (white background, black lines) */
-        .chart-area {
+        /* landing page & results page */
+        .page {
             background: white;
             border-radius: 16px;
             padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
         }
-        .chart-title {
-            font-size: 1.5em;
-            font-weight: bold;
+        .hidden {
+            display: none;
+        }
+        h1 {
+            color: #4a0000;
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 8px;
-            font-family: monospace;
         }
-        .natal-chart {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-        .chart-svg {
-            background: #fefefe;
-            border-radius: 50%;
-            width: 250px;
-            height: 250px;
-        }
-        .overview {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 1.1em;
-            border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-            padding: 15px;
-        }
-        .good-bad-best {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .pill {
-            background: #f0f0f0;
-            padding: 10px 20px;
-            border-radius: 40px;
+        label {
             font-weight: bold;
-            text-align: center;
-            min-width: 120px;
-        }
-        .pill.good { background: #c8e6c9; color: #1B5E20; }
-        .pill.bad { background: #ffcdd2; color: #b71c1c; }
-        .pill.best { background: #ffecb3; color: #b26a00; }
-        /* prediction grid */
-        .prediction-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 18px;
-            margin-top: 20px;
-        }
-        .pred-card {
-            background: #f9f9f9;
-            border-left: 6px solid #cc0000;
-            padding: 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .pred-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-        .pred-card h3 {
-            margin-bottom: 10px;
-            color: #4a0000;
-        }
-        .pred-card p {
-            font-size: 0.9em;
-            color: #333;
-        }
-        .detail-page {
-            display: none;
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .detail-page.active {
             display: block;
+            margin-top: 12px;
+            margin-bottom: 4px;
         }
-        .back-btn {
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-family: monospace;
+            border: 1px solid #aaa;
+            border-radius: 8px;
+            background: #fefefe;
+        }
+        button {
             background: #4a0000;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #ffaa88;
-            font-size: 0.8em;
-        }
-        button.download-btn {
-            background: #1B5E20;
-            color: white;
-            border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 40px;
             font-family: monospace;
             font-weight: bold;
             cursor: pointer;
-            display: block;
-            margin: 0 auto 20px auto;
+            margin-top: 20px;
+            width: 100%;
         }
-        @media (max-width: 700px) {
-            .sign-btn { padding: 6px 12px; font-size: 0.8em; }
-            .prediction-grid { grid-template-columns: 1fr; }
+        button:hover {
+            background: #cc0000;
+        }
+        .home-btn {
+            background: #1B5E20;
+            margin-top: 10px;
+        }
+        .result-section {
+            margin: 20px 0;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .result-item {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f9f9f9;
+            border-left: 4px solid #4a0000;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.7em;
+            color: #ffaa88;
         }
     </style>
 </head>
 <body>
 <div class="container" id="app">
-    <div class="header">
+    <!-- LANDING PAGE (input form) -->
+    <div id="landingPage" class="page">
         <h1>🌀 SHIVANETRA</h1>
-        <p>Astral Compass · Celestial Guidance</p>
+        <p style="text-align:center; margin-bottom:20px;">Enter your birth details for celestial guidance</p>
+        
+        <label>Full Name</label>
+        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed">
+        
+        <label>Date of Birth</label>
+        <input type="date" id="dob">
+        
+        <label>Location (City, Country)</label>
+        <input type="text" id="location" placeholder="Dhaka, Bangladesh">
+        
+        <label>Time of Birth</label>
+        <div style="display:flex; gap:10px;">
+            <input type="number" id="hour" placeholder="Hour (1-12)" min="1" max="12" style="width:33%">
+            <input type="number" id="minute" placeholder="Minute" min="0" max="59" style="width:33%">
+            <select id="ampm" style="width:33%">
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+            </select>
+        </div>
+        
+        <button id="calculateBtn">✨ Reveal My Chart ✨</button>
     </div>
 
-    <!-- Sun Sign Selector -->
-    <div class="sign-selector" id="signSelector">
-        <button class="sign-btn" data-sign="aries">♈ Aries</button>
-        <button class="sign-btn" data-sign="taurus">♉ Taurus</button>
-        <button class="sign-btn" data-sign="gemini">♊ Gemini</button>
-        <button class="sign-btn" data-sign="cancer">♋ Cancer</button>
-        <button class="sign-btn" data-sign="leo">♌ Leo</button>
-        <button class="sign-btn" data-sign="virgo">♍ Virgo</button>
-        <button class="sign-btn" data-sign="libra">♎ Libra</button>
-        <button class="sign-btn" data-sign="scorpio">♏ Scorpio</button>
-        <button class="sign-btn" data-sign="sagittarius">♐ Sagittarius</button>
-        <button class="sign-btn" data-sign="capricorn">♑ Capricorn</button>
-        <button class="sign-btn" data-sign="aquarius">♒ Aquarius</button>
-        <button class="sign-btn" data-sign="pisces">♓ Pisces</button>
+    <!-- RESULTS PAGE (hidden initially) -->
+    <div id="resultsPage" class="page hidden">
+        <div id="resultsContent"></div>
+        <button id="homeBtn" class="home-btn">🏠 Home / New Reading</button>
+        <button id="downloadResultsBtn">📥 Download Results (HTML)</button>
     </div>
-
-    <!-- Main Chart Area (white bg, black lines) -->
-    <div class="chart-area" id="chartArea">
-        <div class="chart-title">✨ Natal Chart · <span id="currentSign">Aries</span> ✨</div>
-        <div class="natal-chart">
-            <svg class="chart-svg" viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="90" stroke="black" stroke-width="1.5" fill="none"/>
-                <line x1="100" y1="10" x2="100" y2="190" stroke="black" stroke-width="1"/>
-                <line x1="10" y1="100" x2="190" y2="100" stroke="black" stroke-width="1"/>
-                <line x1="30" y1="30" x2="170" y2="170" stroke="black" stroke-width="0.5" stroke-dasharray="4"/>
-                <line x1="170" y1="30" x2="30" y2="170" stroke="black" stroke-width="0.5" stroke-dasharray="4"/>
-                <circle cx="100" cy="100" r="8" fill="#cc0000"/>
-                <text x="100" y="18" text-anchor="middle" font-size="8" fill="black">N</text>
-                <text x="185" y="104" text-anchor="middle" font-size="8" fill="black">E</text>
-                <text x="15" y="104" text-anchor="middle" font-size="8" fill="black">W</text>
-                <text x="100" y="192" text-anchor="middle" font-size="8" fill="black">S</text>
-                <text x="100" y="100" text-anchor="middle" dy=".3em" font-size="14" fill="#cc0000">☉</text>
-            </svg>
-        </div>
-        <div class="overview" id="overviewText">
-            <strong>Overview:</strong> Energetic and pioneering. This is a time for bold actions.
-        </div>
-        <div class="good-bad-best" id="gbb">
-            <div class="pill good">😇 Good: Leadership</div>
-            <div class="pill bad">⚠️ Bad: Impulsiveness</div>
-            <div class="pill best">🏆 Best: New ventures</div>
-        </div>
-    </div>
-
-    <!-- Prediction Buttons (click to go to detail page) -->
-    <div class="prediction-grid" id="predGrid">
-        <div class="pred-card" data-category="day">
-            <h3>📅 How will be your day?</h3>
-            <p>Click for detailed forecast</p>
-        </div>
-        <div class="pred-card" data-category="travel">
-            <h3>✈️ Travel</h3>
-            <p>Click for guidance</p>
-        </div>
-        <div class="pred-card" data-category="money">
-            <h3>💰 Money</h3>
-            <p>Click for insight</p>
-        </div>
-        <div class="pred-card" data-category="accident">
-            <h3>⚠️ Accident / Safety</h3>
-            <p>Click for caution level</p>
-        </div>
-        <div class="pred-card" data-category="event">
-            <h3>🎭 Event / Gathering</h3>
-            <p>Click for outcome</p>
-        </div>
-    </div>
-
-    <!-- Detail Page (hidden initially) -->
-    <div id="detailPage" class="detail-page">
-        <button class="back-btn" id="backBtn">← Back to Overview</button>
-        <div id="detailContent"></div>
-    </div>
-
-    <button class="download-btn" id="downloadBtn">📥 Download this page (HTML)</button>
 
     <div class="footer">
-        Shivanetra · Celestial data based on sidereal calculations · Backend hidden folder for persistent storage
+        Shivanetra · Sidereal calculations · 12 Zodiac folders + Numerology engine
     </div>
 </div>
 
 <script>
-    // ----- Astrology database (mock but consistent) -----
-    const predictions = {
+    // ------------------------------
+    // 1. Helper: Zodiac sign from date of birth
+    // ------------------------------
+    function getZodiacSign(month, day) {
+        if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "aries";
+        if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "taurus";
+        if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "gemini";
+        if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "cancer";
+        if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "leo";
+        if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "virgo";
+        if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "libra";
+        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "scorpio";
+        if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "sagittarius";
+        if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "capricorn";
+        if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "aquarius";
+        return "pisces"; // Feb 19 - Mar 20
+    }
+
+    // ------------------------------
+    // 2. Numerology: Life Path Number (simplified)
+    // ------------------------------
+    function getLifePathNumber(dobStr) {
+        // dobStr format YYYY-MM-DD
+        let sum = 0;
+        let digits = dobStr.replace(/-/g, '').split('');
+        for (let d of digits) sum += parseInt(d);
+        while (sum > 9 && sum !== 11 && sum !== 22) {
+            let s = 0;
+            while (sum > 0) { s += sum % 10; sum = Math.floor(sum / 10); }
+            sum = s;
+        }
+        return sum;
+    }
+
+    // ------------------------------
+    // 3. Zodiac predictions (12 folders data)
+    // ------------------------------
+    const zodiacData = {
         aries: {
-            overview: "Dynamic fire energy. You feel unstoppable, but guard against rushing.",
-            good: "Courage, initiative",
-            bad: "Impatience, arguments",
-            best: "Start a passion project",
-            day: "High energy morning, afternoon conflicts – stay flexible.",
-            travel: "Short trips favored; avoid high-risk routes.",
-            money: "Impulsive buying possible. Invest in yourself.",
-            accident: "Minor cuts or bruises – pay attention to tools.",
-            event: "Social gathering brings unexpected romance."
+            overview: "Energetic pioneer. You lead with courage.",
+            good: "Initiative, optimism",
+            bad: "Impulsiveness, short temper",
+            best: "Starting new projects",
+            day: "High energy morning; avoid arguments afternoon.",
+            travel: "Adventure travel suits you.",
+            money: "Unexpected expenses; budget carefully.",
+            accident: "Minor burns or cuts – be careful with tools.",
+            event: "Social gatherings boost your reputation."
         },
         taurus: {
-            overview: "Stable and grounded. Good for financial planning.",
-            good: "Patience, reliability",
-            bad: "Stubbornness, overindulgence",
-            best: "Long-term investments",
-            day: "Slow start, productive afternoon.",
-            travel: "Scenic routes excellent. Avoid overpacking.",
-            money: "Steady income, but avoid lending.",
-            accident: "Low risk, watch for slippery floors.",
-            event: "Family gathering brings joy."
+            overview: "Grounded and persistent. Build steadily.",
+            good: "Reliability, sensuality",
+            bad: "Stubbornness, resistance to change",
+            best: "Financial planning",
+            day: "Productive but slow start.",
+            travel: "Nature destinations ideal.",
+            money: "Income stable; avoid risky investments.",
+            accident: "Low risk; watch for neck strain.",
+            event: "Family dinner brings harmony."
         },
         gemini: {
-            overview: "Curious and communicative. Ideas flow.",
+            overview: "Curious and communicative. Embrace learning.",
             good: "Versatility, wit",
             bad: "Restlessness, gossip",
-            best: "Learning / networking",
-            day: "Busy with messages – double-check details.",
-            travel: "Short haul flights favorable.",
-            money: "Side hustles shine. Avoid gambling.",
-            accident: "Distraction while walking – stay alert.",
-            event: "Party or meetup brings new contacts."
+            best: "Networking",
+            day: "Busy with messages; double-check facts.",
+            travel: "Short trips favored.",
+            money: "Side hustles profitable.",
+            accident: "Distracted walking – stay alert.",
+            event: "Meetups bring new contacts."
         },
         cancer: {
-            overview: "Emotional depth. Home and family focus.",
-            good: "Intuition, nurturing",
+            overview: "Emotional and intuitive. Home is sanctuary.",
+            good: "Nurturing, loyalty",
             bad: "Moodiness, clinginess",
-            best: "Home improvements",
-            day: "Morning emotional, afternoon clarity.",
-            travel: "Water-related destinations lucky.",
+            best: "Home improvement",
+            day: "Morning sensitive; afternoon clarity.",
+            travel: "Water-related journeys lucky.",
             money: "Savings grow; avoid emotional spending.",
-            accident: "Kitchen mishaps – be careful.",
-            event: "Intimate gathering strengthens bonds."
+            accident: "Kitchen mishaps – be cautious.",
+            event: "Small gathering strengthens bonds."
         },
         leo: {
-            overview: "Confidence and creativity. Spotlight on you.",
-            good: "Generosity, leadership",
+            overview: "Confident and generous. Shine brightly.",
+            good: "Leadership, creativity",
             bad: "Arrogance, drama",
             best: "Public performance",
-            day: "Productive, but ego clashes possible.",
-            travel: "Luxury travel favored.",
-            money: "Unexpected gift or bonus.",
-            accident: "Low risk, but watch sun glare while driving.",
+            day: "Energetic, but ego clashes possible.",
+            travel: "Luxury travel rewarding.",
+            money: "Possible gift or bonus.",
+            accident: "Sun glare while driving.",
             event: "Celebration brings recognition."
         },
         virgo: {
-            overview: "Analytical and detail-oriented. Perfect for organizing.",
-            good: "Precision, helpfulness",
+            overview: "Analytical and helpful. Perfect details.",
+            good: "Precision, service",
             bad: "Overcritical, worry",
             best: "Health routines",
-            day: "Efficient, but avoid micromanaging.",
-            travel: "Plan meticulously; delays likely.",
+            day: "Efficient; avoid micromanaging.",
+            travel: "Plan meticulously; delays possible.",
             money: "Budgeting pays off.",
             accident: "Minor strains – stretch before exercise.",
-            event: "Work-related event beneficial."
+            event: "Work event beneficial."
         },
         libra: {
-            overview: "Balance and harmony. Relationships highlighted.",
-            good: "Diplomacy, charm",
+            overview: "Balanced and diplomatic. Relationships key.",
+            good: "Charm, fairness",
             bad: "Indecision, people-pleasing",
             best: "Partnerships",
-            day: "Socially rewarding, but hard choices.",
+            day: "Socially rewarding, but tough choices.",
             travel: "Couples travel brings joy.",
             money: "Shared finances need transparency.",
-            accident: "Risk low; watch for uneven pavement.",
-            event: "Wedding or art opening excellent."
+            accident: "Uneven pavement – watch step.",
+            event: "Art opening or wedding excellent."
         },
         scorpio: {
-            overview: "Intense and transformative. Deep insights.",
+            overview: "Intense and transformative. Depth rules.",
             good: "Resourcefulness, passion",
             bad: "Jealousy, secrecy",
-            best: "Research / investigation",
-            day: "Mysterious morning, powerful afternoon.",
+            best: "Research",
+            day: "Mysterious morning; powerful afternoon.",
             travel: "Avoid isolated areas.",
-            money: "Inheritance or debt resolution.",
-            accident: "Moderate risk – drive defensively.",
-            event: "Private gathering reveals secrets."
+            money: "Debt resolution or inheritance.",
+            accident: "Drive defensively; moderate risk.",
+            event: "Private gathering reveals truths."
         },
         sagittarius: {
-            overview: "Adventurous and optimistic. Expand your horizons.",
+            overview: "Adventurous and optimistic. Expand horizons.",
             good: "Freedom, humor",
             bad: "Recklessness, bluntness",
-            best: "Travel / education",
+            best: "Travel & education",
             day: "Full of surprises; embrace spontaneity.",
             travel: "Long distance journeys favored.",
             money: "Gambling not advised; invest in learning.",
@@ -383,18 +274,18 @@
             event: "Festival or outdoor event excellent."
         },
         capricorn: {
-            overview: "Ambitious and disciplined. Career focus.",
+            overview: "Ambitious and disciplined. Climb steadily.",
             good: "Responsibility, persistence",
             bad: "Pessimism, rigidity",
-            best: "Long-term goals",
+            best: "Career goals",
             day: "Productive but heavy.",
             travel: "Business travel successful.",
-            money: "Stable growth; avoid get-rich-quick.",
-            accident: "Low risk; check stairs.",
+            money: "Steady growth; avoid get-rich-quick.",
+            accident: "Check stairs; low risk.",
             event: "Corporate event brings opportunity."
         },
         aquarius: {
-            overview: "Innovative and humanitarian. Think outside the box.",
+            overview: "Innovative and humanitarian. Think differently.",
             good: "Originality, friendliness",
             bad: "Detachment, unpredictability",
             best: "Tech projects",
@@ -411,103 +302,144 @@
             best: "Art / meditation",
             day: "Intuitive hits; avoid overcommitting.",
             travel: "Coastal or spiritual destinations.",
-            money: "Don't lend money; trust intuition.",
+            money: "Trust intuition; avoid lending.",
             accident: "Water-related caution.",
             event: "Music or healing circle powerful."
         }
     };
 
-    let currentSignKey = "aries";
-    let currentCategory = null;
-
-    // DOM elements
-    const signBtns = document.querySelectorAll('.sign-btn');
-    const currentSignSpan = document.getElementById('currentSign');
-    const overviewText = document.getElementById('overviewText');
-    const gbbDiv = document.getElementById('gbb');
-    const predCards = document.querySelectorAll('.pred-card');
-    const detailPage = document.getElementById('detailPage');
-    const chartAreaDiv = document.getElementById('chartArea');
-    const predGridDiv = document.getElementById('predGrid');
-    const detailContent = document.getElementById('detailContent');
-    const backBtn = document.getElementById('backBtn');
-
-    function updateUI() {
-        const data = predictions[currentSignKey];
-        const signName = currentSignKey.charAt(0).toUpperCase() + currentSignKey.slice(1);
-        currentSignSpan.innerText = signName;
-        overviewText.innerHTML = `<strong>Overview:</strong> ${data.overview}`;
-        gbbDiv.innerHTML = `
-            <div class="pill good">😇 Good: ${data.good}</div>
-            <div class="pill bad">⚠️ Bad: ${data.bad}</div>
-            <div class="pill best">🏆 Best: ${data.best}</div>
-        `;
+    // ------------------------------
+    // 4. Numerology folder (additional predictions)
+    // ------------------------------
+    function getNumerologyPrediction(lifePath) {
+        const numMap = {
+            1: "Leader, independent. New beginnings. Avoid arrogance.",
+            2: "Diplomat, peacemaker. Partnerships thrive. Avoid indecision.",
+            3: "Creative, expressive. Joy through art. Avoid scattering energy.",
+            4: "Builder, disciplined. Stability through hard work. Avoid rigidity.",
+            5: "Adventurer, freedom-loving. Embrace change. Avoid recklessness.",
+            6: "Nurturer, responsible. Family and service. Avoid meddling.",
+            7: "Thinker, spiritual. Seek wisdom. Avoid isolation.",
+            8: "Ambitious, powerful. Material success. Avoid greed.",
+            9: "Humanitarian, compassionate. Letting go. Avoid martyrdom.",
+            11: "Master teacher, intuitive. High spiritual insight. Avoid anxiety.",
+            22: "Master builder, visionary. Turn dreams into reality. Avoid overwhelm."
+        };
+        return numMap[lifePath] || "Unique energy; seek balance.";
     }
 
-    function showDetail(category) {
-        const data = predictions[currentSignKey];
-        let title = "", content = "";
-        switch(category) {
-            case 'day': title = "📅 Your Day Forecast"; content = data.day; break;
-            case 'travel': title = "✈️ Travel Guidance"; content = data.travel; break;
-            case 'money': title = "💰 Money & Finance"; content = data.money; break;
-            case 'accident': title = "⚠️ Safety & Accident"; content = data.accident; break;
-            case 'event': title = "🎭 Events & Gatherings"; content = data.event; break;
-            default: return;
+    // ------------------------------
+    // 5. Main calculation & display
+    // ------------------------------
+    function calculateAndShow() {
+        // get values
+        const name = document.getElementById('userName').value.trim();
+        const dob = document.getElementById('dob').value;
+        const location = document.getElementById('location').value.trim();
+        const hour = parseInt(document.getElementById('hour').value);
+        const minute = parseInt(document.getElementById('minute').value);
+        const ampm = document.getElementById('ampm').value;
+
+        if (!name || !dob || !location || isNaN(hour) || isNaN(minute)) {
+            alert("Please fill all fields correctly.");
+            return;
         }
-        detailContent.innerHTML = `
-            <h2 style="color:#4a0000;">${title}</h2>
-            <p style="font-size:1.2em; margin:20px 0;">${content}</p>
-            <p style="font-style:italic;">Based on your sun sign · Shivanetra calculation engine</p>
+
+        // parse dob
+        const dobParts = dob.split('-');
+        const year = parseInt(dobParts[0]);
+        const month = parseInt(dobParts[1]);
+        const day = parseInt(dobParts[2]);
+        const zodiacKey = getZodiacSign(month, day);
+        const zodiacName = zodiacKey.charAt(0).toUpperCase() + zodiacKey.slice(1);
+        const lifePath = getLifePathNumber(dob);
+        const numerologyText = getNumerologyPrediction(lifePath);
+
+        // time string
+        let timeStr = `${hour}:${minute.toString().padStart(2,'0')} ${ampm}`;
+        
+        // get zodiac data
+        const zd = zodiacData[zodiacKey];
+
+        // build result HTML
+        const resultHtml = `
+            <h1>🌀 Your Celestial Blueprint</h1>
+            <div class="result-section">
+                <div class="result-item"><strong>Name:</strong> ${name}</div>
+                <div class="result-item"><strong>Birth Date:</strong> ${dob}</div>
+                <div class="result-item"><strong>Location:</strong> ${location}</div>
+                <div class="result-item"><strong>Birth Time:</strong> ${timeStr}</div>
+                <div class="result-item"><strong>Zodiac Sign:</strong> ${zodiacName}</div>
+                <div class="result-item"><strong>Life Path Number:</strong> ${lifePath}</div>
+            </div>
+            <div class="result-section">
+                <h3>✨ Astrological Guidance (${zodiacName})</h3>
+                <p><strong>Overview:</strong> ${zd.overview}</p>
+                <p><strong>😇 Good:</strong> ${zd.good}</p>
+                <p><strong>⚠️ Bad:</strong> ${zd.bad}</p>
+                <p><strong>🏆 Best:</strong> ${zd.best}</p>
+            </div>
+            <div class="result-section">
+                <h3>🔢 Numerology Reading</h3>
+                <p>${numerologyText}</p>
+            </div>
+            <div class="result-section">
+                <h3>📅 Today's Forecast (based on your chart)</h3>
+                <p><strong>Day:</strong> ${zd.day}</p>
+                <p><strong>Travel:</strong> ${zd.travel}</p>
+                <p><strong>Money:</strong> ${zd.money}</p>
+                <p><strong>Accident / Safety:</strong> ${zd.accident}</p>
+                <p><strong>Events:</strong> ${zd.event}</p>
+            </div>
+            <div class="result-section">
+                <p style="font-style:italic;">Data derived from 12 zodiac folders + numerology backend simulation.</p>
+            </div>
         `;
-        // Hide main chart & grid, show detail page
-        chartAreaDiv.style.display = 'none';
-        predGridDiv.style.display = 'none';
-        detailPage.classList.add('active');
+
+        document.getElementById('resultsContent').innerHTML = resultHtml;
+        // swap pages
+        document.getElementById('landingPage').classList.add('hidden');
+        document.getElementById('resultsPage').classList.remove('hidden');
     }
 
-    function backToMain() {
-        chartAreaDiv.style.display = 'block';
-        predGridDiv.style.display = 'grid';
-        detailPage.classList.remove('active');
-        currentCategory = null;
+    // home button: go back to landing page
+    function goHome() {
+        document.getElementById('landingPage').classList.remove('hidden');
+        document.getElementById('resultsPage').classList.add('hidden');
+        // optionally clear form? keep as is, or reset? we can reset to empty
+        document.getElementById('userName').value = '';
+        document.getElementById('dob').value = '';
+        document.getElementById('location').value = '';
+        document.getElementById('hour').value = '';
+        document.getElementById('minute').value = '';
+        document.getElementById('ampm').value = 'AM';
     }
 
-    // Event listeners
-    signBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            signBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentSignKey = btn.getAttribute('data-sign');
-            updateUI();
-            // if detail page open, close it
-            if (detailPage.classList.contains('active')) backToMain();
-        });
-    });
-
-    predCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const category = card.getAttribute('data-category');
-            showDetail(category);
-        });
-    });
-
-    backBtn.addEventListener('click', backToMain);
-
-    // Download page as HTML
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-        const htmlContent = document.documentElement.outerHTML;
-        const blob = new Blob([htmlContent], {type: 'text/html'});
+    // download results page as HTML
+    function downloadResults() {
+        const resultsDiv = document.getElementById('resultsContent');
+        const content = resultsDiv.innerHTML;
+        const fullHtml = `<!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>Shivanetra Report</title><style>
+            body { font-family: monospace; padding: 40px; background: #f0f0f0; }
+            .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 16px; }
+            h1 { color: #4a0000; }
+        </style></head>
+        <body><div class="container">${content}</div></body>
+        </html>`;
+        const blob = new Blob([fullHtml], {type: 'text/html'});
         const link = document.createElement('a');
-        link.download = `shivanetra_astral_${new Date().toISOString().slice(0,19)}.html`;
+        link.download = `shivanetra_${new Date().toISOString().slice(0,19)}.html`;
         link.href = URL.createObjectURL(blob);
         link.click();
         URL.revokeObjectURL(link.href);
-    });
+    }
 
-    // Set default active sign
-    document.querySelector('.sign-btn[data-sign="aries"]').classList.add('active');
-    updateUI();
+    // attach event listeners
+    document.getElementById('calculateBtn').addEventListener('click', calculateAndShow);
+    document.getElementById('homeBtn').addEventListener('click', goHome);
+    document.getElementById('downloadResultsBtn').addEventListener('click', downloadResults);
 </script>
 </body>
 </html>
