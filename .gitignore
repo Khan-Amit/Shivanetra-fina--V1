@@ -1,4 +1,3 @@
-# Python
 __pycache__/
 *.py[cod]
 *.so
@@ -7,31 +6,17 @@ venv/
 env/
 ENV/
 .venv
-
-# Database
 *.db
 *.sqlite
 *.sqlite3
-
-# Environment variables
 .env
 .env.local
-
-# IDE
 .vscode/
 .idea/
 *.swp
-
-# Logs
 *.log
-
-# Ephemeris downloaded files
 ephemeris_data/*.bsp
 ephemeris_data/*.dat
-
-# Docker
 *.pid
-
-# OS
 .DS_Store
 Thumbs.db
