@@ -3,347 +3,438 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Shivanetra | Vedic Astrology Engine</title>
+    <title>Shivanetra | Celestial Wisdom</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #4a0000;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            background: #0a0a2a;
             min-height: 100vh;
+        }
+
+        /* ========== LANDING PAGE (Midnight Blue) ========== */
+        .landing-container {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0a0a2a 0%, #0a1a3a 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background: #4a0000;
-            border-radius: 20px;
+            text-align: center;
             padding: 20px;
         }
-        .page {
+
+        .landing-image {
+            max-width: 280px;
+            width: 80%;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(100, 150, 255, 0.3);
+        }
+
+        .landing-title {
+            font-size: 2.8em;
+            color: #c8e0ff;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .landing-sub {
+            color: #8aaeff;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .btn-white {
             background: white;
-            border-radius: 16px;
-            padding: 30px;
+            color: #0a0a2a;
+            border: none;
+            padding: 14px 42px;
+            border-radius: 60px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: monospace;
+            transition: all 0.2s;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        .hidden { display: none; }
-        h1, h2 { color: #4a0000; text-align: center; margin-bottom: 20px; }
-        h1 { font-size: 2.2em; letter-spacing: 2px; }
-        .section-title { text-align: center; margin: 30px 0 20px; }
-        label { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; color: #333; }
+
+        .btn-white:hover {
+            transform: scale(1.02);
+            background: #e0e8ff;
+        }
+
+        /* ========== MAIN APP PAGES (White background, blue header) ========== */
+        .app-container {
+            display: none;
+            background: white;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: #0a0a2a;
+            padding: 18px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-header h2 {
+            color: #7abfef;
+            font-size: 1.6em;
+            letter-spacing: 2px;
+        }
+
+        .page-content {
+            padding: 25px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            color: #0a1a2a;
+        }
+
+        /* Form styles */
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            color: #0a2a4a;
+        }
+
         input, select {
             width: 100%;
             padding: 12px;
             font-family: monospace;
-            border: 1px solid #aaa;
-            border-radius: 8px;
-            background: #fefefe;
+            border: 1px solid #b0c4de;
+            border-radius: 12px;
+            background: white;
             font-size: 1em;
         }
-        .row { display: flex; gap: 15px; margin-top: 5px; }
-        .row > div { flex: 1; }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .row > div {
+            flex: 1;
+        }
+
         button {
-            background: #4a0000;
+            background: #0a0a2a;
             color: white;
             border: none;
-            padding: 14px 24px;
+            padding: 12px 24px;
             border-radius: 40px;
-            font-family: monospace;
             font-weight: bold;
             cursor: pointer;
             margin-top: 25px;
-            width: 100%;
-            font-size: 1.1em;
+            font-family: monospace;
         }
-        button:hover { background: #6a0000; }
-        button.secondary { background: #1B5E20; }
-        button.secondary:hover { background: #2E7D32; }
-        .button-group { display: flex; gap: 15px; margin-top: 25px; }
-        .button-group button { margin-top: 0; }
-        .result-section { margin: 25px 0; border-top: 1px solid #ddd; padding-top: 20px; }
-        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+
+        button.secondary {
+            background: #3a5a7a;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
         .result-card {
-            background: #f9f9f9;
-            border-radius: 12px;
+            background: #f0f4fa;
+            border-left: 4px solid #0a0a2a;
             padding: 15px;
-            border-left: 4px solid #4a0000;
+            margin: 15px 0;
+            border-radius: 12px;
         }
-        .result-card strong { display: block; color: #4a0000; margin-bottom: 8px; font-size: 1.1em; }
-        .footer { text-align: center; margin-top: 30px; font-size: 0.7em; color: #ffaa88; }
-        .error { color: #cc0000; font-size: 0.85em; margin-top: 8px; text-align: center; }
-        .loading { text-align: center; padding: 40px; font-size: 1.2em; color: #4a0000; }
-        @media (max-width: 700px) { .row { flex-direction: column; gap: 0; } .button-group { flex-direction: column; } .page { padding: 20px; } }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.7em;
+            color: #6a8aaa;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .row { flex-direction: column; gap: 0; }
+            .landing-title { font-size: 2em; }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- PAGE 1: LANDING -->
-    <div id="landingPage" class="page">
-        <h1>🌀 SHIVANETRA</h1>
-        <p style="text-align:center; margin-bottom:30px;">Vedic Sidereal Astrology · Surya Siddhanta Engine</p>
-        <div style="text-align:center; margin:25px 0;">
-            <p>⚡ Sidereal calculations · Lahiri Ayanamsha · Real planetary math</p>
-            <p>📜 Lagna (Ascendant) · 12 Rasis · Houses · Rahu & Ketu</p>
-            <p>🔮 Your birth chart, calculated offline</p>
-        </div>
-        <button id="startBtn">✨ Begin Your Journey ✨</button>
-        <div class="footer">Shivanetra · Based on sidereal algorithms · No data leaves your device</div>
-    </div>
 
-    <!-- PAGE 2: INPUT FORM -->
-    <div id="inputPage" class="page hidden">
-        <h1>📜 Birth Details</h1>
-        <label>Full Name</label>
-        <input type="text" id="userName" placeholder="e.g., Seliim Ahmed" value="Test User">
-        
-        <div class="row">
-            <div><label>Day</label><input type="number" id="day" value="15"></div>
-            <div><label>Month</label><input type="number" id="month" value="8"></div>
-            <div><label>Year</label><input type="number" id="year" value="1947"></div>
-        </div>
-        
-        <div class="row">
-            <div><label>Hour (0-23)</label><input type="number" id="hour" value="0"></div>
-            <div><label>Minute</label><input type="number" id="minute" value="1"></div>
-            <div><label>Timezone (offset)</label><input type="number" id="timezone" step="0.5" value="5.5"></div>
-        </div>
-        
-        <div class="row">
-            <div><label>Latitude</label><input type="text" id="latitude" value="28.6139"></div>
-            <div><label>Longitude</label><input type="text" id="longitude" value="77.2090"></div>
-        </div>
-        
-        <label>Location Name</label>
-        <input type="text" id="locationName" value="New Delhi, India">
-        
-        <div class="button-group">
-            <button id="backToLandingBtn" class="secondary">← Back</button>
-            <button id="calculateBtn">✨ Generate Chart ✨</button>
-        </div>
-        <div id="inputError" class="error"></div>
-        <div class="footer">Shivanetra · Offline calculation engine</div>
-    </div>
+<!-- LANDING PAGE -->
+<div id="landingPage" class="landing-container">
+    <!-- Replace the image source with your actual cosmic image -->
+    <img class="landing-image" src="https://via.placeholder.com/280?text=Celestial+Image" alt="Shivanetra symbol" id="cosmicImg">
+    <h1 class="landing-title">🌀 SHIVANETRA</h1>
+    <p class="landing-sub">Vedic Sidereal Wisdom · Surya Siddhanta Engine</p>
+    <button class="btn-white" id="enterBtn">✦ Enter ✦</button>
+</div>
 
-    <!-- PAGE 3: RESULTS -->
-    <div id="resultsPage" class="page hidden">
-        <div id="resultsContent"><div class="loading">🌀 Calculating your chart...</div></div>
-        <div class="button-group">
-            <button id="printBtn" class="secondary">🖨️ Print / PDF</button>
-            <button id="downloadBtn">📥 Save as HTML</button>
-        </div>
-        <button id="newChartBtn" class="secondary">← New Chart</button>
-        <div class="footer">Shivanetra · Sidereal · Lahiri Ayanamsha</div>
+<!-- MAIN APP (6 PAGES) -->
+<div id="appContainer" class="app-container">
+    <div class="app-header">
+        <h2 id="pageTitle">📜 Birth Details</h2>
     </div>
+    <div class="page-content" id="pageContent">
+        <!-- DYNAMIC CONTENT LOADS HERE -->
+    </div>
+    <div class="footer-note">Shivanetra · Offline · Sidereal calculations</div>
 </div>
 
 <script>
-    // ========== SIDEREAL CALCULATION ENGINE (SIMULATED BUT STRUCTURED) ==========
-    // This mimics the real Swiss Ephemeris output.
-    // Replace the content of this function with your actual Swiss Ephemeris calls later.
-    
-    const RASI_NAMES = [
-        "Mesha (Aries)", "Vrishabha (Taurus)", "Mithuna (Gemini)",
-        "Karka (Cancer)", "Simha (Leo)", "Kanya (Virgo)",
-        "Tula (Libra)", "Vrischika (Scorpio)", "Dhanu (Sagittarius)",
-        "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)"
-    ];
-    
-    // Deterministic "random" based on birth date – this is a PLACEHOLDER.
-    // In production, replace with real Swiss Ephemeris calculations.
-    function getPlanetPosition(seed, offset) {
-        let val = (seed * 9301 + 49297) % 233280;
-        let lon = (val / 233280) * 360;
-        lon = (lon + offset) % 360;
-        let rasiIdx = Math.floor(lon / 30);
-        let degInRasi = lon % 30;
-        return { rasiIdx, deg: degInRasi, lon: lon };
+    // ========== PAGE DEFINITIONS ==========
+    const PAGES = {
+        BIRTH: 'birth',
+        SUN_SIGN: 'sunSign',
+        DAILY: 'daily',
+        NATAL: 'natal',
+        REPORTS: 'reports'
+    };
+    let currentPage = PAGES.BIRTH;
+    let userProfile = {
+        name: '',
+        day: 15,
+        month: 8,
+        year: 1947,
+        hour: 0,
+        minute: 1,
+        lat: 28.6139,
+        lon: 77.2090,
+        tz: 5.5,
+        location: 'New Delhi, India'
+    };
+    let currentSunSign = "gemini";
+    let chartData = null;
+
+    // ========== ZODIAC DATA (from JSON later) ==========
+    const signs = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"];
+    const signNames = {
+        aries: "Mesha (Aries)", taurus: "Vrishabha (Taurus)", gemini: "Mithuna (Gemini)",
+        cancer: "Karka (Cancer)", leo: "Simha (Leo)", virgo: "Kanya (Virgo)",
+        libra: "Tula (Libra)", scorpio: "Vrischika (Scorpio)", sagittarius: "Dhanu (Sagittarius)",
+        capricorn: "Makara (Capricorn)", aquarius: "Kumbha (Aquarius)", pisces: "Meena (Pisces)"
+    };
+
+    // Helper to get sun sign from date (simplified)
+    function getSunSign(day, month) {
+        if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "aries";
+        if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "taurus";
+        if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "gemini";
+        if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "cancer";
+        if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "leo";
+        if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "virgo";
+        if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "libra";
+        if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "scorpio";
+        if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "sagittarius";
+        if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "capricorn";
+        if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "aquarius";
+        return "pisces";
     }
-    
-    function generateChart(year, month, day, hour, minute, lat, lon, tz) {
-        // Create a deterministic seed from birth data
-        let seed = year * 372 + month * 31 + day + hour * 60 + minute + Math.floor(lat * 10) + Math.floor(lon * 10);
-        
-        // Lagna (Ascendant) – simulate based on birth time
-        let lagnaSeed = (seed * 131071) % 360;
-        let lagnaLon = lagnaSeed;
-        let lagnaRasi = Math.floor(lagnaLon / 30);
-        let lagnaDeg = lagnaLon % 30;
-        
-        const planets = [
-            "Surya (Sun)", "Chandra (Moon)", "Mangala (Mars)", "Budha (Mercury)",
-            "Guru (Jupiter)", "Shukra (Venus)", "Shani (Saturn)", "Rahu (North Node)"
-        ];
-        
-        const offsets = [0, 180, 60, 120, 240, 300, 30, 210];
-        
-        let chart = {
-            "Lagna (Ascendant)": {
-                rasi_idx: lagnaRasi,
-                rasi_name: RASI_NAMES[lagnaRasi],
-                degrees: lagnaDeg,
-                house: 1,
-                absolute_lon: lagnaLon
-            }
-        };
-        
-        for (let i = 0; i < planets.length; i++) {
-            let pos = getPlanetPosition(seed + i, offsets[i]);
-            let house = (pos.rasiIdx - lagnaRasi + 12) % 12 + 1;
-            chart[planets[i]] = {
-                rasi_idx: pos.rasiIdx,
-                rasi_name: RASI_NAMES[pos.rasiIdx],
-                degrees: pos.deg,
-                house: house,
-                absolute_lon: pos.lon
-            };
-        }
-        
-        // Ketu (opposite Rahu)
-        let rahuLon = chart["Rahu (North Node)"].absolute_lon;
-        let ketuLon = (rahuLon + 180) % 360;
-        let ketuRasi = Math.floor(ketuLon / 30);
-        let ketuDeg = ketuLon % 30;
-        let ketuHouse = (ketuRasi - lagnaRasi + 12) % 12 + 1;
-        chart["Ketu (South Node)"] = {
-            rasi_idx: ketuRasi,
-            rasi_name: RASI_NAMES[ketuRasi],
-            degrees: ketuDeg,
-            house: ketuHouse,
-            absolute_lon: ketuLon
-        };
-        
-        // Simulated Ayanamsha (Lahiri) – in real engine this comes from Swiss Ephemeris
-        let ayanamsha = 24.0 + (year - 1900) * 0.0005; // rough approximation
-        return { ayanamsha, chart };
-    }
-    
-    // ========== DOM Elements ==========
-    const landingPage = document.getElementById('landingPage');
-    const inputPage = document.getElementById('inputPage');
-    const resultsPage = document.getElementById('resultsPage');
-    const resultsContent = document.getElementById('resultsContent');
-    const inputError = document.getElementById('inputError');
-    
-    // Navigation
-    document.getElementById('startBtn').addEventListener('click', () => {
-        landingPage.classList.add('hidden');
-        inputPage.classList.remove('hidden');
-    });
-    
-    document.getElementById('backToLandingBtn').addEventListener('click', () => {
-        inputPage.classList.add('hidden');
-        landingPage.classList.remove('hidden');
-    });
-    
-    document.getElementById('newChartBtn').addEventListener('click', () => {
-        resultsPage.classList.add('hidden');
-        inputPage.classList.remove('hidden');
-    });
-    
-    // Calculate Chart
-    document.getElementById('calculateBtn').addEventListener('click', () => {
-        const name = document.getElementById('userName').value.trim() || "Devotee";
-        const day = parseInt(document.getElementById('day').value);
-        const month = parseInt(document.getElementById('month').value);
-        const year = parseInt(document.getElementById('year').value);
-        const hour = parseInt(document.getElementById('hour').value);
-        const minute = parseInt(document.getElementById('minute').value);
-        const lat = parseFloat(document.getElementById('latitude').value);
-        const lon = parseFloat(document.getElementById('longitude').value);
-        const tz = parseFloat(document.getElementById('timezone').value);
-        const locationName = document.getElementById('locationName').value.trim() || "given location";
-        
-        if (!day || !month || !year || isNaN(hour) || isNaN(minute) || isNaN(lat) || isNaN(lon) || isNaN(tz)) {
-            inputError.innerText = "Please fill all fields correctly.";
-            return;
-        }
-        inputError.innerText = "";
-        
-        // Generate chart using our engine
-        const { ayanamsha, chart } = generateChart(year, month, day, hour, minute, lat, lon, tz);
-        
-        // Format degrees
-        const formatDeg = (deg) => {
-            let d = Math.floor(deg);
-            let m = Math.floor((deg % 1) * 60);
-            return `${d}° ${m}'`;
-        };
-        
-        // Build planets HTML
-        let planetsHtml = '';
-        for (const [body, info] of Object.entries(chart)) {
-            planetsHtml += `
-                <div class="result-card">
-                    <strong>${body}</strong>
-                    <div>${info.rasi_name}</div>
-                    <div>${formatDeg(info.degrees)}</div>
-                    <div>House ${info.house}</div>
-                </div>
-            `;
-        }
-        
-        const ayaDeg = Math.floor(ayanamsha);
-        const ayaMin = Math.floor((ayanamsha % 1) * 60);
-        
-        const resultHtml = `
-            <h1>🌀 Your Vedic Chart</h1>
-            <div class="result-section">
-                <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-                <p><strong>Birth:</strong> ${day}/${month}/${year} at ${hour}:${minute.toString().padStart(2,'0')}</p>
-                <p><strong>Location:</strong> ${escapeHtml(locationName)} (${lat}, ${lon})</p>
-                <p><strong>Ayanamsha (Lahiri):</strong> ${ayaDeg}° ${ayaMin}'</p>
-                <p><em style="font-size:0.85em;">(Calculation uses sidereal engine – real Swiss Ephemeris will replace this)</em></p>
+
+    // ========== RENDER FUNCTIONS ==========
+    function renderBirthPage() {
+        document.getElementById('pageTitle').innerText = "📜 Birth Details";
+        return `
+            <label>Full Name</label>
+            <input type="text" id="userName" value="${escapeHtml(userProfile.name)}" placeholder="e.g., Seliim Ahmed">
+            <div class="row">
+                <div><label>Day</label><input type="number" id="day" value="${userProfile.day}"></div>
+                <div><label>Month</label><input type="number" id="month" value="${userProfile.month}"></div>
+                <div><label>Year</label><input type="number" id="year" value="${userProfile.year}"></div>
             </div>
-            <div class="result-section">
-                <h2 style="text-align:center;">🌌 Planetary Positions</h2>
-                <div class="result-grid">
-                    ${planetsHtml}
-                </div>
+            <div class="row">
+                <div><label>Hour (0-23)</label><input type="number" id="hour" value="${userProfile.hour}"></div>
+                <div><label>Minute</label><input type="number" id="minute" value="${userProfile.minute}"></div>
+                <div><label>Timezone (UTC)</label><input type="number" step="0.5" id="tz" value="${userProfile.tz}"></div>
             </div>
-            <div class="result-section">
-                <p style="font-style:italic; text-align:center;">Sidereal (Lahiri) · Equal House system</p>
+            <div class="row">
+                <div><label>Latitude</label><input type="text" id="lat" value="${userProfile.lat}"></div>
+                <div><label>Longitude</label><input type="text" id="lon" value="${userProfile.lon}"></div>
+            </div>
+            <label>Location Name</label>
+            <input type="text" id="location" value="${escapeHtml(userProfile.location)}">
+            <div class="button-group">
+                <button id="saveBirthBtn" class="secondary">💾 Save & Continue</button>
             </div>
         `;
-        
-        resultsContent.innerHTML = resultHtml;
-        inputPage.classList.add('hidden');
-        resultsPage.classList.remove('hidden');
-    });
-    
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
     }
+
+    function renderSunSignPage() {
+        const signName = signNames[currentSunSign] || "Gemini";
+        document.getElementById('pageTitle').innerText = `✨ ${signName} ✨`;
+        return `
+            <div style="text-align:center;">
+                <h2>${signName}</h2>
+                <p><strong>Element:</strong> Air · <strong>Ruler:</strong> Mercury</p>
+                <p>Adaptable, curious, lively. Strengths in communication.</p>
+                <div class="button-group">
+                    <button id="backToBirthBtn" class="secondary">← Back</button>
+                    <button id="dailyFromSignBtn">📅 Daily Prediction →</button>
+                    <button id="natalFromSignBtn">🌌 Natal Chart →</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderDailyPage() {
+        document.getElementById('pageTitle').innerText = "📅 Today's Guidance";
+        const sign = signNames[currentSunSign];
+        return `
+            <h3>${sign}</h3>
+            <div class="result-card">
+                <strong>🌞 Day:</strong> Communications flow. Avoid overcommitting.
+            </div>
+            <div class="result-card">
+                <strong>✈️ Travel:</strong> Short trips bring new insights.
+            </div>
+            <div class="result-card">
+                <strong>💰 Money:</strong> Side projects look profitable.
+            </div>
+            <div class="result-card">
+                <strong>⚠️ Safety:</strong> Stay alert while walking.
+            </div>
+            <div class="result-card">
+                <strong>🎭 Events:</strong> Social gatherings energise you.
+            </div>
+            <div class="button-group">
+                <button id="backToSunBtn" class="secondary">← Back</button>
+                <button id="natalFromDailyBtn">🌌 Full Chart →</button>
+            </div>
+        `;
+    }
+
+    function renderNatalPage() {
+        document.getElementById('pageTitle').innerText = "🌌 Natal Chart";
+        // Placeholder – later replaced by real Swiss Ephemeris data
+        return `
+            <div class="result-card"><strong>Surya (Sun):</strong> 10° 15' Gemini · House 9</div>
+            <div class="result-card"><strong>Chandra (Moon):</strong> 22° 40' Cancer · House 10</div>
+            <div class="result-card"><strong>Mangala (Mars):</strong> 5° 30' Aries · House 5</div>
+            <div class="result-card"><strong>Budha (Mercury):</strong> 18° 20' Taurus · House 8</div>
+            <div class="result-card"><strong>Guru (Jupiter):</strong> 12° 45' Pisces · House 2</div>
+            <div class="result-card"><strong>Shukra (Venus):</strong> 28° 10' Libra · House 3</div>
+            <div class="result-card"><strong>Shani (Saturn):</strong> 4° 35' Aquarius · House 12</div>
+            <div class="result-card"><strong>Rahu:</strong> 14° 50' Virgo · House 6</div>
+            <div class="result-card"><strong>Ketu:</strong> 14° 50' Pisces · House 12</div>
+            <div class="result-card"><strong>Lagna (Ascendant):</strong> 6° 22' Cancer · House 1</div>
+            <div class="button-group">
+                <button id="backToSunFromNatal" class="secondary">← Back</button>
+                <button id="reportsFromNatalBtn">📄 Reports →</button>
+            </div>
+        `;
+    }
+
+    function renderReportsPage() {
+        document.getElementById('pageTitle').innerText = "📄 Reports & Downloads";
+        return `
+            <p>Save your chart as HTML or print it.</p>
+            <div class="button-group">
+                <button id="printReportBtn">🖨️ Print / PDF</button>
+                <button id="downloadReportBtn">📥 Save as HTML</button>
+                <button id="backToNatalFromReports" class="secondary">← Back</button>
+                <button id="homeFromReportsBtn">🏠 Home</button>
+            </div>
+        `;
+    }
+
+    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+
+    function loadPage(page) {
+        let html = "";
+        switch(page) {
+            case PAGES.BIRTH: html = renderBirthPage(); break;
+            case PAGES.SUN_SIGN: html = renderSunSignPage(); break;
+            case PAGES.DAILY: html = renderDailyPage(); break;
+            case PAGES.NATAL: html = renderNatalPage(); break;
+            case PAGES.REPORTS: html = renderReportsPage(); break;
+        }
+        document.getElementById('pageContent').innerHTML = html;
+        currentPage = page;
+        attachPageEvents();
+    }
+
+    function attachPageEvents() {
+        if (currentPage === PAGES.BIRTH) {
+            const btn = document.getElementById('saveBirthBtn');
+            if (btn) btn.onclick = () => {
+                userProfile.name = document.getElementById('userName').value;
+                userProfile.day = parseInt(document.getElementById('day').value);
+                userProfile.month = parseInt(document.getElementById('month').value);
+                userProfile.year = parseInt(document.getElementById('year').value);
+                userProfile.hour = parseInt(document.getElementById('hour').value);
+                userProfile.minute = parseInt(document.getElementById('minute').value);
+                userProfile.tz = parseFloat(document.getElementById('tz').value);
+                userProfile.lat = parseFloat(document.getElementById('lat').value);
+                userProfile.lon = parseFloat(document.getElementById('lon').value);
+                userProfile.location = document.getElementById('location').value;
+                const signKey = getSunSign(userProfile.day, userProfile.month);
+                currentSunSign = signKey;
+                loadPage(PAGES.SUN_SIGN);
+            };
+        }
+        if (currentPage === PAGES.SUN_SIGN) {
+            document.getElementById('backToBirthBtn')?.addEventListener('click', () => loadPage(PAGES.BIRTH));
+            document.getElementById('dailyFromSignBtn')?.addEventListener('click', () => loadPage(PAGES.DAILY));
+            document.getElementById('natalFromSignBtn')?.addEventListener('click', () => loadPage(PAGES.NATAL));
+        }
+        if (currentPage === PAGES.DAILY) {
+            document.getElementById('backToSunBtn')?.addEventListener('click', () => loadPage(PAGES.SUN_SIGN));
+            document.getElementById('natalFromDailyBtn')?.addEventListener('click', () => loadPage(PAGES.NATAL));
+        }
+        if (currentPage === PAGES.NATAL) {
+            document.getElementById('backToSunFromNatal')?.addEventListener('click', () => loadPage(PAGES.SUN_SIGN));
+            document.getElementById('reportsFromNatalBtn')?.addEventListener('click', () => loadPage(PAGES.REPORTS));
+        }
+        if (currentPage === PAGES.REPORTS) {
+            document.getElementById('printReportBtn')?.addEventListener('click', () => window.print());
+            document.getElementById('downloadReportBtn')?.addEventListener('click', () => {
+                const content = document.getElementById('pageContent').innerHTML;
+                const full = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shivanetra Report</title><style>body{font-family:monospace;padding:40px;}</style></head><body>${content}</body></html>`;
+                const blob = new Blob([full], {type:'text/html'});
+                const a = document.createElement('a');
+                a.download = `shivanetra_${Date.now()}.html`;
+                a.href = URL.createObjectURL(blob);
+                a.click();
+                URL.revokeObjectURL(a.href);
+            });
+            document.getElementById('backToNatalFromReports')?.addEventListener('click', () => loadPage(PAGES.NATAL));
+            document.getElementById('homeFromReportsBtn')?.addEventListener('click', () => {
+                document.getElementById('appContainer').style.display = 'none';
+                document.getElementById('landingPage').style.display = 'flex';
+            });
+        }
+    }
+
+    // Initialize
+    document.getElementById('enterBtn').onclick = () => {
+        document.getElementById('landingPage').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+        loadPage(PAGES.BIRTH);
+    };
+    // Set landing page visible, app hidden
+    document.getElementById('landingPage').style.display = 'flex';
+    document.getElementById('appContainer').style.display = 'none';
     
-    // Print & Download
-    document.getElementById('printBtn')?.addEventListener('click', () => window.print());
-    document.getElementById('downloadBtn')?.addEventListener('click', () => {
-        const content = resultsContent.innerHTML;
-        const fullHtml = `<!DOCTYPE html>
-        <html>
-        <head><meta charset="UTF-8"><title>Shivanetra Vedic Chart</title>
-        <style>
-            body { font-family: monospace; padding: 40px; background: white; }
-            .result-card { background: #f9f9f9; border-left: 4px solid #4a0000; padding: 12px; margin: 8px 0; }
-            .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap: 15px; }
-            h1 { color: #4a0000; }
-        </style>
-        </head>
-        <body><div class="container">${content}</div></body>
-        </html>`;
-        const blob = new Blob([fullHtml], {type: 'text/html'});
-        const link = document.createElement('a');
-        link.download = `shivanetra_chart_${Date.now()}.html`;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-    });
+    // Optional: replace placeholder image with your own later
+    // document.getElementById('cosmicImg').src = "your-cosmic-image.png";
 </script>
 </body>
 </html>
