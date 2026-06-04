@@ -2,439 +2,434 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Shivanetra | Celestial Wisdom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shivanetra - Complete Horoscope</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            font-family: 'Segoe UI', 'Courier New', monospace;
-            background: #0a0a2a;
-            min-height: 100vh;
-        }
-
-        /* ========== LANDING PAGE (Midnight Blue) ========== */
-        .landing-container {
-            min-height: 100vh;
-            background: linear-gradient(145deg, #0a0a2a 0%, #0a1a3a 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
             padding: 20px;
-        }
-
-        .landing-image {
-            max-width: 280px;
-            width: 80%;
-            margin-bottom: 30px;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(100, 150, 255, 0.3);
-        }
-
-        .landing-title {
-            font-size: 2.8em;
-            color: #c8e0ff;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .landing-sub {
-            color: #8aaeff;
-            margin-bottom: 40px;
-            font-size: 1.1em;
-        }
-
-        .btn-white {
-            background: white;
-            color: #0a0a2a;
-            border: none;
-            padding: 14px 42px;
-            border-radius: 60px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: monospace;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        .btn-white:hover {
-            transform: scale(1.02);
-            background: #e0e8ff;
-        }
-
-        /* ========== MAIN APP PAGES (White background, blue header) ========== */
-        .app-container {
-            display: none;
-            background: white;
             min-height: 100vh;
         }
-
-        .app-header {
-            background: #0a0a2a;
-            padding: 18px 20px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .app-header h2 {
-            color: #7abfef;
-            font-size: 1.6em;
-            letter-spacing: 2px;
-        }
-
-        .page-content {
-            padding: 25px 20px;
-            max-width: 1000px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            color: #0a1a2a;
         }
-
-        /* Form styles */
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 18px;
-            margin-bottom: 6px;
-            color: #0a2a4a;
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #ffd89b, #c7e9fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            font-family: monospace;
-            border: 1px solid #b0c4de;
-            border-radius: 12px;
-            background: white;
-            font-size: 1em;
-        }
-
-        .row {
+        /* Tabs */
+        .tabs {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
             flex-wrap: wrap;
         }
-        .row > div {
-            flex: 1;
-        }
-
-        button {
-            background: #0a0a2a;
-            color: white;
+        .tab-btn {
+            padding: 12px 30px;
             border: none;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: bold;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 25px;
-            font-family: monospace;
+            transition: all 0.3s;
         }
-
-        button.secondary {
-            background: #3a5a7a;
+        .tab-btn.active {
+            background: #ff6b6b;
+            box-shadow: 0 0 15px rgba(255,107,107,0.5);
         }
-
-        .button-group {
+        .tab-btn:hover {
+            background: #ff6b6b;
+        }
+        /* Form */
+        .sign-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        select {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            border: none;
+            background: #0f3460;
+            color: #fff;
+            cursor: pointer;
+            min-width: 200px;
+        }
+        /* Prediction Card */
+        .prediction-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .category {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .category h3 {
+            margin-bottom: 10px;
+            color: #ffd89b;
+        }
+        .category p {
+            line-height: 1.5;
+        }
+        /* Chart / Meter */
+        .meter {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .meter-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd89b);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        .chart-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            align-items: center;
+        }
+        .chart-label {
+            width: 80px;
+        }
+        /* Buttons */
+        .action-buttons {
             display: flex;
             gap: 15px;
+            justify-content: center;
             margin-top: 20px;
             flex-wrap: wrap;
         }
-
-        .result-card {
-            background: #f0f4fa;
-            border-left: 4px solid #0a0a2a;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 12px;
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s;
         }
-
-        .footer-note {
+        button:active {
+            transform: scale(0.97);
+        }
+        .btn-save {
+            background: #4caf50;
+            color: white;
+        }
+        .btn-download {
+            background: #2196f3;
+            color: white;
+        }
+        .btn-reset {
+            background: #ff9800;
+            color: white;
+        }
+        .message {
             text-align: center;
-            margin-top: 40px;
-            font-size: 0.7em;
-            color: #6a8aaa;
-            padding: 20px;
-        }
-
-        .hidden {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
             display: none;
         }
-
-        @media (max-width: 700px) {
-            .row { flex-direction: column; gap: 0; }
-            .landing-title { font-size: 2em; }
+        .message.show {
+            display: block;
+        }
+        .message.success {
+            background: #4caf50;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            .tab-btn {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <h1>✨ Shivanetra Horoscope ✨</h1>
 
-<!-- LANDING PAGE -->
-<div id="landingPage" class="landing-container">
-    <!-- Replace the image source with your actual cosmic image -->
-    <img class="landing-image" src="https://via.placeholder.com/280?text=Celestial+Image" alt="Shivanetra symbol" id="cosmicImg">
-    <h1 class="landing-title">🌀 SHIVANETRA</h1>
-    <p class="landing-sub">Vedic Sidereal Wisdom · Surya Siddhanta Engine</p>
-    <button class="btn-white" id="enterBtn">✦ Enter ✦</button>
-</div>
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="today">📅 Today</button>
+        <button class="tab-btn" data-tab="tomorrow">🌅 Tomorrow</button>
+        <button class="tab-btn" data-tab="weekly">📆 Weekly</button>
+        <button class="tab-btn" data-tab="monthly">🌙 Monthly</button>
+    </div>
 
-<!-- MAIN APP (6 PAGES) -->
-<div id="appContainer" class="app-container">
-    <div class="app-header">
-        <h2 id="pageTitle">📜 Birth Details</h2>
+    <div class="sign-selector">
+        <select id="signSelect">
+            <option value="">-- Select Your Zodiac Sign --</option>
+        </select>
     </div>
-    <div class="page-content" id="pageContent">
-        <!-- DYNAMIC CONTENT LOADS HERE -->
+
+    <div id="predictionDisplay" class="prediction-card">
+        <h2 id="signTitle">Select a sign</h2>
+        <div id="categoryContainer" class="category-grid"></div>
+        <div id="chartContainer"></div>
+        <div class="action-buttons">
+            <button class="btn-save" id="saveBtn">💾 Save Predictions</button>
+            <button class="btn-download" id="downloadBtn">📥 Download HTML (My Data)</button>
+            <button class="btn-reset" id="resetBtn">🔄 Reset to Default</button>
+        </div>
+        <div id="message" class="message"></div>
     </div>
-    <div class="footer-note">Shivanetra · Offline · Sidereal calculations</div>
+    <footer>Predictions are saved in your browser. Edit any text field and click Save.</footer>
 </div>
 
 <script>
-    // ========== PAGE DEFINITIONS ==========
-    const PAGES = {
-        BIRTH: 'birth',
-        SUN_SIGN: 'sunSign',
-        DAILY: 'daily',
-        NATAL: 'natal',
-        REPORTS: 'reports'
-    };
-    let currentPage = PAGES.BIRTH;
-    let userProfile = {
-        name: '',
-        day: 15,
-        month: 8,
-        year: 1947,
-        hour: 0,
-        minute: 1,
-        lat: 28.6139,
-        lon: 77.2090,
-        tz: 5.5,
-        location: 'New Delhi, India'
-    };
-    let currentSunSign = "gemini";
-    let chartData = null;
-
-    // ========== ZODIAC DATA (from JSON later) ==========
-    const signs = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"];
-    const signNames = {
-        aries: "Mesha (Aries)", taurus: "Vrishabha (Taurus)", gemini: "Mithuna (Gemini)",
-        cancer: "Karka (Cancer)", leo: "Simha (Leo)", virgo: "Kanya (Virgo)",
-        libra: "Tula (Libra)", scorpio: "Vrischika (Scorpio)", sagittarius: "Dhanu (Sagittarius)",
-        capricorn: "Makara (Capricorn)", aquarius: "Kumbha (Aquarius)", pisces: "Meena (Pisces)"
+    // ============ SIGNS DATA ============
+    const signsData = {
+        "zodiac_signs": [
+            { "id": "aries", "name": "Aries", "symbol": "Ram", "start_date": "March 21", "end_date": "April 19" },
+            { "id": "taurus", "name": "Taurus", "symbol": "Bull", "start_date": "April 20", "end_date": "May 20" },
+            { "id": "gemini", "name": "Gemini", "symbol": "Twins", "start_date": "May 21", "end_date": "June 20" },
+            { "id": "cancer", "name": "Cancer", "symbol": "Crab", "start_date": "June 21", "end_date": "July 22" },
+            { "id": "leo", "name": "Leo", "symbol": "Lion", "start_date": "July 23", "end_date": "August 22" },
+            { "id": "virgo", "name": "Virgo", "symbol": "Virgin", "start_date": "August 23", "end_date": "September 22" },
+            { "id": "libra", "name": "Libra", "symbol": "Scales", "start_date": "September 23", "end_date": "October 22" },
+            { "id": "scorpio", "name": "Scorpio", "symbol": "Scorpion", "start_date": "October 23", "end_date": "November 21" },
+            { "id": "sagittarius", "name": "Sagittarius", "symbol": "Archer", "start_date": "November 22", "end_date": "December 21" },
+            { "id": "capricorn", "name": "Capricorn", "symbol": "Sea-goat", "start_date": "December 22", "end_date": "January 19" },
+            { "id": "aquarius", "name": "Aquarius", "symbol": "Water Bearer", "start_date": "January 20", "end_date": "February 18" },
+            { "id": "pisces", "name": "Pisces", "symbol": "Fish", "start_date": "February 19", "end_date": "March 20" }
+        ]
     };
 
-    // Helper to get sun sign from date (simplified)
-    function getSunSign(day, month) {
-        if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "aries";
-        if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "taurus";
-        if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "gemini";
-        if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "cancer";
-        if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "leo";
-        if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "virgo";
-        if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "libra";
-        if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "scorpio";
-        if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "sagittarius";
-        if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "capricorn";
-        if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "aquarius";
-        return "pisces";
-    }
+    // Default predictions template (with Travel & Finance)
+    const defaultPredictions = {
+        "today": {
+            "aries": { overall: "Energetic day", love: "Romantic sparks", career: "New opportunity", health: "Great energy", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" },
+            "taurus": { overall: "Stable and calm", love: "Deep connection", career: "Steady progress", health: "Good", travel: "Avoid long trips", finance: "Save money", luck: 70, color: "Green", number: "4" },
+            "gemini": { overall: "Curious mind", love: "Flirty vibes", career: "Meetings", health: "Rest needed", travel: "Exciting plans", finance: "Unexpected gain", luck: 90, color: "Yellow", number: "3" },
+            "cancer": { overall: "Emotional day", love: "Family time", career: "Supportive", health: "Hydrate", travel: "Visit water", finance: "Budget well", luck: 65, color: "White", number: "2" },
+            "leo": { overall: "Shine bright", love: "Passionate", career: "Leadership", health: "Exercise", travel: "Luxury trip", finance: "Investment good", luck: 95, color: "Gold", number: "1" },
+            "virgo": { overall: "Productive", love: "Practical love", career: "Details matter", health: "Healthy eating", travel: "Plan ahead", finance: "Analyze", luck: 75, color: "Brown", number: "5" },
+            "libra": { overall: "Balanced", love: "Romantic date", career: "Teamwork", health: "Yoga helps", travel: "Partner travel", finance: "Fair deals", luck: 80, color: "Pink", number: "6" },
+            "scorpio": { overall: "Intense", love: "Deep trust", career: "Transformation", health: "Detox", travel: "Mysterious place", finance: "Hidden money", luck: 88, color: "Black", number: "8" },
+            "sagittarius": { overall: "Adventure", love: "Free spirit", career: "Expansion", health: "Outdoor", travel: "Perfect time", finance: "Spend on fun", luck: 92, color: "Purple", number: "9" },
+            "capricorn": { overall: "Focused", love: "Commitment", career: "Promotion", health: "Discipline", travel: "Business trip", finance: "Wealth grows", luck: 78, color: "Grey", number: "10" },
+            "aquarius": { overall: "Innovative", love: "Unique bond", career: "Ideas flow", health: "Social energy", travel: "Group trip", finance: "Tech gains", luck: 82, color: "Blue", number: "11" },
+            "pisces": { overall: "Dreamy", love: "Romantic fantasy", career: "Artistic", health: "Rest well", travel: "Beach escape", finance: "Intuitive", luck: 87, color: "Sea Green", number: "12" }
+        },
+        "tomorrow": {},
+        "weekly": {},
+        "monthly": {}
+    };
 
-    // ========== RENDER FUNCTIONS ==========
-    function renderBirthPage() {
-        document.getElementById('pageTitle').innerText = "📜 Birth Details";
-        return `
-            <label>Full Name</label>
-            <input type="text" id="userName" value="${escapeHtml(userProfile.name)}" placeholder="e.g., Seliim Ahmed">
-            <div class="row">
-                <div><label>Day</label><input type="number" id="day" value="${userProfile.day}"></div>
-                <div><label>Month</label><input type="number" id="month" value="${userProfile.month}"></div>
-                <div><label>Year</label><input type="number" id="year" value="${userProfile.year}"></div>
-            </div>
-            <div class="row">
-                <div><label>Hour (0-23)</label><input type="number" id="hour" value="${userProfile.hour}"></div>
-                <div><label>Minute</label><input type="number" id="minute" value="${userProfile.minute}"></div>
-                <div><label>Timezone (UTC)</label><input type="number" step="0.5" id="tz" value="${userProfile.tz}"></div>
-            </div>
-            <div class="row">
-                <div><label>Latitude</label><input type="text" id="lat" value="${userProfile.lat}"></div>
-                <div><label>Longitude</label><input type="text" id="lon" value="${userProfile.lon}"></div>
-            </div>
-            <label>Location Name</label>
-            <input type="text" id="location" value="${escapeHtml(userProfile.location)}">
-            <div class="button-group">
-                <button id="saveBirthBtn" class="secondary">💾 Save & Continue</button>
-            </div>
-        `;
-    }
-
-    function renderSunSignPage() {
-        const signName = signNames[currentSunSign] || "Gemini";
-        document.getElementById('pageTitle').innerText = `✨ ${signName} ✨`;
-        return `
-            <div style="text-align:center;">
-                <h2>${signName}</h2>
-                <p><strong>Element:</strong> Air · <strong>Ruler:</strong> Mercury</p>
-                <p>Adaptable, curious, lively. Strengths in communication.</p>
-                <div class="button-group">
-                    <button id="backToBirthBtn" class="secondary">← Back</button>
-                    <button id="dailyFromSignBtn">📅 Daily Prediction →</button>
-                    <button id="natalFromSignBtn">🌌 Natal Chart →</button>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderDailyPage() {
-        document.getElementById('pageTitle').innerText = "📅 Today's Guidance";
-        const sign = signNames[currentSunSign];
-        return `
-            <h3>${sign}</h3>
-            <div class="result-card">
-                <strong>🌞 Day:</strong> Communications flow. Avoid overcommitting.
-            </div>
-            <div class="result-card">
-                <strong>✈️ Travel:</strong> Short trips bring new insights.
-            </div>
-            <div class="result-card">
-                <strong>💰 Money:</strong> Side projects look profitable.
-            </div>
-            <div class="result-card">
-                <strong>⚠️ Safety:</strong> Stay alert while walking.
-            </div>
-            <div class="result-card">
-                <strong>🎭 Events:</strong> Social gatherings energise you.
-            </div>
-            <div class="button-group">
-                <button id="backToSunBtn" class="secondary">← Back</button>
-                <button id="natalFromDailyBtn">🌌 Full Chart →</button>
-            </div>
-        `;
-    }
-
-    function renderNatalPage() {
-        document.getElementById('pageTitle').innerText = "🌌 Natal Chart";
-        // Placeholder – later replaced by real Swiss Ephemeris data
-        return `
-            <div class="result-card"><strong>Surya (Sun):</strong> 10° 15' Gemini · House 9</div>
-            <div class="result-card"><strong>Chandra (Moon):</strong> 22° 40' Cancer · House 10</div>
-            <div class="result-card"><strong>Mangala (Mars):</strong> 5° 30' Aries · House 5</div>
-            <div class="result-card"><strong>Budha (Mercury):</strong> 18° 20' Taurus · House 8</div>
-            <div class="result-card"><strong>Guru (Jupiter):</strong> 12° 45' Pisces · House 2</div>
-            <div class="result-card"><strong>Shukra (Venus):</strong> 28° 10' Libra · House 3</div>
-            <div class="result-card"><strong>Shani (Saturn):</strong> 4° 35' Aquarius · House 12</div>
-            <div class="result-card"><strong>Rahu:</strong> 14° 50' Virgo · House 6</div>
-            <div class="result-card"><strong>Ketu:</strong> 14° 50' Pisces · House 12</div>
-            <div class="result-card"><strong>Lagna (Ascendant):</strong> 6° 22' Cancer · House 1</div>
-            <div class="button-group">
-                <button id="backToSunFromNatal" class="secondary">← Back</button>
-                <button id="reportsFromNatalBtn">📄 Reports →</button>
-            </div>
-        `;
-    }
-
-    function renderReportsPage() {
-        document.getElementById('pageTitle').innerText = "📄 Reports & Downloads";
-        return `
-            <p>Save your chart as HTML or print it.</p>
-            <div class="button-group">
-                <button id="printReportBtn">🖨️ Print / PDF</button>
-                <button id="downloadReportBtn">📥 Save as HTML</button>
-                <button id="backToNatalFromReports" class="secondary">← Back</button>
-                <button id="homeFromReportsBtn">🏠 Home</button>
-            </div>
-        `;
-    }
-
-    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
-
-    function loadPage(page) {
-        let html = "";
-        switch(page) {
-            case PAGES.BIRTH: html = renderBirthPage(); break;
-            case PAGES.SUN_SIGN: html = renderSunSignPage(); break;
-            case PAGES.DAILY: html = renderDailyPage(); break;
-            case PAGES.NATAL: html = renderNatalPage(); break;
-            case PAGES.REPORTS: html = renderReportsPage(); break;
-        }
-        document.getElementById('pageContent').innerHTML = html;
-        currentPage = page;
-        attachPageEvents();
-    }
-
-    function attachPageEvents() {
-        if (currentPage === PAGES.BIRTH) {
-            const btn = document.getElementById('saveBirthBtn');
-            if (btn) btn.onclick = () => {
-                userProfile.name = document.getElementById('userName').value;
-                userProfile.day = parseInt(document.getElementById('day').value);
-                userProfile.month = parseInt(document.getElementById('month').value);
-                userProfile.year = parseInt(document.getElementById('year').value);
-                userProfile.hour = parseInt(document.getElementById('hour').value);
-                userProfile.minute = parseInt(document.getElementById('minute').value);
-                userProfile.tz = parseFloat(document.getElementById('tz').value);
-                userProfile.lat = parseFloat(document.getElementById('lat').value);
-                userProfile.lon = parseFloat(document.getElementById('lon').value);
-                userProfile.location = document.getElementById('location').value;
-                const signKey = getSunSign(userProfile.day, userProfile.month);
-                currentSunSign = signKey;
-                loadPage(PAGES.SUN_SIGN);
-            };
-        }
-        if (currentPage === PAGES.SUN_SIGN) {
-            document.getElementById('backToBirthBtn')?.addEventListener('click', () => loadPage(PAGES.BIRTH));
-            document.getElementById('dailyFromSignBtn')?.addEventListener('click', () => loadPage(PAGES.DAILY));
-            document.getElementById('natalFromSignBtn')?.addEventListener('click', () => loadPage(PAGES.NATAL));
-        }
-        if (currentPage === PAGES.DAILY) {
-            document.getElementById('backToSunBtn')?.addEventListener('click', () => loadPage(PAGES.SUN_SIGN));
-            document.getElementById('natalFromDailyBtn')?.addEventListener('click', () => loadPage(PAGES.NATAL));
-        }
-        if (currentPage === PAGES.NATAL) {
-            document.getElementById('backToSunFromNatal')?.addEventListener('click', () => loadPage(PAGES.SUN_SIGN));
-            document.getElementById('reportsFromNatalBtn')?.addEventListener('click', () => loadPage(PAGES.REPORTS));
-        }
-        if (currentPage === PAGES.REPORTS) {
-            document.getElementById('printReportBtn')?.addEventListener('click', () => window.print());
-            document.getElementById('downloadReportBtn')?.addEventListener('click', () => {
-                const content = document.getElementById('pageContent').innerHTML;
-                const full = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shivanetra Report</title><style>body{font-family:monospace;padding:40px;}</style></head><body>${content}</body></html>`;
-                const blob = new Blob([full], {type:'text/html'});
-                const a = document.createElement('a');
-                a.download = `shivanetra_${Date.now()}.html`;
-                a.href = URL.createObjectURL(blob);
-                a.click();
-                URL.revokeObjectURL(a.href);
-            });
-            document.getElementById('backToNatalFromReports')?.addEventListener('click', () => loadPage(PAGES.NATAL));
-            document.getElementById('homeFromReportsBtn')?.addEventListener('click', () => {
-                document.getElementById('appContainer').style.display = 'none';
-                document.getElementById('landingPage').style.display = 'flex';
+    // Generate default for all signs for each tab
+    const allTabs = ["today", "tomorrow", "weekly", "monthly"];
+    allTabs.forEach(tab => {
+        if (Object.keys(defaultPredictions[tab]).length === 0) {
+            defaultPredictions[tab] = {};
+            signsData.zodiac_signs.forEach(sign => {
+                const base = defaultPredictions.today[sign.id] || {};
+                defaultPredictions[tab][sign.id] = { ...base, overall: `${tab.charAt(0).toUpperCase() + tab.slice(1)} prediction for ${sign.name}` };
             });
         }
+    });
+
+    // Load saved or default
+    let userPredictions = JSON.parse(localStorage.getItem("shivanetra_predictions"));
+    if (!userPredictions) {
+        userPredictions = JSON.parse(JSON.stringify(defaultPredictions));
     }
 
-    // Initialize
-    document.getElementById('enterBtn').onclick = () => {
-        document.getElementById('landingPage').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        loadPage(PAGES.BIRTH);
-    };
-    // Set landing page visible, app hidden
-    document.getElementById('landingPage').style.display = 'flex';
-    document.getElementById('appContainer').style.display = 'none';
-    
-    // Optional: replace placeholder image with your own later
-    // document.getElementById('cosmicImg').src = "your-cosmic-image.png";
+    let currentTab = "today";
+    let currentSignId = "";
+
+    // Populate sign dropdown
+    function loadSigns() {
+        const select = document.getElementById("signSelect");
+        select.innerHTML = '<option value="">-- Select Your Zodiac Sign --</option>';
+        signsData.zodiac_signs.forEach(sign => {
+            const option = document.createElement("option");
+            option.value = sign.id;
+            option.textContent = `${sign.name} (${sign.start_date} - ${sign.end_date})`;
+            select.appendChild(option);
+        });
+    }
+
+    // Render editable predictions
+    function render() {
+        if (!currentSignId) {
+            document.getElementById("signTitle").innerText = "Select a sign above";
+            document.getElementById("categoryContainer").innerHTML = "";
+            document.getElementById("chartContainer").innerHTML = "";
+            return;
+        }
+
+        const sign = signsData.zodiac_signs.find(s => s.id === currentSignId);
+        document.getElementById("signTitle").innerHTML = `${sign.name} Horoscope - ${currentTab.toUpperCase()}`;
+
+        let pred = userPredictions[currentTab]?.[currentSignId];
+        if (!pred) {
+            pred = { overall: "", love: "", career: "", health: "", travel: "", finance: "", luck: 50, color: "", number: "" };
+            userPredictions[currentTab] = userPredictions[currentTab] || {};
+            userPredictions[currentTab][currentSignId] = pred;
+        }
+
+        const categories = [
+            { key: "overall", label: "🌟 Overall", icon: "🔮" },
+            { key: "love", label: "❤️ Love", icon: "💕" },
+            { key: "career", label: "💼 Career", icon: "📈" },
+            { key: "health", label: "🏃 Health", icon: "💪" },
+            { key: "travel", label: "✈️ Travel", icon: "🌍" },
+            { key: "finance", label: "💰 Finance", icon: "💵" },
+            { key: "color", label: "🎨 Lucky Color", icon: "🌈" },
+            { key: "number", label: "🔢 Lucky Number", icon: "🔢" }
+        ];
+
+        let html = `<div class="category-grid">`;
+        categories.forEach(cat => {
+            let value = pred[cat.key] || "";
+            if (cat.key === "luck") value = pred.luck || 50;
+            if (cat.key === "color" || cat.key === "number") {
+                html += `<div class="category">
+                            <h3>${cat.icon} ${cat.label}</h3>
+                            <input type="text" data-field="${cat.key}" value="${escapeHtml(value)}" style="width:100%; padding:8px; border-radius:10px; border:none; background:#fff; color:#000;">
+                         </div>`;
+            } else if (cat.key === "luck") {
+                html += `<div class="category">
+                            <h3>${cat.icon} ${cat.label} (0-100)</h3>
+                            <input type="range" data-field="${cat.key}" min="0" max="100" value="${value}" style="width:100%">
+                            <span id="luckValue">${value}%</span>
+                         </div>`;
+            } else {
+                html += `<div class="category">
+                            <h3>${cat.icon} ${cat.label}</h3>
+                            <textarea data-field="${cat.key}" rows="3" style="width:100%; padding:8px; border-radius:10px; border:none; background:#fff; color:#000;">${escapeHtml(value)}</textarea>
+                         </div>`;
+            }
+        });
+        html += `</div>`;
+
+        // Chart for luck only (simple meter)
+        const luckVal = pred.luck || 50;
+        html += `<div class="chart-row"><span class="chart-label">🍀 Luck Meter</span><div class="meter"><div class="meter-fill" style="width:${luckVal}%"></div></div><span>${luckVal}%</span></div>`;
+
+        document.getElementById("categoryContainer").innerHTML = html;
+        document.getElementById("chartContainer").innerHTML = ""; // chart already inside
+
+        // Attach event listeners to inputs
+        document.querySelectorAll("[data-field]").forEach(input => {
+            input.addEventListener("change", function(e) {
+                const field = this.getAttribute("data-field");
+                let newVal = this.value;
+                if (field === "luck") newVal = parseInt(this.value);
+                userPredictions[currentTab][currentSignId][field] = newVal;
+                if (field === "luck") {
+                    document.getElementById("luckValue").innerText = newVal + "%";
+                    const fill = document.querySelector(".meter-fill");
+                    if (fill) fill.style.width = newVal + "%";
+                }
+                showMessage("Changes made — don't forget to Save!", "success");
+            });
+            if (input.type === "range") {
+                input.addEventListener("input", function() {
+                    document.getElementById("luckValue").innerText = this.value + "%";
+                });
+            }
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === "&") return "&amp;";
+            if (m === "<") return "&lt;";
+            if (m === ">") return "&gt;";
+            return m;
+        });
+    }
+
+    function showMessage(msg, type) {
+        const msgDiv = document.getElementById("message");
+        msgDiv.textContent = msg;
+        msgDiv.className = `message show ${type}`;
+        setTimeout(() => msgDiv.classList.remove("show"), 3000);
+    }
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+        localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
+        showMessage("✅ All predictions saved to browser!", "success");
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+        const dataStr = JSON.stringify(userPredictions, null, 2);
+        const blob = new Blob([dataStr], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `shivanetra_predictions_${new Date().toISOString().slice(0,19)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showMessage("📁 Predictions JSON downloaded", "success");
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+        if (confirm("Reset all predictions to defaults? Your saved data will be lost.")) {
+            userPredictions = JSON.parse(JSON.stringify(defaultPredictions));
+            localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
+            render();
+            showMessage("🔄 Reset to default predictions", "success");
+        }
+    });
+
+    document.getElementById("signSelect").addEventListener("change", (e) => {
+        currentSignId = e.target.value;
+        render();
+    });
+
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentTab = btn.getAttribute("data-tab");
+            render();
+        });
+    });
+
+    loadSigns();
+    render();
 </script>
 </body>
 </html>
