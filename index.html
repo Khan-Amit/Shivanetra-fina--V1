@@ -2,83 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivanetra - Horoscope Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shivanetra - Complete Horoscope</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #fff;
+            padding: 20px;
             min-height: 100vh;
+            overflow-x: hidden;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
         }
-
-        /* Header */
         h1 {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-size: 2.5rem;
             background: linear-gradient(90deg, #ffd89b, #c7e9fb);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            opacity: 0.8;
-        }
-
-        /* Landing Card */
-        .landing-card {
+        /* Landing Section */
+        .landing-section {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             margin-bottom: 30px;
             border: 1px solid rgba(255,255,255,0.2);
         }
-
         .form-row {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             margin-bottom: 20px;
         }
-
         .form-group {
             flex: 1;
-            min-width: 200px;
+            min-width: 180px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 8px;
             color: #ffd89b;
             font-weight: bold;
         }
-
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
             border: none;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.95);
             font-size: 1rem;
         }
-
+        .birthday-group {
+            display: flex;
+            gap: 10px;
+        }
+        .birthday-group select {
+            flex: 1;
+        }
         .enter-btn {
             background: #ff6b6b;
             color: white;
@@ -88,76 +80,43 @@
             font-size: 1.1rem;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 20px;
             width: 100%;
             transition: transform 0.2s;
         }
-
         .enter-btn:hover {
             transform: scale(1.02);
             background: #ff5252;
         }
-
-        /* Main App (hidden until user enters) */
+        /* Main App */
         .main-app {
             display: none;
         }
-
-        /* Toolbar */
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .tool-btn {
-            padding: 10px 20px;
-            border: none;
-            background: rgba(255,255,255,0.2);
-            color: #fff;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .tool-btn:hover {
-            background: #ff6b6b;
-            transform: translateY(-2px);
-        }
-
-        /* Tabs */
+        /* Tabs - 5 pages */
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 30px;
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .tab-btn {
-            padding: 12px 30px;
+            padding: 10px 20px;
             border: none;
             background: rgba(255,255,255,0.1);
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.9rem;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .tab-btn.active {
             background: #ff6b6b;
             box-shadow: 0 0 15px rgba(255,107,107,0.5);
         }
-
         .sign-selector {
             text-align: center;
             margin-bottom: 30px;
         }
-
         select {
             padding: 12px 20px;
             font-size: 1.1rem;
@@ -168,7 +127,6 @@
             cursor: pointer;
             min-width: 250px;
         }
-
         .prediction-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
@@ -177,25 +135,21 @@
             margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
-
         .category {
             background: rgba(0,0,0,0.3);
             padding: 15px;
             border-radius: 15px;
         }
-
         .category h3 {
             margin-bottom: 10px;
             color: #ffd89b;
         }
-
         .category input, .category textarea {
             width: 100%;
             padding: 8px;
@@ -204,7 +158,6 @@
             background: #fff;
             color: #000;
         }
-
         .meter {
             width: 100%;
             height: 8px;
@@ -213,7 +166,6 @@
             margin: 10px 0;
             overflow: hidden;
         }
-
         .meter-fill {
             height: 100%;
             width: 0%;
@@ -221,15 +173,6 @@
             border-radius: 10px;
             transition: width 0.5s;
         }
-
-        .chart-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -237,7 +180,6 @@
             margin-top: 20px;
             flex-wrap: wrap;
         }
-
         button {
             padding: 12px 25px;
             border: none;
@@ -247,17 +189,18 @@
             font-weight: bold;
             transition: transform 0.2s;
         }
-
         button:active {
             transform: scale(0.97);
         }
-
         .btn-save { background: #4caf50; color: white; }
         .btn-download { background: #2196f3; color: white; }
-        .btn-html { background: #9c27b0; color: white; }
-        .btn-whatsapp { background: #25D366; color: white; }
-        .btn-email { background: #ff9800; color: white; }
-
+        .user-bar {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
         .message {
             position: fixed;
             bottom: 20px;
@@ -269,76 +212,62 @@
             display: none;
             z-index: 1000;
         }
-
-        .message.show {
-            display: block;
-        }
-
+        .message.show { display: block; }
         footer {
             text-align: center;
             margin-top: 40px;
             opacity: 0.7;
-            padding: 20px;
         }
-
-        .user-info-bar {
-            background: rgba(255,255,255,0.1);
-            padding: 10px 20px;
-            border-radius: 30px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-
         @media (max-width: 768px) {
-            .category-grid {
-                grid-template-columns: 1fr;
-            }
-            .tool-btn, .tab-btn {
-                padding: 8px 15px;
-                font-size: 0.8rem;
-            }
+            .category-grid { grid-template-columns: 1fr; }
+            .tab-btn { padding: 8px 12px; font-size: 0.75rem; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>✨ Shivanetra Horoscope Pro ✨</h1>
-    <div class="subtitle">Your Daily Cosmic Guide</div>
+    <h1>✨ Shivanetra Horoscope ✨</h1>
 
-    <!-- LANDING PAGE -->
-    <div id="landingPage" class="landing-card">
+    <!-- LANDING SECTION with Birthday Dropdowns -->
+    <div id="landingSection" class="landing-section">
         <div class="form-row">
             <div class="form-group">
                 <label>🌟 Your Name</label>
-                <input type="text" id="userName" placeholder="Enter your name" value="Gemini User">
+                <input type="text" id="userName" placeholder="Enter your name">
             </div>
             <div class="form-group">
                 <label>🎂 Birthday</label>
-                <input type="date" id="userBirthday">
+                <div class="birthday-group">
+                    <select id="birthDay">
+                        <option value="">Day</option>
+                    </select>
+                    <select id="birthMonth">
+                        <option value="">Month</option>
+                    </select>
+                    <select id="birthYear">
+                        <option value="">Year</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label>📍 Location (City, Country)</label>
-                <input type="text" id="userLocation" placeholder="e.g., Dhaka, Russia, China, New York" value="Dhaka, Bangladesh">
+                <label>📍 Location</label>
+                <input type="text" id="userLocation" placeholder="e.g., Dhaka, New York, London">
             </div>
         </div>
-        <button class="enter-btn" id="enterBtn">🔮 Enter Your Horoscope 🔮</button>
+        <button class="enter-btn" id="enterBtn">🔮 Save & Enter 🔮</button>
     </div>
 
-    <!-- MAIN APP (Hidden until Enter) -->
+    <!-- MAIN APP -->
     <div id="mainApp" class="main-app">
-        <div class="user-info-bar" id="userInfoBar"></div>
+        <div class="user-bar" id="userBar"></div>
 
-        <div class="toolbar">
-            <button class="tool-btn" id="shareWhatsAppBtn">📱 WhatsApp</button>
-            <button class="tool-btn" id="emailBtn">✉️ Email</button>
-        </div>
-
+        <!-- 5 TABS -->
         <div class="tabs">
             <button class="tab-btn active" data-tab="today">📅 Today</button>
             <button class="tab-btn" data-tab="tomorrow">🌅 Tomorrow</button>
             <button class="tab-btn" data-tab="weekly">📆 Weekly</button>
             <button class="tab-btn" data-tab="monthly">🌙 Monthly</button>
+            <button class="tab-btn" data-tab="natal">⭐ Natal Chart</button>
         </div>
 
         <div class="sign-selector">
@@ -352,67 +281,108 @@
             <div id="categoryContainer" class="category-grid"></div>
             <div id="chartContainer"></div>
             <div class="action-buttons">
-                <button class="btn-save" id="saveBtn">💾 Save Predictions</button>
+                <button class="btn-save" id="saveBtn">💾 Save</button>
                 <button class="btn-download" id="downloadBtn">📥 Download JSON</button>
-                <button class="btn-html" id="downloadHtmlBtn">📄 Download HTML</button>
             </div>
         </div>
     </div>
-
     <footer>Shivanetra - Your Cosmic Journey</footer>
 </div>
-
 <div id="message" class="message"></div>
 
 <script>
     // ============ SIGNS DATA ============
     const signsData = {
         "zodiac_signs": [
-            { "id": "aries", "name": "Aries", "start_date": "Mar 21 - Apr 19" },
-            { "id": "taurus", "name": "Taurus", "start_date": "Apr 20 - May 20" },
-            { "id": "gemini", "name": "Gemini", "start_date": "May 21 - Jun 20" },
-            { "id": "cancer", "name": "Cancer", "start_date": "Jun 21 - Jul 22" },
-            { "id": "leo", "name": "Leo", "start_date": "Jul 23 - Aug 22" },
-            { "id": "virgo", "name": "Virgo", "start_date": "Aug 23 - Sep 22" },
-            { "id": "libra", "name": "Libra", "start_date": "Sep 23 - Oct 22" },
-            { "id": "scorpio", "name": "Scorpio", "start_date": "Oct 23 - Nov 21" },
-            { "id": "sagittarius", "name": "Sagittarius", "start_date": "Nov 22 - Dec 21" },
-            { "id": "capricorn", "name": "Capricorn", "start_date": "Dec 22 - Jan 19" },
-            { "id": "aquarius", "name": "Aquarius", "start_date": "Jan 20 - Feb 18" },
-            { "id": "pisces", "name": "Pisces", "start_date": "Feb 19 - Mar 20" }
+            { "id": "aries", "name": "Aries", "symbol": "Ram", "element": "Fire", "planet": "Mars" },
+            { "id": "taurus", "name": "Taurus", "symbol": "Bull", "element": "Earth", "planet": "Venus" },
+            { "id": "gemini", "name": "Gemini", "symbol": "Twins", "element": "Air", "planet": "Mercury" },
+            { "id": "cancer", "name": "Cancer", "symbol": "Crab", "element": "Water", "planet": "Moon" },
+            { "id": "leo", "name": "Leo", "symbol": "Lion", "element": "Fire", "planet": "Sun" },
+            { "id": "virgo", "name": "Virgo", "symbol": "Virgin", "element": "Earth", "planet": "Mercury" },
+            { "id": "libra", "name": "Libra", "symbol": "Scales", "element": "Air", "planet": "Venus" },
+            { "id": "scorpio", "name": "Scorpio", "symbol": "Scorpion", "element": "Water", "planet": "Pluto" },
+            { "id": "sagittarius", "name": "Sagittarius", "symbol": "Archer", "element": "Fire", "planet": "Jupiter" },
+            { "id": "capricorn", "name": "Capricorn", "symbol": "Sea-goat", "element": "Earth", "planet": "Saturn" },
+            { "id": "aquarius", "name": "Aquarius", "symbol": "Water Bearer", "element": "Air", "planet": "Uranus" },
+            { "id": "pisces", "name": "Pisces", "symbol": "Fish", "element": "Water", "planet": "Neptune" }
         ]
     };
 
-    // Default predictions
+    // Default Predictions
     const defaultPredictions = {
         "today": {
-            "aries": { overall: "Energetic day ahead!", love: "Romantic sparks fly", career: "New opportunity knocks", health: "Great energy levels", travel: "Short trip will be fruitful", finance: "Steady income expected", luck: 85, color: "Red", number: "7" },
-            "taurus": { overall: "Stable and calm energy", love: "Deep connection forms", career: "Steady progress at work", health: "Good vitality", travel: "Avoid long trips today", finance: "Save money wisely", luck: 70, color: "Green", number: "4" },
-            "gemini": { overall: "Curious and alert mind", love: "Flirty and fun vibes", career: "Important meetings", health: "Rest is needed", travel: "Exciting travel plans", finance: "Unexpected gain possible", luck: 90, color: "Yellow", number: "3" },
-            "cancer": { overall: "Emotional and nurturing", love: "Quality family time", career: "Supportive colleagues", health: "Stay hydrated", travel: "Visit water bodies", finance: "Budget carefully", luck: 65, color: "White", number: "2" },
-            "leo": { overall: "Shine bright like a star", love: "Passionate encounters", career: "Leadership role", health: "Regular exercise", travel: "Luxury trip awaits", finance: "Good investment time", luck: 95, color: "Gold", number: "1" },
-            "virgo": { overall: "Productive and organized", love: "Practical approach", career: "Attention to detail", health: "Healthy eating habits", travel: "Plan your trip", finance: "Analyze expenses", luck: 75, color: "Brown", number: "5" },
-            "libra": { overall: "Balanced and harmonious", love: "Romantic date night", career: "Teamwork succeeds", health: "Yoga helps", travel: "Travel with partner", finance: "Fair financial deals", luck: 80, color: "Pink", number: "6" },
-            "scorpio": { overall: "Intense and powerful", love: "Deep trust builds", career: "Transformation coming", health: "Detox your body", travel: "Mysterious destination", finance: "Hidden money found", luck: 88, color: "Black", number: "8" },
-            "sagittarius": { overall: "Adventure calls", love: "Freedom and fun", career: "Expansion phase", health: "Outdoor activities", travel: "Perfect time to travel", finance: "Spend on experiences", luck: 92, color: "Purple", number: "9" },
-            "capricorn": { overall: "Focused and determined", love: "Commitment grows", career: "Promotion likely", health: "Stay disciplined", travel: "Business trip", finance: "Wealth increases", luck: 78, color: "Grey", number: "10" },
-            "aquarius": { overall: "Innovative ideas flow", love: "Unique connection", career: "Creative projects", health: "Social energy high", travel: "Group trip planned", finance: "Tech investments pay", luck: 82, color: "Blue", number: "11" },
-            "pisces": { overall: "Dreamy and intuitive", love: "Romantic fantasy", career: "Artistic success", health: "Rest and recharge", travel: "Beach escape", finance: "Trust your gut", luck: 87, color: "Sea Green", number: "12" }
+            "aries": { overall: "Energetic day", love: "Romantic sparks", career: "New opportunity", health: "Great energy", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" },
+            "taurus": { overall: "Stable and calm", love: "Deep connection", career: "Steady progress", health: "Good", travel: "Avoid long trips", finance: "Save money", luck: 70, color: "Green", number: "4" },
+            "gemini": { overall: "Curious mind", love: "Flirty vibes", career: "Meetings", health: "Rest needed", travel: "Exciting plans", finance: "Unexpected gain", luck: 90, color: "Yellow", number: "3" },
+            "cancer": { overall: "Emotional day", love: "Family time", career: "Supportive", health: "Hydrate", travel: "Visit water", finance: "Budget well", luck: 65, color: "White", number: "2" },
+            "leo": { overall: "Shine bright", love: "Passionate", career: "Leadership", health: "Exercise", travel: "Luxury trip", finance: "Investment good", luck: 95, color: "Gold", number: "1" },
+            "virgo": { overall: "Productive", love: "Practical love", career: "Details matter", health: "Healthy eating", travel: "Plan ahead", finance: "Analyze", luck: 75, color: "Brown", number: "5" },
+            "libra": { overall: "Balanced", love: "Romantic date", career: "Teamwork", health: "Yoga helps", travel: "Partner travel", finance: "Fair deals", luck: 80, color: "Pink", number: "6" },
+            "scorpio": { overall: "Intense", love: "Deep trust", career: "Transformation", health: "Detox", travel: "Mysterious place", finance: "Hidden money", luck: 88, color: "Black", number: "8" },
+            "sagittarius": { overall: "Adventure", love: "Free spirit", career: "Expansion", health: "Outdoor", travel: "Perfect time", finance: "Spend on fun", luck: 92, color: "Purple", number: "9" },
+            "capricorn": { overall: "Focused", love: "Commitment", career: "Promotion", health: "Discipline", travel: "Business trip", finance: "Wealth grows", luck: 78, color: "Grey", number: "10" },
+            "aquarius": { overall: "Innovative", love: "Unique bond", career: "Ideas flow", health: "Social energy", travel: "Group trip", finance: "Tech gains", luck: 82, color: "Blue", number: "11" },
+            "pisces": { overall: "Dreamy", love: "Romantic fantasy", career: "Artistic", health: "Rest well", travel: "Beach escape", finance: "Intuitive", luck: 87, color: "Sea Green", number: "12" }
         },
-        "tomorrow": {}, "weekly": {}, "monthly": {}
+        "tomorrow": {},
+        "weekly": {},
+        "monthly": {},
+        "natal": {}
     };
 
-    // Load or initialize data
+    // Natal Chart Template
+    const natalTemplate = {
+        "aries": { sunSign: "Aries", moonSign: "To be calculated", risingSign: "To be calculated", element: "Fire", rulingPlanet: "Mars", strength: "Courage", weakness: "Impulsiveness" },
+        "taurus": { sunSign: "Taurus", moonSign: "To be calculated", risingSign: "To be calculated", element: "Earth", rulingPlanet: "Venus", strength: "Loyalty", weakness: "Stubbornness" },
+        "gemini": { sunSign: "Gemini", moonSign: "To be calculated", risingSign: "To be calculated", element: "Air", rulingPlanet: "Mercury", strength: "Adaptability", weakness: "Inconsistency" },
+        "cancer": { sunSign: "Cancer", moonSign: "To be calculated", risingSign: "To be calculated", element: "Water", rulingPlanet: "Moon", strength: "Intuition", weakness: "Moodiness" },
+        "leo": { sunSign: "Leo", moonSign: "To be calculated", risingSign: "To be calculated", element: "Fire", rulingPlanet: "Sun", strength: "Leadership", weakness: "Pride" },
+        "virgo": { sunSign: "Virgo", moonSign: "To be calculated", risingSign: "To be calculated", element: "Earth", rulingPlanet: "Mercury", strength: "Analytical", weakness: "Overcritical" },
+        "libra": { sunSign: "Libra", moonSign: "To be calculated", risingSign: "To be calculated", element: "Air", rulingPlanet: "Venus", strength: "Diplomacy", weakness: "Indecisive" },
+        "scorpio": { sunSign: "Scorpio", moonSign: "To be calculated", risingSign: "To be calculated", element: "Water", rulingPlanet: "Pluto", strength: "Passion", weakness: "Jealousy" },
+        "sagittarius": { sunSign: "Sagittarius", moonSign: "To be calculated", risingSign: "To be calculated", element: "Fire", rulingPlanet: "Jupiter", strength: "Optimism", weakness: "Impatience" },
+        "capricorn": { sunSign: "Capricorn", moonSign: "To be calculated", risingSign: "To be calculated", element: "Earth", rulingPlanet: "Saturn", strength: "Discipline", weakness: "Pessimism" },
+        "aquarius": { sunSign: "Aquarius", moonSign: "To be calculated", risingSign: "To be calculated", element: "Air", rulingPlanet: "Uranus", strength: "Innovation", weakness: "Detachment" },
+        "pisces": { sunSign: "Pisces", moonSign: "To be calculated", risingSign: "To be calculated", element: "Water", rulingPlanet: "Neptune", strength: "Compassion", weakness: "Escapism" }
+    };
+
+    // Initialize birthday dropdowns
+    function initBirthdayDropdowns() {
+        const daySelect = document.getElementById("birthDay");
+        for (let i = 1; i <= 31; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            daySelect.appendChild(option);
+        }
+        const monthSelect = document.getElementById("birthMonth");
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        months.forEach((m, idx) => {
+            const option = document.createElement("option");
+            option.value = idx + 1;
+            option.textContent = m;
+            monthSelect.appendChild(option);
+        });
+        const yearSelect = document.getElementById("birthYear");
+        for (let i = 2024; i >= 1900; i--) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option);
+        }
+    }
+
     let userPredictions = JSON.parse(localStorage.getItem("shivanetra_predictions"));
     if (!userPredictions) {
         userPredictions = JSON.parse(JSON.stringify(defaultPredictions));
+        userPredictions.natal = JSON.parse(JSON.stringify(natalTemplate));
     }
 
     let currentTab = "today";
     let currentSignId = "";
     let currentUser = { name: "", birthday: "", location: "" };
 
-    // Helper functions
     function showMessage(msg) {
         const msgDiv = document.getElementById("message");
         msgDiv.textContent = msg;
@@ -430,19 +400,17 @@
         });
     }
 
-    // Load signs dropdown
     function loadSigns() {
         const select = document.getElementById("signSelect");
         select.innerHTML = '<option value="">-- Select Your Zodiac Sign --</option>';
         signsData.zodiac_signs.forEach(sign => {
             const option = document.createElement("option");
             option.value = sign.id;
-            option.textContent = `${sign.name} (${sign.start_date})`;
+            option.textContent = `${sign.name} (${sign.element})`;
             select.appendChild(option);
         });
     }
 
-    // Render predictions
     function render() {
         if (!currentSignId) {
             document.getElementById("signTitle").innerText = "Select a sign above";
@@ -455,29 +423,48 @@
 
         if (!userPredictions[currentTab]) userPredictions[currentTab] = {};
         if (!userPredictions[currentTab][currentSignId]) {
-            userPredictions[currentTab][currentSignId] = { overall: "", love: "", career: "", health: "", travel: "", finance: "", luck: 50, color: "", number: "" };
+            if (currentTab === "natal") {
+                userPredictions[currentTab][currentSignId] = natalTemplate[currentSignId] || {};
+            } else {
+                userPredictions[currentTab][currentSignId] = { overall: "", love: "", career: "", health: "", travel: "", finance: "", luck: 50, color: "", number: "" };
+            }
         }
 
         let pred = userPredictions[currentTab][currentSignId];
-        const categories = [
-            { key: "overall", label: "🌟 Overall", icon: "🔮" },
-            { key: "love", label: "❤️ Love", icon: "💕" },
-            { key: "career", label: "💼 Career", icon: "📈" },
-            { key: "health", label: "🏃 Health", icon: "💪" },
-            { key: "travel", label: "✈️ Travel", icon: "🌍" },
-            { key: "finance", label: "💰 Finance", icon: "💵" },
-            { key: "color", label: "🎨 Lucky Color", icon: "🌈" },
-            { key: "number", label: "🔢 Lucky Number", icon: "🔢" }
-        ];
+        
+        let categories = [];
+        if (currentTab === "natal") {
+            categories = [
+                { key: "sunSign", label: "☀️ Sun Sign", icon: "☀️" },
+                { key: "moonSign", label: "🌙 Moon Sign", icon: "🌙" },
+                { key: "risingSign", label: "⬆️ Rising Sign", icon: "⬆️" },
+                { key: "element", label: "🔥 Element", icon: "🔥" },
+                { key: "rulingPlanet", label: "🪐 Ruling Planet", icon: "🪐" },
+                { key: "strength", label: "💪 Strength", icon: "💪" },
+                { key: "weakness", label: "⚠️ Weakness", icon: "⚠️" }
+            ];
+        } else {
+            categories = [
+                { key: "overall", label: "🌟 Overall", icon: "🔮" },
+                { key: "love", label: "❤️ Love", icon: "💕" },
+                { key: "career", label: "💼 Career", icon: "📈" },
+                { key: "health", label: "🏃 Health", icon: "💪" },
+                { key: "travel", label: "✈️ Travel", icon: "🌍" },
+                { key: "finance", label: "💰 Finance", icon: "💵" },
+                { key: "color", label: "🎨 Lucky Color", icon: "🌈" },
+                { key: "number", label: "🔢 Lucky Number", icon: "🔢" }
+            ];
+        }
 
         let html = `<div class="category-grid">`;
         categories.forEach(cat => {
             let value = pred[cat.key] || "";
-            if (cat.key === "luck") value = pred.luck || 50;
-            if (cat.key === "color" || cat.key === "number") {
+            if (cat.key === "luck" && currentTab !== "natal") value = pred.luck || 50;
+            
+            if (cat.key === "color" || cat.key === "number" || currentTab === "natal") {
                 html += `<div class="category"><h3>${cat.icon} ${cat.label}</h3>
                         <input type="text" data-field="${cat.key}" value="${escapeHtml(value)}"></div>`;
-            } else if (cat.key === "luck") {
+            } else if (cat.key === "luck" && currentTab !== "natal") {
                 html += `<div class="category"><h3>${cat.icon} ${cat.label} (0-100)</h3>
                         <input type="range" data-field="${cat.key}" min="0" max="100" value="${value}">
                         <span id="luckValue">${value}%</span></div>`;
@@ -486,7 +473,12 @@
                         <textarea data-field="${cat.key}" rows="3">${escapeHtml(value)}</textarea></div>`;
             }
         });
-        html += `</div><div class="chart-row"><span>🍀 Luck Meter</span><div class="meter"><div class="meter-fill" style="width:${pred.luck || 50}%"></div></div><span>${pred.luck || 50}%</span></div>`;
+        html += `</div>`;
+        
+        if (currentTab !== "natal") {
+            html += `<div class="chart-row"><span>🍀 Luck Meter</span><div class="meter"><div class="meter-fill" style="width:${pred.luck || 50}%"></div></div><span>${pred.luck || 50}%</span></div>`;
+        }
+        
         document.getElementById("categoryContainer").innerHTML = html;
 
         document.querySelectorAll("[data-field]").forEach(input => {
@@ -501,6 +493,7 @@
                     const fill = document.querySelector(".meter-fill");
                     if (fill) fill.style.width = newVal + "%";
                 }
+                localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
             });
             if (input.type === "range") {
                 input.addEventListener("input", function() {
@@ -511,47 +504,41 @@
         });
     }
 
-    // Get formatted prediction text for sharing
-    function getFormattedPrediction() {
-        if (!currentSignId) return "No sign selected";
-        const sign = signsData.zodiac_signs.find(s => s.id === currentSignId);
-        const pred = userPredictions[currentTab]?.[currentSignId] || {};
-        return `🔮 SHIVANETRA HOROSCOPE 🔮
-━━━━━━━━━━━━━━━━━━━━━
-👤 Name: ${currentUser.name || "Guest"}
-📍 Location: ${currentUser.location || "Unknown"}
-📅 Date: ${new Date().toLocaleDateString()}
-⭐ Sign: ${sign?.name || "Unknown"} (${currentTab.toUpperCase()})
-━━━━━━━━━━━━━━━━━━━━━
-🌟 Overall: ${pred.overall || "Not set"}
-❤️ Love: ${pred.love || "Not set"}
-💼 Career: ${pred.career || "Not set"}
-🏃 Health: ${pred.health || "Not set"}
-✈️ Travel: ${pred.travel || "Not set"}
-💰 Finance: ${pred.finance || "Not set"}
-🍀 Luck: ${pred.luck || 50}%
-🎨 Lucky Color: ${pred.color || "Not set"}
-🔢 Lucky Number: ${pred.number || "Not set"}
-━━━━━━━━━━━━━━━━━━━━━
-✨ Shivanetra - Your Cosmic Guide ✨`;
-    }
-
-    // Event Listeners
+    // Save & Enter button
     document.getElementById("enterBtn").addEventListener("click", () => {
+        const day = document.getElementById("birthDay").value;
+        const month = document.getElementById("birthMonth").value;
+        const year = document.getElementById("birthYear").value;
+        const birthday = `${day}/${month}/${year}`;
+        
         currentUser = {
             name: document.getElementById("userName").value || "Guest",
-            birthday: document.getElementById("userBirthday").value || "Not set",
+            birthday: birthday,
             location: document.getElementById("userLocation").value || "Unknown"
         };
-        document.getElementById("landingPage").style.display = "none";
+        
+        localStorage.setItem("shivanetra_user", JSON.stringify(currentUser));
+        document.getElementById("landingSection").style.display = "none";
         document.getElementById("mainApp").style.display = "block";
-        document.getElementById("userInfoBar").innerHTML = `👤 ${currentUser.name} | 📍 ${currentUser.location} | 🎂 ${currentUser.birthday}`;
-        showMessage(`Welcome ${currentUser.name}! ✨`);
+        document.getElementById("userBar").innerHTML = `👤 ${currentUser.name} | 📍 ${currentUser.location} | 🎂 ${currentUser.birthday}`;
+        showMessage(`Welcome ${currentUser.name}! Predictions saved. ✨`);
     });
+
+    // Load saved user if exists
+    const savedUser = localStorage.getItem("shivanetra_user");
+    if (savedUser) {
+        const user = JSON.parse(savedUser);
+        if (user.name && user.name !== "Guest") {
+            document.getElementById("landingSection").style.display = "none";
+            document.getElementById("mainApp").style.display = "block";
+            document.getElementById("userBar").innerHTML = `👤 ${user.name} | 📍 ${user.location} | 🎂 ${user.birthday}`;
+            currentUser = user;
+        }
+    }
 
     document.getElementById("saveBtn").addEventListener("click", () => {
         localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
-        showMessage("✅ Predictions saved!");
+        showMessage("✅ All predictions saved!");
     });
 
     document.getElementById("downloadBtn").addEventListener("click", () => {
@@ -560,47 +547,10 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `shivanetra_predictions_${currentUser.name}.json`;
+        a.download = `shivanetra_predictions_${currentUser.name || "user"}.json`;
         a.click();
         URL.revokeObjectURL(url);
         showMessage("📥 JSON downloaded!");
-    });
-
-    document.getElementById("downloadHtmlBtn").addEventListener("click", () => {
-        const htmlContent = `<!DOCTYPE html>
-<html>
-<head><title>Shivanetra - ${currentUser.name}'s Horoscope</title>
-<style>body{font-family:Arial;background:#1a1a2e;color:#fff;padding:20px}</style>
-</head>
-<body>
-<h1>✨ Shivanetra Horoscope ✨</h1>
-<p>User: ${currentUser.name}</p>
-<p>Location: ${currentUser.location}</p>
-<p>Birthday: ${currentUser.birthday}</p>
-<p>Date: ${new Date().toLocaleString()}</p>
-<pre>${getFormattedPrediction()}</pre>
-<footer>Generated by Shivanetra Pro</footer>
-</body>
-</html>`;
-        const blob = new Blob([htmlContent], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `shivanetra_${currentUser.name}_horoscope.html`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showMessage("📄 HTML downloaded!");
-    });
-
-    document.getElementById("shareWhatsAppBtn").addEventListener("click", () => {
-        const msg = getFormattedPrediction();
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-
-    document.getElementById("emailBtn").addEventListener("click", () => {
-        const subject = `Shivanetra Horoscope for ${currentUser.name} - ${currentTab}`;
-        const body = getFormattedPrediction();
-        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
 
     document.getElementById("signSelect").addEventListener("change", (e) => {
@@ -617,7 +567,9 @@
         });
     });
 
+    initBirthdayDropdowns();
     loadSigns();
+    render();
 </script>
 </body>
 </html>
