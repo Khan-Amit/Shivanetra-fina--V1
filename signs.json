@@ -1,0 +1,16 @@
+{
+  "zodiac_signs": [
+    { "id": "aries", "name": "Aries", "symbol": "Ram", "start_date": "Mar 21", "end_date": "Apr 19" },
+    { "id": "taurus", "name": "Taurus", "symbol": "Bull", "start_date": "Apr 20", "end_date": "May 20" },
+    { "id": "gemini", "name": "Gemini", "symbol": "Twins", "start_date": "May 21", "end_date": "Jun 20" },
+    { "id": "cancer", "name": "Cancer", "symbol": "Crab", "start_date": "Jun 21", "end_date": "Jul 22" },
+    { "id": "leo", "name": "Leo", "symbol": "Lion", "start_date": "Jul 23", "end_date": "Aug 22" },
+    { "id": "virgo", "name": "Virgo", "symbol": "Virgin", "start_date": "Aug 23", "end_date": "Sep 22" },
+    { "id": "libra", "name": "Libra", "symbol": "Scales", "start_date": "Sep 23", "end_date": "Oct 22" },
+    { "id": "scorpio", "name": "Scorpio", "symbol": "Scorpion", "start_date": "Oct 23", "end_date": "Nov 21" },
+    { "id": "sagittarius", "name": "Sagittarius", "symbol": "Archer", "start_date": "Nov 22", "end_date": "Dec 21" },
+    { "id": "capricorn", "name": "Capricorn", "symbol": "Goat", "start_date": "Dec 22", "end_date": "Jan 19" },
+    { "id": "aquarius", "name": "Aquarius", "symbol": "Water Bearer", "start_date": "Jan 20", "end_date": "Feb 18" },
+    { "id": "pisces", "name": "Pisces", "symbol": "Fish", "start_date": "Feb 19", "end_date": "Mar 20" }
+  ]
+}
