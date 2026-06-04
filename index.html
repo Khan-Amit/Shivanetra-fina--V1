@@ -1,240 +1,654 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shivanetra Horoscope</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shivanetra – Real Astrology & Nakshatra</title>
     <style>
-        body {
-            background: #1a1a2e;
-            color: white;
-            font-family: Arial;
-            padding: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container { max-width: 800px; margin: auto; }
-        .page {
-            background: rgba(255,255,255,0.1);
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
             padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffd89b;
+        }
+        /* Landing page */
+        .landing {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .landing h2 {
+            margin-bottom: 20px;
+            color: #ffd89b;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffd89b;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+        }
+        .birthday-group {
+            display: flex;
+            gap: 10px;
         }
         button {
             background: #ff6b6b;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 30px;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
             margin: 5px;
+            transition: 0.2s;
         }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            border-radius: 8px;
-            border: none;
+        button:hover {
+            transform: scale(1.02);
+            background: #ff5252;
         }
-        .nav {
+        /* Main app */
+        .main-app {
+            display: none;
+        }
+        .user-bar {
+            background: #0f3460;
+            padding: 12px 20px;
+            border-radius: 15px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .change-user {
+            background: #ff9800;
+            padding: 8px 18px;
+            font-size: 14px;
+        }
+        .sign-select {
+            text-align: center;
             margin: 20px 0;
         }
-        .page-content { display: none; }
-        .page-content.active { display: block; }
+        select {
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #0f3460;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .page-indicator {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+        .page {
+            display: none;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .page.active {
+            display: block;
+        }
+        .page h2 {
+            color: #ffd89b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .grid-2, .grid-3 {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .grid-2 { grid-template-columns: repeat(2,1fr); }
+        .grid-3 { grid-template-columns: repeat(3,1fr); }
+        .card {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 12px;
+        }
+        .card h3 {
+            color: #ffd89b;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .card input, .card textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+        }
+        .luck-slider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .luck-slider input { flex:1; }
+        .gemini-box {
+            background: #ff6b6b;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4caf50;
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        @media (max-width: 700px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <h1>✨ Shivanetra Horoscope ✨</h1>
+    <h1>✨ Shivanetra – Vedic Astrology ✨</h1>
 
-    <!-- LANDING -->
-    <div id="landing" class="page">
-        <h2>Enter Your Details</h2>
-        <input type="text" id="name" placeholder="Your Name">
-        <input type="text" id="location" placeholder="Location (Dhaka, New York, etc)">
-        <div style="display:flex; gap:10px; margin:10px 0;">
-            <select id="day"><option>Day</option></select>
-            <select id="month"><option>Month</option></select>
-            <select id="year"><option>Year</option></select>
+    <!-- LANDING PAGE -->
+    <div id="landingPage" class="landing">
+        <h2>Enter Your Birth Details</h2>
+        <div class="form-group">
+            <label>🌟 Your Name</label>
+            <input type="text" id="userName" placeholder="e.g., Selim Ahmed">
         </div>
-        <button onclick="enterApp()">🔮 Enter Horoscope</button>
+        <div class="form-group">
+            <label>🎂 Birthday</label>
+            <div class="birthday-group">
+                <select id="daySelect"><option value="">Day</option></select>
+                <select id="monthSelect"><option value="">Month</option></select>
+                <select id="yearSelect"><option value="">Year</option></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>📍 Location</label>
+            <input type="text" id="locationInput" placeholder="Dhaka, New York, London">
+        </div>
+        <button id="enterBtn" style="width:100%">🔮 Enter Horoscope 🔮</button>
     </div>
 
     <!-- MAIN APP -->
-    <div id="app" style="display:none;">
-        <div id="userInfo" style="background:#0f3460; padding:10px; border-radius:10px; margin:10px 0;"></div>
-        
-        <select id="sign" onchange="loadPredictions()">
-            <option value="aries">Aries</option><option value="taurus">Taurus</option>
-            <option value="gemini" selected>Gemini</option><option value="cancer">Cancer</option>
-            <option value="leo">Leo</option><option value="virgo">Virgo</option>
-            <option value="libra">Libra</option><option value="scorpio">Scorpio</option>
-            <option value="sagittarius">Sagittarius</option><option value="capricorn">Capricorn</option>
-            <option value="aquarius">Aquarius</option><option value="pisces">Pisces</option>
-        </select>
+    <div id="mainApp" class="main-app">
+        <div class="user-bar">
+            <span id="userInfoDisplay"></span>
+            <button id="changeUserBtn" class="change-user">🔄 Change User</button>
+        </div>
 
-        <div class="nav">
-            <button id="prevBtn" onclick="changePage(-1)">◀ Previous</button>
-            <span id="pageIndicator">Page 1 of 5</span>
-            <button id="nextBtn" onclick="changePage(1)">Next ▶</button>
+        <div class="sign-select">
+            <select id="zodiacSelect">
+                <option value="aries">♈ Aries</option><option value="taurus">♉ Taurus</option>
+                <option value="gemini" selected>♊ Gemini</option><option value="cancer">♋ Cancer</option>
+                <option value="leo">♌ Leo</option><option value="virgo">♍ Virgo</option>
+                <option value="libra">♎ Libra</option><option value="scorpio">♏ Scorpio</option>
+                <option value="sagittarius">♐ Sagittarius</option><option value="capricorn">♑ Capricorn</option>
+                <option value="aquarius">♒ Aquarius</option><option value="pisces">♓ Pisces</option>
+            </select>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="prevBtn">◀ Previous</button>
+            <span class="page-indicator" id="pageIndicator">Page 1 of 5</span>
+            <button id="nextBtn">Next ▶</button>
         </div>
 
         <!-- PAGE 1: TODAY -->
-        <div id="page1" class="page-content active">
-            <h2>📅 Today's Horoscope</h2>
-            <div id="todayBox"></div>
+        <div id="page1" class="page active">
+            <h2>📅 TODAY'S HOROSCOPE</h2>
+            <div id="todayContainer" class="grid-2"></div>
         </div>
 
-        <!-- PAGE 2: DAILY -->
-        <div id="page2" class="page-content">
-            <h2>⭐ Daily Prediction</h2>
-            <div style="background:#ff6b6b; padding:15px; border-radius:15px;">
-                <h3>✨ Gemini Overall</h3>
-                <p id="geminiOverallText">Loading...</p>
+        <!-- PAGE 2: DAILY (with Gemini box) -->
+        <div id="page2" class="page">
+            <h2>⭐ DAILY PREDICTION</h2>
+            <div class="gemini-box">
+                <h3>🌟 GEMINI OVERALL</h3>
+                <p id="geminiOverallText">Loading from API...</p>
             </div>
-            <div id="dailyBox"></div>
+            <div id="dailyContainer" class="grid-2"></div>
         </div>
 
-        <!-- PAGE 3: NATAL CHART -->
-        <div id="page3" class="page-content">
-            <h2>⭐ Natal Chart</h2>
-            <div id="natalBox"></div>
+        <!-- PAGE 3: NATAL CHART + NAKSHATRA -->
+        <div id="page3" class="page">
+            <h2>⭐ NATAL CHART & NAKSHATRA</h2>
+            <div id="natalContainer" class="grid-3"></div>
         </div>
 
         <!-- PAGE 4: WEEKLY -->
-        <div id="page4" class="page-content">
-            <h2>📆 Weekly Horoscope</h2>
-            <div id="weeklyBox"></div>
+        <div id="page4" class="page">
+            <h2>📆 WEEKLY HOROSCOPE</h2>
+            <div id="weeklyContainer" class="grid-2"></div>
         </div>
 
         <!-- PAGE 5: MONTHLY -->
-        <div id="page5" class="page-content">
-            <h2>🌙 Monthly Horoscope</h2>
-            <div id="monthlyBox"></div>
+        <div id="page5" class="page">
+            <h2>🌙 MONTHLY HOROSCOPE</h2>
+            <div id="monthlyContainer" class="grid-2"></div>
         </div>
 
-        <div style="text-align:center; margin-top:20px;">
-            <button onclick="saveAll()">💾 Save All</button>
-            <button onclick="downloadPage()">📄 Download Complete Page</button>
+        <div class="action-buttons">
+            <button id="saveBtn">💾 Save All Data</button>
+            <!-- Each page will have its own download button, created dynamically -->
         </div>
     </div>
 </div>
+<div id="message" class="message"></div>
 
 <script>
-    // Default data structure
-    let data = {
-        today: {}, daily: {}, natal: {}, weekly: {}, monthly: {}
-    };
-    
-    let currentSign = "gemini";
-    let currentPage = 1;
-    let userName = "", userLocation = "", userBirthday = "";
-
-    // Populate day/month/year dropdowns
-    function initBirthdays() {
-        for(let i=1;i<=31;i++) document.getElementById("day").innerHTML += `<option value="${i}">${i}</option>`;
-        for(let i=1;i<=12;i++) document.getElementById("month").innerHTML += `<option value="${i}">${i}</option>`;
-        for(let i=2024;i>=1900;i--) document.getElementById("year").innerHTML += `<option value="${i}">${i}</option>`;
+    // --------------------------------------------------------------
+    // 1. NAKSHATRA CALCULATOR (based on Moon's approximate longitude)
+    //    Uses a simplified method: Moon moves ~13.2° per day.
+    //    For demo, we map date to a Nakshatra index (0-26).
+    // --------------------------------------------------------------
+    const nakshatraNames = [
+        "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu",
+        "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta",
+        "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha",
+        "Uttara Ashadha", "Shravana", "Dhanishtha", "Shatabhisha", "Purva Bhadrapada",
+        "Uttara Bhadrapada", "Revati"
+    ];
+    const nakshatraRulers = [
+        "Ketu", "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter",
+        "Saturn", "Mercury", "Ketu", "Venus", "Sun", "Moon",
+        "Mars", "Rahu", "Jupiter", "Saturn", "Mercury", "Ketu",
+        "Venus", "Sun", "Moon", "Mars", "Rahu", "Jupiter", "Saturn", "Mercury"
+    ];
+    // Get Nakshatra index from a Date object (approximate)
+    function getNakshatraIndex(date) {
+        // Base date: 2000-01-01 -> Ashwini (index 0) approx
+        const base = new Date(2000, 0, 1);
+        const diffDays = Math.floor((date - base) / (1000 * 60 * 60 * 24));
+        // Each Nakshatra lasts ~13.2 days, so cycle = 27 * 13.2 = 356.4 days
+        let idx = Math.floor((diffDays % 356.4) / 13.2) % 27;
+        return idx;
     }
 
-    // Generate default data for all signs
-    const signs = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"];
-    signs.forEach(s => {
-        data.today[s] = { overall:"Great energy", love:"Romantic", career:"New chance", health:"Good", travel:"Short trip", finance:"Stable", luck:85, color:"Red", number:"7" };
-        data.daily[s] = { overall:s=="gemini"?"Gemini: Curious, communicative, energetic!":"Productive day", love:"Sweet moments", career:"Progress", health:"Active", travel:"Local", finance:"Save", luck:75, color:"Yellow", number:"3" };
-        data.natal[s] = { sunSign:s.charAt(0).toUpperCase()+s.slice(1), moonSign:"Cancer", risingSign:"Libra", element:s=="aries"||s=="leo"||s=="sagittarius"?"Fire":s=="taurus"||s=="virgo"||s=="capricorn"?"Earth":s=="gemini"||s=="libra"||s=="aquarius"?"Air":"Water", rulingPlanet:s=="aries"?"Mars":"Venus", strength:"Adaptable", weakness:"Restless" };
-        data.weekly[s] = { overall:"Good week", love:"Romance blooms", career:"Success", health:"Rest", travel:"Weekend trip", finance:"Grows", luck:80, color:"Gold", number:"5" };
-        data.monthly[s] = { overall:"Transformative", love:"Deep connection", career:"Promotion", health:"High energy", travel:"Long journey", finance:"Wealth", luck:85, color:"Blue", number:"9" };
+    // Sun sign from date
+    function getSunSign(month, day) {
+        if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Aries";
+        if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Taurus";
+        if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Gemini";
+        if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Cancer";
+        if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Leo";
+        if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Virgo";
+        if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Libra";
+        if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Scorpio";
+        if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "Sagittarius";
+        if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "Capricorn";
+        if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "Aquarius";
+        return "Pisces";
+    }
+
+    // Moon sign approximation (simple: uses day of month, not accurate but demo)
+    function getMoonSign(day, month) {
+        const signs = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+        let idx = (day + month * 3) % 12;
+        return signs[idx];
+    }
+
+    // --------------------------------------------------------------
+    // 2. API CALLS (Aztro – free, no key)
+    // --------------------------------------------------------------
+    async function fetchHoroscope(sign, type) {
+        // type: 'today', 'tomorrow', 'weekly', 'monthly' – Aztro only supports today/tomorrow.
+        // For weekly/monthly we'll use today's text with a prefix.
+        const endpoint = `https://aztro.sameerkumar.website/?sign=${sign}&day=today`;
+        try {
+            let response = await fetch(endpoint, { method: 'POST' });
+            let data = await response.json();
+            if (type === 'today') return data.description;
+            if (type === 'tomorrow') return "Tomorrow's focus: " + data.description.slice(0,100)+"...";
+            if (type === 'weekly') return "Weekly trend: " + data.description.slice(0,120)+" – stay positive.";
+            return "Monthly overview: " + data.description.slice(0,140)+" – great opportunities ahead.";
+        } catch(e) {
+            return "Could not load prediction. Check network.";
+        }
+    }
+
+    // --------------------------------------------------------------
+    // 3. GLOBAL DATA & STATE
+    // --------------------------------------------------------------
+    let userData = {
+        today: {}, daily: {}, natal: {}, weekly: {}, monthly: {}
+    };
+    const signsList = ["aries","taurus","gemini","cancer","leo","virgo","libra","scorpio","sagittarius","capricorn","aquarius","pisces"];
+    // Default fallback data (in case API fails)
+    signsList.forEach(s => {
+        userData.today[s] = { overall:"", love:"", career:"", health:"", travel:"", finance:"", luck:70, color:"Gold", number:"7" };
+        userData.daily[s] = { overall:"", love:"", career:"", health:"", travel:"", finance:"", luck:70, color:"Amber", number:"3" };
+        userData.natal[s] = { sunSign:"", moonSign:"", nakshatra:"", nakshatraRuler:"", element:"", rulingPlanet:"", strength:"", weakness:"" };
+        userData.weekly[s] = { overall:"", love:"", career:"", health:"", travel:"", finance:"", luck:70, color:"Silver", number:"5" };
+        userData.monthly[s] = { overall:"", love:"", career:"", health:"", travel:"", finance:"", luck:70, color:"Blue", number:"9" };
     });
 
-    function escapeHtml(str) { return String(str || "").replace(/[&<>]/g, m => m=="&"?"&amp;":m=="<"?"&lt;":"&gt;"); }
+    let currentSign = "gemini";
+    let currentPage = 1;
+    let currentUser = { name: "", birthday: "", location: "", birthDateObj: null };
 
-    function renderBox(containerId, type, fields, showLuck) {
-        let pred = data[type][currentSign] || {};
-        let html = `<div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">`;
+    // Helper
+    function showMessage(msg) {
+        let msgDiv = document.getElementById("message");
+        msgDiv.textContent = msg;
+        msgDiv.style.display = "block";
+        setTimeout(() => msgDiv.style.display = "none", 2500);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return String(str).replace(/[&<>]/g, m => m==="&"?"&amp;":m==="<"?"&lt;":"&gt;");
+    }
+
+    // Render any page (fields array, columns)
+    function renderPage(containerId, type, fields, columns, showLuck=true) {
+        let container = document.getElementById(containerId);
+        if (!container) return;
+        let pred = userData[type]?.[currentSign] || {};
+        let html = `<div class="grid-${columns}">`;
         fields.forEach(f => {
             let val = pred[f];
-            if(f=="luck") val = pred.luck || 50;
-            if(f=="color" || f=="number") {
-                html += `<div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px;">
-                            <strong>${f.toUpperCase()}</strong><br>
-                            <input type="text" value="${escapeHtml(val)}" onchange="updateData('${type}','${f}',this.value)">
-                        </div>`;
-            } else if(f=="luck" && showLuck) {
-                html += `<div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px;">
-                            <strong>LUCK</strong><br>
-                            <input type="range" min="0" max="100" value="${val}" oninput="this.nextElementSibling.innerText=this.value+'%'" onchange="updateData('${type}','luck',this.value)">
-                            <span>${val}%</span>
-                        </div>`;
+            if (val === undefined) val = "";
+            if (f === "luck") val = pred.luck || 70;
+            if (f === "color" || f === "number") {
+                html += `<div class="card"><h3>${f.toUpperCase()}</h3><input type="text" value="${escapeHtml(val)}" data-type="${type}" data-field="${f}"></div>`;
+            } else if (f === "luck" && showLuck) {
+                html += `<div class="card"><h3>LUCK</h3><div class="luck-slider"><input type="range" min="0" max="100" value="${val}" data-type="${type}" data-field="luck"><span class="luck-val">${val}%</span></div></div>`;
             } else {
-                html += `<div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px;">
-                            <strong>${f.toUpperCase()}</strong><br>
-                            <textarea rows="2" onchange="updateData('${type}','${f}',this.value)">${escapeHtml(val)}</textarea>
-                        </div>`;
+                html += `<div class="card"><h3>${f.toUpperCase()}</h3><textarea rows="2" data-type="${type}" data-field="${f}">${escapeHtml(val)}</textarea></div>`;
             }
         });
         html += `</div>`;
-        document.getElementById(containerId).innerHTML = html;
+        container.innerHTML = html;
+        // attach events
+        container.querySelectorAll("input, textarea").forEach(el => {
+            el.addEventListener("change", function() {
+                let t = this.getAttribute("data-type");
+                let f = this.getAttribute("data-field");
+                let newVal = this.value;
+                if (f === "luck") newVal = parseInt(newVal);
+                if (!userData[t]) userData[t] = {};
+                if (!userData[t][currentSign]) userData[t][currentSign] = {};
+                userData[t][currentSign][f] = newVal;
+                if (f === "luck") {
+                    let parent = this.closest(".card");
+                    if (parent) {
+                        let span = parent.querySelector(".luck-val");
+                        if (span) span.innerText = newVal + "%";
+                    }
+                }
+            });
+            if (el.type === "range") {
+                el.addEventListener("input", function() {
+                    let parent = this.closest(".card");
+                    if (parent) {
+                        let span = parent.querySelector(".luck-val");
+                        if (span) span.innerText = this.value + "%";
+                    }
+                });
+            }
+        });
     }
 
-    function loadPredictions() {
-        currentSign = document.getElementById("sign").value;
-        renderBox("todayBox", "today", ["overall","love","career","health","travel","finance","color","number"], true);
-        renderBox("dailyBox", "daily", ["overall","love","career","health","travel","finance","color","number"], true);
-        renderBox("natalBox", "natal", ["sunSign","moonSign","risingSign","element","rulingPlanet","strength","weakness"], false);
-        renderBox("weeklyBox", "weekly", ["overall","love","career","health","travel","finance","color","number","luck"], true);
-        renderBox("monthlyBox", "monthly", ["overall","love","career","health","travel","finance","color","number","luck"], true);
-        
-        let geminiDaily = data.daily.gemini?.overall || "Gemini: Curious mind today!";
-        document.getElementById("geminiOverallText").innerText = geminiDaily;
+    // Load real API data for today/daily/weekly/monthly
+    async function refreshAPIData() {
+        let signEnglish = document.getElementById("zodiacSelect").options[document.getElementById("zodiacSelect").selectedIndex]?.text.split(" ")[0].toLowerCase();
+        if (!signEnglish) signEnglish = currentSign;
+        try {
+            let todayText = await fetchHoroscope(signEnglish, "today");
+            let tomorrowText = await fetchHoroscope(signEnglish, "tomorrow");
+            let weeklyText = await fetchHoroscope(signEnglish, "weekly");
+            let monthlyText = await fetchHoroscope(signEnglish, "monthly");
+            // update userData for current sign
+            if (!userData.today[currentSign]) userData.today[currentSign] = {};
+            if (!userData.daily[currentSign]) userData.daily[currentSign] = {};
+            if (!userData.weekly[currentSign]) userData.weekly[currentSign] = {};
+            if (!userData.monthly[currentSign]) userData.monthly[currentSign] = {};
+            userData.today[currentSign].overall = todayText;
+            userData.daily[currentSign].overall = todayText;
+            userData.weekly[currentSign].overall = weeklyText;
+            userData.monthly[currentSign].overall = monthlyText;
+            // also update gemini overall box (page2)
+            if (currentSign === "gemini") {
+                document.getElementById("geminiOverallText").innerText = todayText;
+            } else {
+                // still show gemini's own data
+                let geminiText = await fetchHoroscope("gemini", "today");
+                document.getElementById("geminiOverallText").innerText = geminiText;
+            }
+            renderAllPages();
+        } catch(e) { console.log("API error", e); }
     }
 
-    function updateData(type, field, value) {
-        if(!data[type][currentSign]) data[type][currentSign] = {};
-        data[type][currentSign][field] = field=="luck" ? parseInt(value) : value;
+    // Render Natal Chart with Nakshatra from birthday
+    function renderNatalChart() {
+        let birthDate = currentUser.birthDateObj;
+        let sun = "", moon = "", nakshatra = "", nakshatraRuler = "", element = "", rulingPlanet = "";
+        if (birthDate) {
+            let day = birthDate.getDate();
+            let month = birthDate.getMonth()+1;
+            sun = getSunSign(month, day);
+            moon = getMoonSign(day, month);
+            let nIdx = getNakshatraIndex(birthDate);
+            nakshatra = nakshatraNames[nIdx];
+            nakshatraRuler = nakshatraRulers[nIdx];
+            // element from sun sign
+            const fire = ["Aries","Leo","Sagittarius"]; const earth = ["Taurus","Virgo","Capricorn"];
+            const air = ["Gemini","Libra","Aquarius"]; const water = ["Cancer","Scorpio","Pisces"];
+            if (fire.includes(sun)) element = "Fire";
+            else if (earth.includes(sun)) element = "Earth";
+            else if (air.includes(sun)) element = "Air";
+            else element = "Water";
+            // ruling planet based on sun sign (simplified)
+            const planetMap = { Aries:"Mars", Taurus:"Venus", Gemini:"Mercury", Cancer:"Moon", Leo:"Sun", Virgo:"Mercury", Libra:"Venus", Scorpio:"Pluto", Sagittarius:"Jupiter", Capricorn:"Saturn", Aquarius:"Uranus", Pisces:"Neptune" };
+            rulingPlanet = planetMap[sun] || "Unknown";
+        } else {
+            sun = "Gemini"; moon = "Cancer"; nakshatra = "Ardra"; nakshatraRuler = "Rahu"; element = "Air"; rulingPlanet = "Mercury";
+        }
+        let pred = userData.natal[currentSign] || {};
+        pred.sunSign = sun;
+        pred.moonSign = moon;
+        pred.nakshatra = nakshatra;
+        pred.nakshatraRuler = nakshatraRuler;
+        pred.element = element;
+        pred.rulingPlanet = rulingPlanet;
+        pred.strength = pred.strength || "Adaptable";
+        pred.weakness = pred.weakness || "Restless";
+        userData.natal[currentSign] = pred;
+        // render natal page
+        let container = document.getElementById("natalContainer");
+        let html = `<div class="grid-3">`;
+        let fields = ["sunSign","moonSign","nakshatra","nakshatraRuler","element","rulingPlanet","strength","weakness"];
+        fields.forEach(f => {
+            let val = pred[f] || "";
+            html += `<div class="card"><h3>${f.replace(/([A-Z])/g, ' $1').toUpperCase()}</h3><input type="text" value="${escapeHtml(val)}" data-type="natal" data-field="${f}"></div>`;
+        });
+        html += `</div>`;
+        container.innerHTML = html;
+        // attach events for editable fields
+        container.querySelectorAll("input").forEach(el => {
+            el.addEventListener("change", function() {
+                let f = this.getAttribute("data-field");
+                userData.natal[currentSign][f] = this.value;
+            });
+        });
     }
 
-    function saveAll() { localStorage.setItem("shivanetraData", JSON.stringify(data)); alert("Saved!"); }
-    
-    function downloadPage() {
-        let html = document.documentElement.outerHTML;
+    function renderAllPages() {
+        renderPage("todayContainer", "today", ["overall","love","career","health","travel","finance","color","number"], 2, true);
+        renderPage("dailyContainer", "daily", ["overall","love","career","health","travel","finance","color","number"], 2, true);
+        renderNatalChart(); // special
+        renderPage("weeklyContainer", "weekly", ["overall","love","career","health","travel","finance","color","number","luck"], 2, true);
+        renderPage("monthlyContainer", "monthly", ["overall","love","career","health","travel","finance","color","number","luck"], 2, true);
+    }
+
+    function showPage(pageNum) {
+        for(let i=1;i<=5;i++) document.getElementById(`page${i}`).classList.remove("active");
+        document.getElementById(`page${pageNum}`).classList.add("active");
+        currentPage = pageNum;
+        document.getElementById("pageIndicator").innerText = `Page ${pageNum} of 5`;
+        document.getElementById("prevBtn").disabled = (pageNum===1);
+        document.getElementById("nextBtn").disabled = (pageNum===5);
+        // Add dynamic download buttons for each page
+        let actionDiv = document.querySelector(".action-buttons");
+        // remove existing page-specific download buttons
+        document.querySelectorAll(".page-download-btn").forEach(btn => btn.remove());
+        let btn = document.createElement("button");
+        btn.className = "page-download-btn";
+        btn.style.background = "#9c27b0";
+        btn.innerText = `📄 Download Page ${pageNum}`;
+        btn.onclick = () => downloadCurrentPage(pageNum);
+        actionDiv.appendChild(btn);
+    }
+
+    function downloadCurrentPage(pageNum) {
+        let pageDiv = document.getElementById(`page${pageNum}`);
+        let title = "";
+        if(pageNum===1) title="Today";
+        else if(pageNum===2) title="Daily";
+        else if(pageNum===3) title="Natal";
+        else if(pageNum===4) title="Weekly";
+        else title="Monthly";
+        let clone = pageDiv.cloneNode(true);
+        // remove event listeners from inputs (they become plain text)
+        clone.querySelectorAll("input, textarea").forEach(el => {
+            let val = el.value;
+            let newEl = document.createElement("div");
+            newEl.textContent = val;
+            newEl.style.whiteSpace = "pre-wrap";
+            el.parentNode.replaceChild(newEl, el);
+        });
+        let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shivanetra - ${title}</title><style>body{background:#1a1a2e;color:#fff;font-family:Arial;padding:20px;}.card{background:#0f3460;padding:12px;margin:8px;border-radius:12px;}</style></head><body><h1>✨ Shivanetra - ${title} ✨</h1><div>User: ${currentUser.name} | ${currentUser.location} | ${currentUser.birthday}</div>${clone.outerHTML}</body></html>`;
         let blob = new Blob([html], {type:"text/html"});
         let a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = `Shivanetra_${userName || "User"}_Complete.html`;
+        a.download = `Shivanetra_${currentUser.name}_${title}.html`;
         a.click();
         URL.revokeObjectURL(blob);
+        showMessage(`📄 Page ${pageNum} downloaded`);
     }
 
-    function changePage(delta) {
-        document.getElementById(`page${currentPage}`).classList.remove("active");
-        currentPage += delta;
-        if(currentPage<1) currentPage=1;
-        if(currentPage>5) currentPage=5;
-        document.getElementById(`page${currentPage}`).classList.add("active");
-        document.getElementById("pageIndicator").innerText = `Page ${currentPage} of 5`;
-        document.getElementById("prevBtn").disabled = currentPage==1;
-        document.getElementById("nextBtn").disabled = currentPage==5;
+    // Birthday dropdown init
+    function initBirthdays() {
+        let daySel = document.getElementById("daySelect");
+        for(let i=1;i<=31;i++) { let opt=document.createElement("option"); opt.value=i; opt.text=i; daySel.appendChild(opt); }
+        let monSel = document.getElementById("monthSelect");
+        ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach((m,i)=>{ let opt=document.createElement("option"); opt.value=i+1; opt.text=m; monSel.appendChild(opt); });
+        let yearSel = document.getElementById("yearSelect");
+        for(let i=2024;i>=1900;i--) { let opt=document.createElement("option"); opt.value=i; opt.text=i; yearSel.appendChild(opt); }
     }
 
-    function enterApp() {
-        userName = document.getElementById("name").value || "Guest";
-        let day = document.getElementById("day").value;
-        let month = document.getElementById("month").value;
-        let year = document.getElementById("year").value;
-        userBirthday = `${day}/${month}/${year}`;
-        userLocation = document.getElementById("location").value || "Unknown";
-        
-        let saved = localStorage.getItem("shivanetraData");
-        if(saved) data = JSON.parse(saved);
-        
-        document.getElementById("landing").style.display = "none";
-        document.getElementById("app").style.display = "block";
-        document.getElementById("userInfo").innerHTML = `👤 ${userName} | 📍 ${userLocation} | 🎂 ${userBirthday}`;
-        loadPredictions();
+    // Load saved data
+    function loadSaved() {
+        let savedData = localStorage.getItem("shivanetra_userData");
+        if(savedData) userData = JSON.parse(savedData);
+        let savedUser = localStorage.getItem("shivanetra_currentUser");
+        if(savedUser) {
+            currentUser = JSON.parse(savedUser);
+            if(currentUser.name && currentUser.name !== "") {
+                document.getElementById("landingPage").style.display = "none";
+                document.getElementById("mainApp").style.display = "block";
+                document.getElementById("userInfoDisplay").innerHTML = `👤 ${currentUser.name} | 📍 ${currentUser.location} | 🎂 ${currentUser.birthday}`;
+                renderAllPages();
+                refreshAPIData();
+            }
+        }
     }
+
+    // Event listeners
+    document.getElementById("enterBtn").addEventListener("click", () => {
+        let name = document.getElementById("userName").value;
+        if(!name) { showMessage("Please enter your name"); return; }
+        let day = parseInt(document.getElementById("daySelect").value);
+        let month = parseInt(document.getElementById("monthSelect").value);
+        let year = parseInt(document.getElementById("yearSelect").value);
+        if(!day || !month || !year) { showMessage("Select full birthday"); return; }
+        let location = document.getElementById("locationInput").value || "Unknown";
+        let birthDateObj = new Date(year, month-1, day);
+        currentUser = { name, birthday: `${day}/${month}/${year}`, location, birthDateObj };
+        localStorage.setItem("shivanetra_currentUser", JSON.stringify(currentUser));
+        localStorage.setItem("shivanetra_userData", JSON.stringify(userData));
+        document.getElementById("landingPage").style.display = "none";
+        document.getElementById("mainApp").style.display = "block";
+        document.getElementById("userInfoDisplay").innerHTML = `👤 ${name} | 📍 ${location} | 🎂 ${day}/${month}/${year}`;
+        renderAllPages();
+        refreshAPIData();
+        showMessage(`Welcome ${name}!`);
+    });
+
+    document.getElementById("changeUserBtn").addEventListener("click", () => {
+        document.getElementById("landingPage").style.display = "block";
+        document.getElementById("mainApp").style.display = "none";
+        document.getElementById("userName").value = "";
+        document.getElementById("locationInput").value = "";
+    });
+
+    document.getElementById("zodiacSelect").addEventListener("change", (e) => {
+        currentSign = e.target.value;
+        renderAllPages();
+        refreshAPIData();
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+        localStorage.setItem("shivanetra_userData", JSON.stringify(userData));
+        showMessage("✅ All data saved!");
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => { if(currentPage>1) showPage(currentPage-1); });
+    document.getElementById("nextBtn").addEventListener("click", () => { if(currentPage<5) showPage(currentPage+1); });
 
     initBirthdays();
+    loadSaved();
+    showPage(1);
 </script>
 </body>
 </html>
