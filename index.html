@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Shivanetra - Cal-X-SA Style Horoscope</title>
+    <title>Shivanetra - Complete Horoscope</title>
     <style>
         * {
             margin: 0;
@@ -96,7 +96,7 @@
         .main-app {
             display: none;
         }
-        /* Page Navigation - like Cal-X-SA */
+        /* Page Navigation */
         .page-nav {
             display: flex;
             justify-content: space-between;
@@ -216,7 +216,6 @@
             transform: scale(0.97);
         }
         .btn-save { background: #4caf50; color: white; }
-        .btn-download { background: #2196f3; color: white; }
         .btn-html { background: #9c27b0; color: white; }
         .user-bar {
             background: rgba(255,255,255,0.1);
@@ -244,6 +243,16 @@
             opacity: 0.6;
             font-size: 0.8rem;
         }
+        .gemini-highlight {
+            background: #ff6b6b;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .gemini-highlight h3 {
+            margin-bottom: 8px;
+        }
         @media (max-width: 650px) {
             .category-grid { grid-template-columns: 1fr; }
             .nav-btn { padding: 8px 16px; font-size: 0.8rem; }
@@ -253,7 +262,7 @@
 <body>
 <div class="container">
     <h1>✨ Shivanetra Horoscope ✨</h1>
-    <div class="sub">Cal-X-SA Style | 5 Pages | Next/Previous</div>
+    <div class="sub">Your Daily Cosmic Guide</div>
 
     <!-- LANDING SECTION -->
     <div id="landingSection" class="landing-card">
@@ -272,7 +281,7 @@
             </div>
             <div class="form-group">
                 <label>📍 Location</label>
-                <input type="text" id="userLocation" placeholder="e.g., Dhaka, New York">
+                <input type="text" id="userLocation" placeholder="e.g., Dhaka, New York, London">
             </div>
         </div>
         <button class="enter-btn" id="enterBtn">🔮 Save & Enter 🔮</button>
@@ -287,31 +296,43 @@
             </select>
         </div>
 
-        <!-- PAGE NAVIGATION (Next/Previous) -->
+        <!-- PAGE NAVIGATION -->
         <div class="page-nav">
             <button class="nav-btn" id="prevPageBtn" disabled>◀ Previous</button>
             <span class="page-indicator" id="pageIndicator">Page 1 / 5</span>
             <button class="nav-btn" id="nextPageBtn">Next ▶</button>
         </div>
 
-        <!-- 5 PAGES -->
+        <!-- PAGE 1: TODAY -->
         <div id="page1" class="page active-page">
             <h2>📅 TODAY'S HOROSCOPE</h2>
             <div id="todayContainer" class="category-grid"></div>
             <div id="todayMeter"></div>
         </div>
+
+        <!-- PAGE 2: DAILY PREDICTION with GEMINI OVERALL -->
         <div id="page2" class="page">
-            <h2>⭐ DAILY PREDICTION (GEMINI OVERALL)</h2>
+            <h2>⭐ DAILY PREDICTION</h2>
+            <div class="gemini-highlight" id="geminiOverallBox">
+                <h3>🌟 GEMINI OVERALL (Example)</h3>
+                <p id="geminiOverallText">Curious mind, excellent communication, double the energy today!</p>
+            </div>
             <div id="dailyContainer" class="category-grid"></div>
         </div>
+
+        <!-- PAGE 3: NATAL CHART -->
         <div id="page3" class="page">
             <h2>⭐ NATAL CHART</h2>
             <div id="natalContainer" class="category-grid"></div>
         </div>
+
+        <!-- PAGE 4: WEEKLY -->
         <div id="page4" class="page">
             <h2>📆 WEEKLY HOROSCOPE</h2>
             <div id="weeklyContainer" class="category-grid"></div>
         </div>
+
+        <!-- PAGE 5: MONTHLY -->
         <div id="page5" class="page">
             <h2>🌙 MONTHLY HOROSCOPE</h2>
             <div id="monthlyContainer" class="category-grid"></div>
@@ -319,16 +340,15 @@
 
         <div class="action-buttons">
             <button class="btn-save" id="saveBtn">💾 Save All</button>
-            <button class="btn-download" id="downloadBtn">📥 Download JSON</button>
-            <button class="btn-html" id="downloadHtmlBtn">📄 Download HTML</button>
+            <button class="btn-html" id="downloadHtmlBtn">📄 Download HTML Page</button>
         </div>
     </div>
-    <footer>Shivanetra • Page navigation • All data saves locally</footer>
+    <footer>Shivanetra • Use Next/Previous to navigate • All data saves automatically</footer>
 </div>
 <div id="message" class="message"></div>
 
 <script>
-    // ============ SIGNS ============
+    // ============ ZODIAC SIGNS ============
     const signsData = {
         "zodiac_signs": [
             { "id": "aries", "name": "Aries", "element": "Fire", "planet": "Mars" },
@@ -346,7 +366,7 @@
         ]
     };
 
-    // Default Data (Today, Daily, Natal, Weekly, Monthly)
+    // Default predictions for all signs
     const defaultData = {
         today: {},
         daily: {},
@@ -355,15 +375,14 @@
         monthly: {}
     };
 
+    // Fill with default values
     signsData.zodiac_signs.forEach(sign => {
-        defaultData.today[sign.id] = { overall: "Energetic day", love: "Romantic sparks", career: "New opportunity", health: "Great energy", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" };
-        defaultData.daily[sign.id] = { overall: "Curious and alert mind", love: "Flirty vibes", career: "Important meetings", health: "Rest needed", travel: "Exciting plans", finance: "Unexpected gain", luck: 90, color: "Yellow", number: "3" };
-        defaultData.natal[sign.id] = { sunSign: sign.name, moonSign: "Calculated", risingSign: "Calculated", element: sign.element, rulingPlanet: sign.planet, strength: "Adaptable", weakness: "Restless" };
-        defaultData.weekly[sign.id] = { overall: "Great week ahead", love: "Romance blooms", career: "Projects succeed", health: "Stay active", travel: "Weekend trip", finance: "Savings grow", luck: 80, color: "Gold", number: "5" };
-        defaultData.monthly[sign.id] = { overall: "Transformative month", love: "Deep connection", career: "Promotion likely", health: "Energy high", travel: "Long journey", finance: "Wealth increases", luck: 85, color: "Blue", number: "9" };
+        defaultData.today[sign.id] = { overall: "Energetic day ahead", love: "Romantic sparks fly", career: "New opportunity knocks", health: "Great energy levels", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" };
+        defaultData.daily[sign.id] = { overall: sign.id === "gemini" ? "Gemini: Curious mind, excellent communication, double the energy today!" : "Productive and focused day", love: "Heartfelt connections", career: "Steady progress", health: "Stay active", travel: "Local trips good", finance: "Save wisely", luck: 75, color: "Yellow", number: "3" };
+        defaultData.natal[sign.id] = { sunSign: sign.name, moonSign: "Calculated from birthday", risingSign: "Depends on time", element: sign.element, rulingPlanet: sign.planet, strength: "Adaptable", weakness: "Restless" };
+        defaultData.weekly[sign.id] = { overall: "Great week coming", love: "Romance blooms midweek", career: "Projects succeed", health: "Stay hydrated", travel: "Weekend trip ideal", finance: "Savings grow", luck: 80, color: "Gold", number: "5" };
+        defaultData.monthly[sign.id] = { overall: "Transformative month", love: "Deep connection forms", career: "Promotion likely", health: "Energy high", travel: "Long journey blessed", finance: "Wealth increases", luck: 85, color: "Blue", number: "9" };
     });
-    // Gemini specific overall for daily page
-    if (defaultData.daily.gemini) defaultData.daily.gemini.overall = "Gemini: Curious mind, excellent communication, double the energy today!";
 
     let userData = JSON.parse(localStorage.getItem("shivanetra_userData"));
     if (!userData) userData = JSON.parse(JSON.stringify(defaultData));
@@ -372,7 +391,6 @@
     let currentPage = 1;
     let currentUser = { name: "", birthday: "", location: "" };
 
-    // Helper
     function showMessage(msg) {
         const msgDiv = document.getElementById("message");
         msgDiv.textContent = msg;
@@ -385,16 +403,19 @@
         return String(str).replace(/[&<>]/g, m => m === "&" ? "&amp;" : m === "<" ? "&lt;" : "&gt;");
     }
 
-    // Render all pages
     function renderAllPages() {
         if (!currentSignId) return;
-        
+
+        // Update Gemini overall box on page 2
+        const geminiPred = userData.daily?.gemini?.overall || "Gemini: Curious mind, excellent communication, double the energy today!";
+        document.getElementById("geminiOverallText").innerText = geminiPred;
+
         const pages = [
-            { id: "todayContainer", dataKey: "today", categories: ["overall","love","career","health","travel","finance","color","number"], showLuck: true },
-            { id: "dailyContainer", dataKey: "daily", categories: ["overall","love","career","health","travel","finance","color","number"], showLuck: true },
-            { id: "natalContainer", dataKey: "natal", categories: ["sunSign","moonSign","risingSign","element","rulingPlanet","strength","weakness"], showLuck: false },
-            { id: "weeklyContainer", dataKey: "weekly", categories: ["overall","love","career","health","travel","finance","luck","color","number"], showLuck: true },
-            { id: "monthlyContainer", dataKey: "monthly", categories: ["overall","love","career","health","travel","finance","luck","color","number"], showLuck: true }
+            { id: "todayContainer", dataKey: "today", cats: ["overall","love","career","health","travel","finance","color","number"], showLuck: true },
+            { id: "dailyContainer", dataKey: "daily", cats: ["overall","love","career","health","travel","finance","color","number"], showLuck: true },
+            { id: "natalContainer", dataKey: "natal", cats: ["sunSign","moonSign","risingSign","element","rulingPlanet","strength","weakness"], showLuck: false },
+            { id: "weeklyContainer", dataKey: "weekly", cats: ["overall","love","career","health","travel","finance","luck","color","number"], showLuck: true },
+            { id: "monthlyContainer", dataKey: "monthly", cats: ["overall","love","career","health","travel","finance","luck","color","number"], showLuck: true }
         ];
 
         pages.forEach(page => {
@@ -402,15 +423,15 @@
             if (!container) return;
             const pred = userData[page.dataKey]?.[currentSignId] || {};
             let html = `<div class="category-grid">`;
-            page.categories.forEach(cat => {
-                let value = pred[cat] !== undefined ? pred[cat] : "";
-                if (cat === "luck") value = pred.luck || 50;
+            page.cats.forEach(cat => {
+                let val = pred[cat] !== undefined ? pred[cat] : "";
+                if (cat === "luck") val = pred.luck || 50;
                 if (cat === "color" || cat === "number" || page.dataKey === "natal") {
-                    html += `<div class="category"><h3>${cat.toUpperCase()}</h3><input type="text" data-section="${page.dataKey}" data-field="${cat}" value="${escapeHtml(value)}"></div>`;
+                    html += `<div class="category"><h3>${cat.toUpperCase()}</h3><input type="text" data-section="${page.dataKey}" data-field="${cat}" value="${escapeHtml(val)}"></div>`;
                 } else if (cat === "luck" && page.showLuck) {
-                    html += `<div class="category"><h3>LUCK (0-100)</h3><input type="range" data-section="${page.dataKey}" data-field="luck" min="0" max="100" value="${value}"><span class="luckVal">${value}%</span></div>`;
+                    html += `<div class="category"><h3>LUCK (0-100)</h3><input type="range" data-section="${page.dataKey}" data-field="luck" min="0" max="100" value="${val}"><span class="luckVal">${val}%</span></div>`;
                 } else {
-                    html += `<div class="category"><h3>${cat.toUpperCase()}</h3><textarea data-section="${page.dataKey}" data-field="${cat}" rows="2">${escapeHtml(value)}</textarea></div>`;
+                    html += `<div class="category"><h3>${cat.toUpperCase()}</h3><textarea data-section="${page.dataKey}" data-field="${cat}" rows="2">${escapeHtml(val)}</textarea></div>`;
                 }
             });
             html += `</div>`;
@@ -420,7 +441,7 @@
             container.innerHTML = html;
         });
 
-        // Attach events
+        // Attach change events
         document.querySelectorAll("[data-section]").forEach(el => {
             el.addEventListener("change", function() {
                 const section = this.getAttribute("data-section");
@@ -442,6 +463,7 @@
                         if (fill) fill.style.width = newVal + "%";
                     }
                 }
+                localStorage.setItem("shivanetra_userData", JSON.stringify(userData));
             });
             if (el.type === "range") {
                 el.addEventListener("input", function() {
@@ -455,7 +477,6 @@
         });
     }
 
-    // Page navigation
     function showPage(pageNum) {
         for (let i = 1; i <= 5; i++) {
             const pg = document.getElementById(`page${i}`);
@@ -472,16 +493,16 @@
     // Birthday dropdowns
     function initBirthdays() {
         const daySel = document.getElementById("birthDay");
-        for (let i=1; i<=31; i++) { let opt = document.createElement("option"); opt.value=i; opt.textContent=i; daySel.appendChild(opt); }
+        for (let i = 1; i <= 31; i++) { let opt = document.createElement("option"); opt.value = i; opt.textContent = i; daySel.appendChild(opt); }
         const monthSel = document.getElementById("birthMonth");
-        ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach((m,idx) => { let opt = document.createElement("option"); opt.value=idx+1; opt.textContent=m; monthSel.appendChild(opt); });
+        ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].forEach((m, idx) => { let opt = document.createElement("option"); opt.value = idx+1; opt.textContent = m; monthSel.appendChild(opt); });
         const yearSel = document.getElementById("birthYear");
-        for (let i=2024; i>=1900; i--) { let opt = document.createElement("option"); opt.value=i; opt.textContent=i; yearSel.appendChild(opt); }
+        for (let i = 2024; i >= 1900; i--) { let opt = document.createElement("option"); opt.value = i; opt.textContent = i; yearSel.appendChild(opt); }
     }
 
     function loadSigns() {
         const sel = document.getElementById("signSelect");
-        sel.innerHTML = '<option value="">-- Select Sign --</option>';
+        sel.innerHTML = '<option value="">-- Select Your Sign --</option>';
         signsData.zodiac_signs.forEach(s => {
             let opt = document.createElement("option");
             opt.value = s.id;
@@ -491,7 +512,7 @@
         sel.value = currentSignId;
     }
 
-    // Save & Enter
+    // ENTER button
     document.getElementById("enterBtn").addEventListener("click", () => {
         const day = document.getElementById("birthDay").value;
         const month = document.getElementById("birthMonth").value;
@@ -506,7 +527,7 @@
         document.getElementById("mainApp").style.display = "block";
         document.getElementById("userBar").innerHTML = `👤 ${currentUser.name} | 📍 ${currentUser.location} | 🎂 ${currentUser.birthday}`;
         renderAllPages();
-        showMessage(`Welcome ${currentUser.name}! Data auto-saves.`);
+        showMessage(`Welcome ${currentUser.name}! ✨`);
     });
 
     // Load saved user
@@ -516,45 +537,40 @@
         if (up.name && up.name !== "Guest") {
             document.getElementById("landingSection").style.display = "none";
             document.getElementById("mainApp").style.display = "block";
-            document.getElementById("userBar").innerHTML = `👤 ${up.name} | 📍 up.location} | 🎂 ${up.birthday}`;
+            document.getElementById("userBar").innerHTML = `👤 ${up.name} | 📍 ${up.location} | 🎂 ${up.birthday}`;
             currentUser = up;
             renderAllPages();
         }
     }
 
+    // SAVE button
     document.getElementById("saveBtn").addEventListener("click", () => {
         localStorage.setItem("shivanetra_userData", JSON.stringify(userData));
         showMessage("✅ All predictions saved!");
     });
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-        const dataStr = JSON.stringify(userData, null, 2);
-        const blob = new Blob([dataStr], {type: "application/json"});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `shivanetra_data_${currentUser.name || "user"}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showMessage("JSON downloaded");
-    });
+
+    // DOWNLOAD HTML button - saves the actual page you see
     document.getElementById("downloadHtmlBtn").addEventListener("click", () => {
-        const htmlContent = `<!DOCTYPE html><html><head><title>Shivanetra Export</title><style>body{background:#1a1a2e;color:#fff;font-family:Arial;padding:20px}</style></head><body><h1>Shivanetra Horoscope</h1><p>User: ${currentUser.name}</p><p>Location: ${currentUser.location}</p><pre>${JSON.stringify(userData, null, 2)}</pre></body></html>`;
-        const blob = new Blob([htmlContent], {type: "text/html"});
+        const htmlContent = document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `shivanetra_export_${currentUser.name}.html`;
+        a.download = `shivanetra_horoscope_${currentUser.name || "user"}_${new Date().toISOString().slice(0,19)}.html`;
         a.click();
         URL.revokeObjectURL(url);
-        showMessage("HTML downloaded");
+        showMessage("📄 HTML page downloaded! This file contains all your predictions.");
     });
 
+    // Sign selection
     document.getElementById("signSelect").addEventListener("change", (e) => {
         currentSignId = e.target.value;
         if (currentSignId) renderAllPages();
     });
-    document.getElementById("prevPageBtn").addEventListener("click", () => { if (currentPage > 1) showPage(currentPage-1); });
-    document.getElementById("nextPageBtn").addEventListener("click", () => { if (currentPage < 5) showPage(currentPage+1); });
+
+    // Next/Previous
+    document.getElementById("prevPageBtn").addEventListener("click", () => { if (currentPage > 1) showPage(currentPage - 1); });
+    document.getElementById("nextPageBtn").addEventListener("click", () => { if (currentPage < 5) showPage(currentPage + 1); });
 
     initBirthdays();
     loadSigns();
