@@ -3,32 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivanetra - Complete Horoscope</title>
+    <title>Shivanetra - Complete Horoscope Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
             padding: 20px;
             min-height: 100vh;
         }
+        body.light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #1a1a2e;
+        }
+        body.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+        }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         h1 {
             text-align: center;
             margin-bottom: 20px;
             font-size: 2.5rem;
+        }
+        body.light h1 {
+            color: #1a1a2e;
+        }
+        body.dark h1 {
             background: linear-gradient(90deg, #ffd89b, #c7e9fb);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.1);
+        }
+        .theme-toggle {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .lang-select {
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+        }
+        .date-search {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .date-search input {
+            padding: 10px;
+            border-radius: 30px;
+            border: none;
+            padding: 10px 15px;
         }
         /* Tabs */
         .tabs {
@@ -42,20 +92,16 @@
             padding: 12px 30px;
             border: none;
             background: rgba(255,255,255,0.1);
-            color: #fff;
+            color: inherit;
             font-size: 1rem;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s;
         }
         .tab-btn.active {
             background: #ff6b6b;
+            color: white;
             box-shadow: 0 0 15px rgba(255,107,107,0.5);
         }
-        .tab-btn:hover {
-            background: #ff6b6b;
-        }
-        /* Form */
         .sign-selector {
             text-align: center;
             margin-bottom: 30px;
@@ -68,15 +114,30 @@
             background: #0f3460;
             color: #fff;
             cursor: pointer;
-            min-width: 200px;
+            min-width: 250px;
         }
-        /* Prediction Card */
+        body.light select {
+            background: #e0e0e0;
+            color: #1a1a2e;
+        }
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
         .prediction-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 25px;
-            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .chart-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .category-grid {
@@ -94,13 +155,21 @@
             margin-bottom: 10px;
             color: #ffd89b;
         }
-        .category p {
-            line-height: 1.5;
+        .category input, .category textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+            border: none;
+            background: #fff;
+            color: #000;
         }
-        /* Chart / Meter */
+        body.dark .category input, body.dark .category textarea {
+            background: #2a2a2a;
+            color: #fff;
+        }
         .meter {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: #333;
             border-radius: 10px;
             margin: 10px 0;
@@ -111,49 +180,26 @@
             width: 0%;
             background: linear-gradient(90deg, #ff6b6b, #ffd89b);
             border-radius: 10px;
-            transition: width 0.5s;
         }
-        .chart-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            align-items: center;
-        }
-        .chart-label {
-            width: 80px;
-        }
-        /* Buttons */
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             margin-top: 20px;
             flex-wrap: wrap;
         }
         button {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            font-size: 1rem;
             font-weight: bold;
-            transition: transform 0.2s;
         }
-        button:active {
-            transform: scale(0.97);
-        }
-        .btn-save {
-            background: #4caf50;
-            color: white;
-        }
-        .btn-download {
-            background: #2196f3;
-            color: white;
-        }
-        .btn-reset {
-            background: #ff9800;
-            color: white;
-        }
+        .btn-save { background: #4caf50; color: white; }
+        .btn-pdf { background: #dc3545; color: white; }
+        .btn-whatsapp { background: #25d366; color: white; }
+        .btn-email { background: #17a2b8; color: white; }
+        .btn-voice { background: #6f42c1; color: white; }
         .message {
             text-align: center;
             margin-top: 15px;
@@ -161,32 +207,28 @@
             border-radius: 10px;
             display: none;
         }
-        .message.show {
-            display: block;
-        }
-        .message.success {
-            background: #4caf50;
-        }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-        @media (max-width: 768px) {
-            .category-grid {
-                grid-template-columns: 1fr;
-            }
-            .tab-btn {
-                padding: 8px 20px;
-                font-size: 0.9rem;
-            }
+        .message.show { display: block; }
+        .message.success { background: #4caf50; }
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+<body class="dark">
 <div class="container">
-    <h1>✨ Shivanetra Horoscope ✨</h1>
+    <h1>🔮 Shivanetra Horoscope Pro 🔮</h1>
+
+    <div class="top-bar">
+        <button class="theme-toggle" id="themeToggle">🌓 Dark/Light</button>
+        <select id="langSelect" class="lang-select">
+            <option value="en">🇬🇧 English</option>
+            <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+        </select>
+        <div class="date-search">
+            <input type="date" id="searchDate">
+            <button id="searchBtn">🔍 Search</button>
+        </div>
+    </div>
 
     <div class="tabs">
         <button class="tab-btn active" data-tab="today">📅 Today</button>
@@ -201,40 +243,48 @@
         </select>
     </div>
 
-    <div id="predictionDisplay" class="prediction-card">
-        <h2 id="signTitle">Select a sign</h2>
-        <div id="categoryContainer" class="category-grid"></div>
-        <div id="chartContainer"></div>
-        <div class="action-buttons">
-            <button class="btn-save" id="saveBtn">💾 Save Predictions</button>
-            <button class="btn-download" id="downloadBtn">📥 Download HTML (My Data)</button>
-            <button class="btn-reset" id="resetBtn">🔄 Reset to Default</button>
+    <div class="main-grid">
+        <div class="prediction-card">
+            <h2 id="signTitle">Select a sign</h2>
+            <div id="categoryContainer" class="category-grid"></div>
+            <div id="luckMeter"></div>
+            <div class="action-buttons">
+                <button class="btn-save" id="saveBtn">💾 Save</button>
+                <button class="btn-pdf" id="pdfBtn">📄 PDF</button>
+                <button class="btn-whatsapp" id="whatsappBtn">📱 WhatsApp</button>
+                <button class="btn-email" id="emailBtn">✉️ Email</button>
+                <button class="btn-voice" id="voiceBtn">🎤 Voice Input</button>
+            </div>
         </div>
-        <div id="message" class="message"></div>
+        <div class="chart-card">
+            <h3>📊 Predictions Chart</h3>
+            <canvas id="predictionChart" width="400" height="300"></canvas>
+        </div>
     </div>
-    <footer>Predictions are saved in your browser. Edit any text field and click Save.</footer>
+    <div id="message" class="message"></div>
+    <footer style="text-align:center; margin-top:30px; opacity:0.7;">© Shivanetra - All predictions editable & savable</footer>
 </div>
 
 <script>
-    // ============ SIGNS DATA ============
+    // Signs Data
     const signsData = {
         "zodiac_signs": [
-            { "id": "aries", "name": "Aries", "symbol": "Ram", "start_date": "March 21", "end_date": "April 19" },
-            { "id": "taurus", "name": "Taurus", "symbol": "Bull", "start_date": "April 20", "end_date": "May 20" },
-            { "id": "gemini", "name": "Gemini", "symbol": "Twins", "start_date": "May 21", "end_date": "June 20" },
-            { "id": "cancer", "name": "Cancer", "symbol": "Crab", "start_date": "June 21", "end_date": "July 22" },
-            { "id": "leo", "name": "Leo", "symbol": "Lion", "start_date": "July 23", "end_date": "August 22" },
-            { "id": "virgo", "name": "Virgo", "symbol": "Virgin", "start_date": "August 23", "end_date": "September 22" },
-            { "id": "libra", "name": "Libra", "symbol": "Scales", "start_date": "September 23", "end_date": "October 22" },
-            { "id": "scorpio", "name": "Scorpio", "symbol": "Scorpion", "start_date": "October 23", "end_date": "November 21" },
-            { "id": "sagittarius", "name": "Sagittarius", "symbol": "Archer", "start_date": "November 22", "end_date": "December 21" },
-            { "id": "capricorn", "name": "Capricorn", "symbol": "Sea-goat", "start_date": "December 22", "end_date": "January 19" },
-            { "id": "aquarius", "name": "Aquarius", "symbol": "Water Bearer", "start_date": "January 20", "end_date": "February 18" },
-            { "id": "pisces", "name": "Pisces", "symbol": "Fish", "start_date": "February 19", "end_date": "March 20" }
+            { "id": "aries", "name": "Aries", "name_hi": "मेष" },
+            { "id": "taurus", "name": "Taurus", "name_hi": "वृषभ" },
+            { "id": "gemini", "name": "Gemini", "name_hi": "मिथुन" },
+            { "id": "cancer", "name": "Cancer", "name_hi": "कर्क" },
+            { "id": "leo", "name": "Leo", "name_hi": "सिंह" },
+            { "id": "virgo", "name": "Virgo", "name_hi": "कन्या" },
+            { "id": "libra", "name": "Libra", "name_hi": "तुला" },
+            { "id": "scorpio", "name": "Scorpio", "name_hi": "वृश्चिक" },
+            { "id": "sagittarius", "name": "Sagittarius", "name_hi": "धनु" },
+            { "id": "capricorn", "name": "Capricorn", "name_hi": "मकर" },
+            { "id": "aquarius", "name": "Aquarius", "name_hi": "कुंभ" },
+            { "id": "pisces", "name": "Pisces", "name_hi": "मीन" }
         ]
     };
 
-    // Default predictions template (with Travel & Finance)
+    // Default Predictions (complete)
     const defaultPredictions = {
         "today": {
             "aries": { overall: "Energetic day", love: "Romantic sparks", career: "New opportunity", health: "Great energy", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" },
@@ -255,19 +305,7 @@
         "monthly": {}
     };
 
-    // Generate default for all signs for each tab
-    const allTabs = ["today", "tomorrow", "weekly", "monthly"];
-    allTabs.forEach(tab => {
-        if (Object.keys(defaultPredictions[tab]).length === 0) {
-            defaultPredictions[tab] = {};
-            signsData.zodiac_signs.forEach(sign => {
-                const base = defaultPredictions.today[sign.id] || {};
-                defaultPredictions[tab][sign.id] = { ...base, overall: `${tab.charAt(0).toUpperCase() + tab.slice(1)} prediction for ${sign.name}` };
-            });
-        }
-    });
-
-    // Load saved or default
+    // Initialize
     let userPredictions = JSON.parse(localStorage.getItem("shivanetra_predictions"));
     if (!userPredictions) {
         userPredictions = JSON.parse(JSON.stringify(defaultPredictions));
@@ -275,93 +313,81 @@
 
     let currentTab = "today";
     let currentSignId = "";
+    let currentLang = "en";
+    let chartInstance = null;
 
-    // Populate sign dropdown
+    // Translations
+    const translations = {
+        en: {
+            overall: "Overall", love: "Love", career: "Career", health: "Health", travel: "Travel", finance: "Finance", color: "Lucky Color", number: "Lucky Number", luck: "Luck"
+        },
+        hi: {
+            overall: "सामान्य", love: "प्रेम", career: "करियर", health: "स्वास्थ्य", travel: "यात्रा", finance: "वित्त", color: "शुभ रंग", number: "शुभ अंक", luck: "भाग्य"
+        }
+    };
+
     function loadSigns() {
         const select = document.getElementById("signSelect");
-        select.innerHTML = '<option value="">-- Select Your Zodiac Sign --</option>';
+        select.innerHTML = '<option value="">-- चुनें / Select --</option>';
         signsData.zodiac_signs.forEach(sign => {
             const option = document.createElement("option");
             option.value = sign.id;
-            option.textContent = `${sign.name} (${sign.start_date} - ${sign.end_date})`;
+            const displayName = currentLang === "hi" ? sign.name_hi : sign.name;
+            option.textContent = displayName;
             select.appendChild(option);
         });
     }
 
-    // Render editable predictions
     function render() {
         if (!currentSignId) {
             document.getElementById("signTitle").innerText = "Select a sign above";
             document.getElementById("categoryContainer").innerHTML = "";
-            document.getElementById("chartContainer").innerHTML = "";
             return;
         }
-
         const sign = signsData.zodiac_signs.find(s => s.id === currentSignId);
-        document.getElementById("signTitle").innerHTML = `${sign.name} Horoscope - ${currentTab.toUpperCase()}`;
+        const signName = currentLang === "hi" ? sign.name_hi : sign.name;
+        document.getElementById("signTitle").innerHTML = `${signName} Horoscope - ${currentTab.toUpperCase()}`;
 
         let pred = userPredictions[currentTab]?.[currentSignId];
         if (!pred) {
             pred = { overall: "", love: "", career: "", health: "", travel: "", finance: "", luck: 50, color: "", number: "" };
-            userPredictions[currentTab] = userPredictions[currentTab] || {};
+            if (!userPredictions[currentTab]) userPredictions[currentTab] = {};
             userPredictions[currentTab][currentSignId] = pred;
         }
 
-        const categories = [
-            { key: "overall", label: "🌟 Overall", icon: "🔮" },
-            { key: "love", label: "❤️ Love", icon: "💕" },
-            { key: "career", label: "💼 Career", icon: "📈" },
-            { key: "health", label: "🏃 Health", icon: "💪" },
-            { key: "travel", label: "✈️ Travel", icon: "🌍" },
-            { key: "finance", label: "💰 Finance", icon: "💵" },
-            { key: "color", label: "🎨 Lucky Color", icon: "🌈" },
-            { key: "number", label: "🔢 Lucky Number", icon: "🔢" }
-        ];
-
+        const cats = ["overall", "love", "career", "health", "travel", "finance", "color", "number"];
         let html = `<div class="category-grid">`;
-        categories.forEach(cat => {
-            let value = pred[cat.key] || "";
-            if (cat.key === "luck") value = pred.luck || 50;
-            if (cat.key === "color" || cat.key === "number") {
-                html += `<div class="category">
-                            <h3>${cat.icon} ${cat.label}</h3>
-                            <input type="text" data-field="${cat.key}" value="${escapeHtml(value)}" style="width:100%; padding:8px; border-radius:10px; border:none; background:#fff; color:#000;">
-                         </div>`;
-            } else if (cat.key === "luck") {
-                html += `<div class="category">
-                            <h3>${cat.icon} ${cat.label} (0-100)</h3>
-                            <input type="range" data-field="${cat.key}" min="0" max="100" value="${value}" style="width:100%">
-                            <span id="luckValue">${value}%</span>
-                         </div>`;
+        cats.forEach(cat => {
+            const label = translations[currentLang][cat] || cat;
+            const value = pred[cat] || "";
+            if (cat === "color" || cat === "number") {
+                html += `<div class="category"><h3>${label}</h3><input type="text" data-field="${cat}" value="${escapeHtml(value)}"></div>`;
             } else {
-                html += `<div class="category">
-                            <h3>${cat.icon} ${cat.label}</h3>
-                            <textarea data-field="${cat.key}" rows="3" style="width:100%; padding:8px; border-radius:10px; border:none; background:#fff; color:#000;">${escapeHtml(value)}</textarea>
-                         </div>`;
+                html += `<div class="category"><h3>${label}</h3><textarea data-field="${cat}" rows="2">${escapeHtml(value)}</textarea></div>`;
             }
         });
+        html += `<div class="category"><h3>${translations[currentLang].luck} (0-100)</h3>
+                 <input type="range" data-field="luck" min="0" max="100" value="${pred.luck || 50}">
+                 <span id="luckValue">${pred.luck || 50}%</span>
+                 <div class="meter"><div class="meter-fill" style="width:${pred.luck || 50}%"></div></div>
+                 </div>`;
         html += `</div>`;
-
-        // Chart for luck only (simple meter)
-        const luckVal = pred.luck || 50;
-        html += `<div class="chart-row"><span class="chart-label">🍀 Luck Meter</span><div class="meter"><div class="meter-fill" style="width:${luckVal}%"></div></div><span>${luckVal}%</span></div>`;
-
         document.getElementById("categoryContainer").innerHTML = html;
-        document.getElementById("chartContainer").innerHTML = ""; // chart already inside
 
-        // Attach event listeners to inputs
+        // Attach events
         document.querySelectorAll("[data-field]").forEach(input => {
-            input.addEventListener("change", function(e) {
+            input.addEventListener("change", function() {
                 const field = this.getAttribute("data-field");
-                let newVal = this.value;
-                if (field === "luck") newVal = parseInt(this.value);
-                userPredictions[currentTab][currentSignId][field] = newVal;
+                let val = this.value;
+                if (field === "luck") val = parseInt(this.value);
+                userPredictions[currentTab][currentSignId][field] = val;
                 if (field === "luck") {
-                    document.getElementById("luckValue").innerText = newVal + "%";
+                    document.getElementById("luckValue").innerText = val + "%";
                     const fill = document.querySelector(".meter-fill");
-                    if (fill) fill.style.width = newVal + "%";
+                    if (fill) fill.style.width = val + "%";
                 }
-                showMessage("Changes made — don't forget to Save!", "success");
+                updateChart();
+                showMessage("Changes made - Save to keep!", "success");
             });
             if (input.type === "range") {
                 input.addEventListener("input", function() {
@@ -369,64 +395,52 @@
                 });
             }
         });
+        updateChart();
     }
 
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === "&") return "&amp;";
-            if (m === "<") return "&lt;";
-            if (m === ">") return "&gt;";
-            return m;
+    function updateChart() {
+        if (!currentSignId) return;
+        const pred = userPredictions[currentTab]?.[currentSignId] || { love: 50, career: 50, health: 50, travel: 50, finance: 50, luck: 50 };
+        const ctx = document.getElementById('predictionChart').getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Love', 'Career', 'Health', 'Travel', 'Finance', 'Luck'],
+                datasets: [{
+                    label: currentTab.toUpperCase(),
+                    data: [pred.love?.length ? 70 : 50, pred.career?.length ? 70 : 50, pred.health?.length ? 70 : 50, pred.travel?.length ? 70 : 50, pred.finance?.length ? 70 : 50, pred.luck || 50],
+                    backgroundColor: 'rgba(255,107,107,0.2)',
+                    borderColor: '#ff6b6b',
+                    borderWidth: 2
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: true }
         });
     }
 
-    function showMessage(msg, type) {
-        const msgDiv = document.getElementById("message");
-        msgDiv.textContent = msg;
-        msgDiv.className = `message show ${type}`;
-        setTimeout(() => msgDiv.classList.remove("show"), 3000);
-    }
+    function escapeHtml(str) { if (!str) return ""; return str.replace(/[&<>]/g, function(m) { return m === "&" ? "&amp;" : m === "<" ? "&lt;" : "&gt;"; }); }
+    function showMessage(msg, type) { const m = document.getElementById("message"); m.textContent = msg; m.className = `message show ${type}`; setTimeout(() => m.classList.remove("show"), 3000); }
 
-    document.getElementById("saveBtn").addEventListener("click", () => {
-        localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
-        showMessage("✅ All predictions saved to browser!", "success");
-    });
-
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-        const dataStr = JSON.stringify(userPredictions, null, 2);
-        const blob = new Blob([dataStr], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `shivanetra_predictions_${new Date().toISOString().slice(0,19)}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        showMessage("📁 Predictions JSON downloaded", "success");
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", () => {
-        if (confirm("Reset all predictions to defaults? Your saved data will be lost.")) {
-            userPredictions = JSON.parse(JSON.stringify(defaultPredictions));
-            localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions));
-            render();
-            showMessage("🔄 Reset to default predictions", "success");
-        }
-    });
-
-    document.getElementById("signSelect").addEventListener("change", (e) => {
-        currentSignId = e.target.value;
-        render();
-    });
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentTab = btn.getAttribute("data-tab");
-            render();
-        });
-    });
+    // Save
+    document.getElementById("saveBtn").addEventListener("click", () => { localStorage.setItem("shivanetra_predictions", JSON.stringify(userPredictions)); showMessage("✅ Saved!", "success"); });
+    // PDF
+    document.getElementById("pdfBtn").addEventListener("click", () => { const element = document.querySelector(".main-grid"); html2pdf().from(element).save(); });
+    // WhatsApp
+    document.getElementById("whatsappBtn").addEventListener("click", () => { const pred = userPredictions[currentTab]?.[currentSignId]; if(pred) { const msg = `*${currentTab} Horoscope*:\nOverall: ${pred.overall}\nLove: ${pred.love}\nCareer: ${pred.career}`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`); } });
+    // Email
+    document.getElementById("emailBtn").addEventListener("click", () => { const pred = userPredictions[currentTab]?.[currentSignId]; if(pred) { window.location.href = `mailto:?subject=My Horoscope&body=${encodeURIComponent(JSON.stringify(pred, null, 2))}`; } });
+    // Voice Input
+    document.getElementById("voiceBtn").addEventListener("click", () => { const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); recognition.lang = currentLang === "hi" ? "hi-IN" : "en-US"; recognition.onresult = (e) => { const text = e.results[0][0].transcript; const active = document.activeElement; if(active && active.hasAttribute("data-field")) { active.value = text; active.dispatchEvent(new Event("change")); } else { alert("Click inside a prediction field first!"); } }; recognition.start(); });
+    // Theme
+    document.getElementById("themeToggle").addEventListener("click", () => { document.body.classList.toggle("dark"); document.body.classList.toggle("light"); });
+    // Language
+    document.getElementById("langSelect").addEventListener("change", (e) => { currentLang = e.target.value; loadSigns(); render(); });
+    // Search Date
+    document.getElementById("searchBtn").addEventListener("click", () => { const date = document.getElementById("searchDate").value; if(date) { alert(`Searching for ${date} - Feature: You can load custom date data here`); } });
+    // Sign + Tab events
+    document.getElementById("signSelect").addEventListener("change", (e) => { currentSignId = e.target.value; render(); });
+    document.querySelectorAll(".tab-btn").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); currentTab = btn.getAttribute("data-tab"); render(); }); });
 
     loadSigns();
     render();
