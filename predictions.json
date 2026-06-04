@@ -1,0 +1,149 @@
+{
+  "date": "YYYY-MM-DD",
+  "predictions": [
+    {
+      "sign_id": "aries",
+      "sign_name": "Aries",
+      "date_range": "Mar 21 – Apr 19",
+      "prediction": "Your prediction text here.",
+      "love": "Love prediction here.",
+      "career": "Career prediction here.",
+      "health": "Health prediction here.",
+      "lucky_number": 0,
+      "lucky_color": "Color",
+      "mood": "Mood"
+    },
+    {
+      "sign_id": "taurus",
+      "sign_name": "Taurus",
+      "date_range": "Apr 20 – May 20",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "gemini",
+      "sign_name": "Gemini",
+      "date_range": "May 21 – Jun 20",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "cancer",
+      "sign_name": "Cancer",
+      "date_range": "Jun 21 – Jul 22",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "leo",
+      "sign_name": "Leo",
+      "date_range": "Jul 23 – Aug 22",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "virgo",
+      "sign_name": "Virgo",
+      "date_range": "Aug 23 – Sep 22",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "libra",
+      "sign_name": "Libra",
+      "date_range": "Sep 23 – Oct 22",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "scorpio",
+      "sign_name": "Scorpio",
+      "date_range": "Oct 23 – Nov 21",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "sagittarius",
+      "sign_name": "Sagittarius",
+      "date_range": "Nov 22 – Dec 21",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "capricorn",
+      "sign_name": "Capricorn",
+      "date_range": "Dec 22 – Jan 19",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "aquarius",
+      "sign_name": "Aquarius",
+      "date_range": "Jan 20 – Feb 18",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    },
+    {
+      "sign_id": "pisces",
+      "sign_name": "Pisces",
+      "date_range": "Feb 19 – Mar 20",
+      "prediction": "",
+      "love": "",
+      "career": "",
+      "health": "",
+      "lucky_number": 0,
+      "lucky_color": "",
+      "mood": ""
+    }
+  ]
+}
