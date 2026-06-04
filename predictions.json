@@ -1,0 +1,139 @@
+{
+  "today": {
+    "aries": {
+      "overall": "Energetic day",
+      "love": "Romantic sparks",
+      "career": "New opportunity",
+      "health": "Great energy",
+      "travel": "Short trip fruitful",
+      "finance": "Steady income",
+      "luck": 85,
+      "color": "Red",
+      "number": "7"
+    },
+    "taurus": {
+      "overall": "Stable and calm",
+      "love": "Deep connection",
+      "career": "Steady progress",
+      "health": "Good",
+      "travel": "Avoid long trips",
+      "finance": "Save money",
+      "luck": 70,
+      "color": "Green",
+      "number": "4"
+    },
+    "gemini": {
+      "overall": "Curious mind",
+      "love": "Flirty vibes",
+      "career": "Meetings",
+      "health": "Rest needed",
+      "travel": "Exciting plans",
+      "finance": "Unexpected gain",
+      "luck": 90,
+      "color": "Yellow",
+      "number": "3"
+    },
+    "cancer": {
+      "overall": "Emotional day",
+      "love": "Family time",
+      "career": "Supportive",
+      "health": "Hydrate",
+      "travel": "Visit water",
+      "finance": "Budget well",
+      "luck": 65,
+      "color": "White",
+      "number": "2"
+    },
+    "leo": {
+      "overall": "Shine bright",
+      "love": "Passionate",
+      "career": "Leadership",
+      "health": "Exercise",
+      "travel": "Luxury trip",
+      "finance": "Investment good",
+      "luck": 95,
+      "color": "Gold",
+      "number": "1"
+    },
+    "virgo": {
+      "overall": "Productive day",
+      "love": "Practical love",
+      "career": "Details matter",
+      "health": "Healthy eating",
+      "travel": "Plan ahead",
+      "finance": "Analyze",
+      "luck": 75,
+      "color": "Brown",
+      "number": "5"
+    },
+    "libra": {
+      "overall": "Balanced",
+      "love": "Romantic date",
+      "career": "Teamwork",
+      "health": "Yoga helps",
+      "travel": "Partner travel",
+      "finance": "Fair deals",
+      "luck": 80,
+      "color": "Pink",
+      "number": "6"
+    },
+    "scorpio": {
+      "overall": "Intense",
+      "love": "Deep trust",
+      "career": "Transformation",
+      "health": "Detox",
+      "travel": "Mysterious place",
+      "finance": "Hidden money",
+      "luck": 88,
+      "color": "Black",
+      "number": "8"
+    },
+    "sagittarius": {
+      "overall": "Adventurous",
+      "love": "Free spirit",
+      "career": "Expansion",
+      "health": "Outdoor",
+      "travel": "Perfect time",
+      "finance": "Spend on fun",
+      "luck": 92,
+      "color": "Purple",
+      "number": "9"
+    },
+    "capricorn": {
+      "overall": "Focused day",
+      "love": "Commitment",
+      "career": "Promotion",
+      "health": "Discipline",
+      "travel": "Business trip",
+      "finance": "Wealth grows",
+      "luck": 78,
+      "color": "Grey",
+      "number": "10"
+    },
+    "aquarius": {
+      "overall": "Innovative day",
+      "love": "Unique bond",
+      "career": "Ideas flow",
+      "health": "Social energy",
+      "travel": "Group trip",
+      "finance": "Tech gains",
+      "luck": 82,
+      "color": "Blue",
+      "number": "11"
+    },
+    "pisces": {
+      "overall": "Dreamy",
+      "love": "Romantic fantasy",
+      "career": "Artistic",
+      "health": "Rest well",
+      "travel": "Beach escape",
+      "finance": "Intuitive",
+      "luck": 87,
+      "color": "Sea Green",
+      "number": "12"
+    }
+  },
+  "tomorrow": {},
+  "weekly": {},
+  "monthly": {}
+}
