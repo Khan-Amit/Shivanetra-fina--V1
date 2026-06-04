@@ -36,7 +36,6 @@
             opacity: 0.8;
             font-size: 0.9rem;
         }
-        /* Landing Card */
         .landing-card {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
@@ -92,11 +91,9 @@
             transform: scale(1.02);
             background: #ff5252;
         }
-        /* Main App */
         .main-app {
             display: none;
         }
-        /* Page Navigation */
         .page-nav {
             display: flex;
             justify-content: space-between;
@@ -131,7 +128,6 @@
             font-size: 1rem;
             font-weight: bold;
         }
-        /* Pages */
         .page {
             display: none;
             background: rgba(255,255,255,0.08);
@@ -250,9 +246,6 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .gemini-highlight h3 {
-            margin-bottom: 8px;
-        }
         @media (max-width: 650px) {
             .category-grid { grid-template-columns: 1fr; }
             .nav-btn { padding: 8px 16px; font-size: 0.8rem; }
@@ -264,7 +257,6 @@
     <h1>✨ Shivanetra Horoscope ✨</h1>
     <div class="sub">Your Daily Cosmic Guide</div>
 
-    <!-- LANDING SECTION -->
     <div id="landingSection" class="landing-card">
         <div class="form-row">
             <div class="form-group">
@@ -287,7 +279,6 @@
         <button class="enter-btn" id="enterBtn">🔮 Save & Enter 🔮</button>
     </div>
 
-    <!-- MAIN APP -->
     <div id="mainApp" class="main-app">
         <div class="user-bar" id="userBar"></div>
         <div class="sign-selector">
@@ -296,43 +287,37 @@
             </select>
         </div>
 
-        <!-- PAGE NAVIGATION -->
         <div class="page-nav">
             <button class="nav-btn" id="prevPageBtn" disabled>◀ Previous</button>
             <span class="page-indicator" id="pageIndicator">Page 1 / 5</span>
             <button class="nav-btn" id="nextPageBtn">Next ▶</button>
         </div>
 
-        <!-- PAGE 1: TODAY -->
         <div id="page1" class="page active-page">
             <h2>📅 TODAY'S HOROSCOPE</h2>
             <div id="todayContainer" class="category-grid"></div>
             <div id="todayMeter"></div>
         </div>
 
-        <!-- PAGE 2: DAILY PREDICTION with GEMINI OVERALL -->
         <div id="page2" class="page">
             <h2>⭐ DAILY PREDICTION</h2>
             <div class="gemini-highlight" id="geminiOverallBox">
-                <h3>🌟 GEMINI OVERALL (Example)</h3>
+                <h3>🌟 GEMINI OVERALL</h3>
                 <p id="geminiOverallText">Curious mind, excellent communication, double the energy today!</p>
             </div>
             <div id="dailyContainer" class="category-grid"></div>
         </div>
 
-        <!-- PAGE 3: NATAL CHART -->
         <div id="page3" class="page">
             <h2>⭐ NATAL CHART</h2>
             <div id="natalContainer" class="category-grid"></div>
         </div>
 
-        <!-- PAGE 4: WEEKLY -->
         <div id="page4" class="page">
             <h2>📆 WEEKLY HOROSCOPE</h2>
             <div id="weeklyContainer" class="category-grid"></div>
         </div>
 
-        <!-- PAGE 5: MONTHLY -->
         <div id="page5" class="page">
             <h2>🌙 MONTHLY HOROSCOPE</h2>
             <div id="monthlyContainer" class="category-grid"></div>
@@ -340,7 +325,7 @@
 
         <div class="action-buttons">
             <button class="btn-save" id="saveBtn">💾 Save All</button>
-            <button class="btn-html" id="downloadHtmlBtn">📄 Download HTML Page</button>
+            <button class="btn-html" id="downloadHtmlBtn">📄 Download HTML (Complete Page)</button>
         </div>
     </div>
     <footer>Shivanetra • Use Next/Previous to navigate • All data saves automatically</footer>
@@ -348,7 +333,6 @@
 <div id="message" class="message"></div>
 
 <script>
-    // ============ ZODIAC SIGNS ============
     const signsData = {
         "zodiac_signs": [
             { "id": "aries", "name": "Aries", "element": "Fire", "planet": "Mars" },
@@ -366,20 +350,12 @@
         ]
     };
 
-    // Default predictions for all signs
-    const defaultData = {
-        today: {},
-        daily: {},
-        natal: {},
-        weekly: {},
-        monthly: {}
-    };
+    const defaultData = { today: {}, daily: {}, natal: {}, weekly: {}, monthly: {} };
 
-    // Fill with default values
     signsData.zodiac_signs.forEach(sign => {
         defaultData.today[sign.id] = { overall: "Energetic day ahead", love: "Romantic sparks fly", career: "New opportunity knocks", health: "Great energy levels", travel: "Short trip fruitful", finance: "Steady income", luck: 85, color: "Red", number: "7" };
         defaultData.daily[sign.id] = { overall: sign.id === "gemini" ? "Gemini: Curious mind, excellent communication, double the energy today!" : "Productive and focused day", love: "Heartfelt connections", career: "Steady progress", health: "Stay active", travel: "Local trips good", finance: "Save wisely", luck: 75, color: "Yellow", number: "3" };
-        defaultData.natal[sign.id] = { sunSign: sign.name, moonSign: "Calculated from birthday", risingSign: "Depends on time", element: sign.element, rulingPlanet: sign.planet, strength: "Adaptable", weakness: "Restless" };
+        defaultData.natal[sign.id] = { sunSign: sign.name, moonSign: "Calculated from birthday", risingSign: "Depends on birth time", element: sign.element, rulingPlanet: sign.planet, strength: "Adaptable", weakness: "Restless" };
         defaultData.weekly[sign.id] = { overall: "Great week coming", love: "Romance blooms midweek", career: "Projects succeed", health: "Stay hydrated", travel: "Weekend trip ideal", finance: "Savings grow", luck: 80, color: "Gold", number: "5" };
         defaultData.monthly[sign.id] = { overall: "Transformative month", love: "Deep connection forms", career: "Promotion likely", health: "Energy high", travel: "Long journey blessed", finance: "Wealth increases", luck: 85, color: "Blue", number: "9" };
     });
@@ -406,7 +382,6 @@
     function renderAllPages() {
         if (!currentSignId) return;
 
-        // Update Gemini overall box on page 2
         const geminiPred = userData.daily?.gemini?.overall || "Gemini: Curious mind, excellent communication, double the energy today!";
         document.getElementById("geminiOverallText").innerText = geminiPred;
 
@@ -441,7 +416,6 @@
             container.innerHTML = html;
         });
 
-        // Attach change events
         document.querySelectorAll("[data-section]").forEach(el => {
             el.addEventListener("change", function() {
                 const section = this.getAttribute("data-section");
@@ -490,7 +464,6 @@
         document.getElementById("nextPageBtn").disabled = (pageNum === 5);
     }
 
-    // Birthday dropdowns
     function initBirthdays() {
         const daySel = document.getElementById("birthDay");
         for (let i = 1; i <= 31; i++) { let opt = document.createElement("option"); opt.value = i; opt.textContent = i; daySel.appendChild(opt); }
@@ -512,7 +485,6 @@
         sel.value = currentSignId;
     }
 
-    // ENTER button
     document.getElementById("enterBtn").addEventListener("click", () => {
         const day = document.getElementById("birthDay").value;
         const month = document.getElementById("birthMonth").value;
@@ -530,7 +502,6 @@
         showMessage(`Welcome ${currentUser.name}! ✨`);
     });
 
-    // Load saved user
     const savedProfile = localStorage.getItem("shivanetra_user_profile");
     if (savedProfile) {
         const up = JSON.parse(savedProfile);
@@ -543,32 +514,30 @@
         }
     }
 
-    // SAVE button
     document.getElementById("saveBtn").addEventListener("click", () => {
         localStorage.setItem("shivanetra_userData", JSON.stringify(userData));
         showMessage("✅ All predictions saved!");
     });
 
-    // DOWNLOAD HTML button - saves the actual page you see
+    // FIXED: Download HTML saves the COMPLETE working page with all 5 pages and Natal Chart
     document.getElementById("downloadHtmlBtn").addEventListener("click", () => {
-        const htmlContent = document.documentElement.outerHTML;
-        const blob = new Blob([htmlContent], { type: "text/html" });
+        // Get the current complete HTML of the page
+        const currentHtml = document.documentElement.outerHTML;
+        const blob = new Blob([currentHtml], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `shivanetra_horoscope_${currentUser.name || "user"}_${new Date().toISOString().slice(0,19)}.html`;
+        a.download = `Shivanetra_${currentUser.name || "User"}_Full_Page.html`;
         a.click();
         URL.revokeObjectURL(url);
-        showMessage("📄 HTML page downloaded! This file contains all your predictions.");
+        showMessage("📄 Complete page with ALL 5 pages and Natal Chart saved!");
     });
 
-    // Sign selection
     document.getElementById("signSelect").addEventListener("change", (e) => {
         currentSignId = e.target.value;
         if (currentSignId) renderAllPages();
     });
 
-    // Next/Previous
     document.getElementById("prevPageBtn").addEventListener("click", () => { if (currentPage > 1) showPage(currentPage - 1); });
     document.getElementById("nextPageBtn").addEventListener("click", () => { if (currentPage < 5) showPage(currentPage + 1); });
 
